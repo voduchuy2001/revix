@@ -5,6 +5,7 @@ import { Label } from "@/Components/ui/label";
 import { Transition } from "@headlessui/react";
 import { useForm } from "@inertiajs/react";
 import { useRef } from "react";
+import toast from "react-hot-toast";
 
 export default function UpdatePasswordForm({ className = "" }) {
     const passwordInput = useRef();
@@ -29,7 +30,10 @@ export default function UpdatePasswordForm({ className = "" }) {
 
         put(route("password.update"), {
             preserveScroll: true,
-            onSuccess: () => reset(),
+            onSuccess: () => {
+                reset();
+                toast.success("Cập nhật thành công");
+            },
             onError: (errors) => {
                 if (errors.password) {
                     reset("password", "password_confirmation");

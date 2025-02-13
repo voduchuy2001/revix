@@ -4,6 +4,7 @@ import { Input } from "@/Components/ui/input";
 import { Label } from "@/Components/ui/label";
 import { Transition } from "@headlessui/react";
 import { useForm, usePage } from "@inertiajs/react";
+import toast from "react-hot-toast";
 
 export default function UpdateProfileInformation({ className = "" }) {
     const user = usePage().props.auth.user;
@@ -13,12 +14,15 @@ export default function UpdateProfileInformation({ className = "" }) {
             name: user.name,
             email: user.email,
             phone_number: user.phone_number,
+            address: user.address,
         });
 
     const submit = (e) => {
         e.preventDefault();
 
-        patch(route("profile.update"));
+        patch(route("profile.update"), {
+            onSuccess: () => toast.success("Cập nhật thành công"),
+        });
     };
 
     return (
@@ -34,23 +38,6 @@ export default function UpdateProfileInformation({ className = "" }) {
             </header>
 
             <form onSubmit={submit} className="mt-6 space-y-6">
-                <div>
-                    <Label htmlFor="phone_number">Số điện thoại</Label>
-                    <Input
-                        id="phone_number"
-                        className="mt-1 block w-full"
-                        value={data.phone_number}
-                        onChange={(e) =>
-                            setData("phone_number", e.target.value)
-                        }
-                    />
-
-                    <InputError
-                        className="mt-2"
-                        message={errors.phone_number}
-                    />
-                </div>
-
                 <div>
                     <Label htmlFor="name">Tên</Label>
                     <Input
@@ -74,6 +61,35 @@ export default function UpdateProfileInformation({ className = "" }) {
                     />
 
                     <InputError className="mt-2" message={errors.email} />
+                </div>
+
+                <div>
+                    <Label htmlFor="phone_number">Số điện thoại</Label>
+                    <Input
+                        id="phone_number"
+                        className="mt-1 block w-full"
+                        value={data.phone_number}
+                        onChange={(e) =>
+                            setData("phone_number", e.target.value)
+                        }
+                    />
+
+                    <InputError
+                        className="mt-2"
+                        message={errors.phone_number}
+                    />
+                </div>
+
+                <div>
+                    <Label htmlFor="address">Địa chỉ</Label>
+                    <Input
+                        id="address"
+                        className="mt-1 block w-full"
+                        value={data.address}
+                        onChange={(e) => setData("address", e.target.value)}
+                    />
+
+                    <InputError className="mt-2" message={errors.address} />
                 </div>
 
                 <div className="flex items-center gap-4">

@@ -25,7 +25,8 @@ class ProfileUpdateRequest extends FormRequest
                 'max:255',
                 Rule::unique(User::class)->ignore($this->user()->id),
             ],
-            'phone_number' => ['nullable', 'regex:/^(0?)(3[2-9]|5[689]|7[06789]|8[0-689]|9[0-46-9])[0-9]{7}$/']
+            'phone_number' => ['nullable', 'regex:/^(0?)(3[2-9]|5[689]|7[06789]|8[0-689]|9[0-46-9])[0-9]{7}$/'],
+            'address' => ['nullable', 'string', 'max:255']
         ];
     }
 
