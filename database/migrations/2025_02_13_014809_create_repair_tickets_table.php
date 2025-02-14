@@ -16,8 +16,9 @@ return new class () extends Migration {
             $table->foreignId('customer_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('device_id')->constrained('devices')->onDelete('cascade');
             $table->foreignId('technician_id')->nullable()->constrained('users')->onDelete('set null');
-            $table->text('condition');
-            $table->text('note');
+            $table->double('amount')->nullable();
+            $table->text('condition')->nullable();
+            $table->text('note')->nullable();
             $table->string('status', 50)->default('pending');
             $table->timestamps();
         });
