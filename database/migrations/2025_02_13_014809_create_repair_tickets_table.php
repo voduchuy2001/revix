@@ -13,12 +13,12 @@ return new class () extends Migration {
         Schema::create('repair_tickets', function (Blueprint $table) {
             $table->id();
             $table->string('code')->unique();
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('customer_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('device_id')->constrained('devices')->onDelete('cascade');
             $table->foreignId('technician_id')->nullable()->constrained('users')->onDelete('set null');
-            $table->text('description');
+            $table->text('condition');
+            $table->text('note');
             $table->string('status', 50)->default('pending');
-            $table->date('date');
             $table->timestamps();
         });
     }

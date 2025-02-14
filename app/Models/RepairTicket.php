@@ -14,19 +14,18 @@ class RepairTicket extends Model
         'user_id',
         'device_id',
         'technician_id',
-        'description',
+        'note',
         'status',
-        'date',
     ];
 
     public function customer(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'customer_id');
     }
 
     public function device(): BelongsTo
     {
-        return $this->belongsTo(Device::class);
+        return $this->belongsTo(Device::class, 'device_id');
     }
 
     public function technician(): BelongsTo
