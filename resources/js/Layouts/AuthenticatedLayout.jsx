@@ -24,6 +24,15 @@ export default function AuthenticatedLayout({ header, children }) {
                                 >
                                     Tổng quan
                                 </NavLink>
+
+                                <NavLink
+                                    href={route("repair_ticket.index")}
+                                    active={route().current(
+                                        "repair_ticket.index"
+                                    )}
+                                >
+                                    Tiếp nhận sửa chữa
+                                </NavLink>
                             </div>
                         </div>
 
@@ -127,6 +136,13 @@ export default function AuthenticatedLayout({ header, children }) {
                             active={route().current("dashboard")}
                         >
                             Tổng quan
+                        </ResponsiveNavLink>
+
+                        <ResponsiveNavLink
+                            href={route("repair_ticket.index")}
+                            active={route().current("repair_ticket.index")}
+                        >
+                            Tiếp nhận sửa chữa
                         </ResponsiveNavLink>
                     </div>
 

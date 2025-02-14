@@ -11,10 +11,10 @@ export default function UpdateProfileInformation({ className = "" }) {
 
     const { data, setData, patch, errors, processing, recentlySuccessful } =
         useForm({
-            name: user.name,
-            email: user.email,
-            phone_number: user.phone_number,
-            address: user.address,
+            name: user.name || "",
+            email: user.email || "",
+            phone_number: user.phone_number || "",
+            address: user.address || "",
         });
 
     const submit = (e) => {
