@@ -12,4 +12,11 @@ class Setting extends Model
         'key',
         'value',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'value' => 'array',
+        ];
+    }
 }

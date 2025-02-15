@@ -22,6 +22,17 @@ class RepairTicket extends Model
         'status',
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($ticket) {
+            $latestCode = self::where('code', 'LIKE', '#%')->orderByDesc('code')->value('code');
+            $latestCode ? $number = intval(substr($latestCode, 1)) + 1 : 1;
+            $ticket->code = '#' . str_pad($number, 7, '0', STR_PAD_LEFT);
+        });
+    }
+
     public function customer(): BelongsTo
     {
         return $this->belongsTo(User::class, 'customer_id');

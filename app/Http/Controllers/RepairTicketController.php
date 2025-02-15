@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\GetRepairTicketRequest;
 use App\Models\RepairTicket;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
@@ -33,9 +34,21 @@ class RepairTicketController extends Controller
 
     public function create(): Response
     {
-        return Inertia::render('RepairTicket/Create');
-    }
+        $customers = User::query()
+            ->where('type', 'customer')
+            ->orderByDesc('created_at')
+            ->get();
 
+        $technicians = User::query()
+            ->where('type', 'customer')
+            ->orderByDesc('created_at')
+            ->get();
+
+        return Inertia::render('RepairTicket/Create', [
+            'customers' => $customers,
+            'technicians' => $technicians
+        ]);
+    }
     public function store()
     {
     }
@@ -43,7 +56,6 @@ class RepairTicketController extends Controller
     public function destroy(string|int $id): RedirectResponse
     {
         $ticket = RepairTicket::findOrFail($id);
-        $ticket->device->delete();
         $ticket->delete();
         return Redirect::back();
     }
