@@ -1,13 +1,11 @@
 import { useEffect, useState, useCallback } from "react";
-import { usePage, Head, router } from "@inertiajs/react";
+import { usePage, Head, router, Link } from "@inertiajs/react";
 import { pickBy, debounce } from "lodash";
 import { usePrevious } from "react-use";
 import {
     Table,
     TableBody,
-    TableCaption,
     TableCell,
-    TableFooter,
     TableHead,
     TableHeader,
     TableRow,
@@ -16,7 +14,7 @@ import { Input } from "@/Components/ui/input";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
 import { formatDate, formatMoney } from "@/utils/format";
-import { Pencil, Printer, Trash } from "lucide-react";
+import { Pencil, Plus, Printer, Trash } from "lucide-react";
 import { DateRange } from "@/Components/DateRange";
 import { endOfMonth, startOfMonth } from "date-fns";
 
@@ -94,13 +92,21 @@ export default function Index() {
                                 </CardTitle>
                             </CardHeader>
                             <CardContent>
-                                <Input
-                                    placeholder="Tên khách hàng, số điện thoại"
-                                    value={values?.search}
-                                    onChange={handleChange}
-                                    className="max-w-sm"
-                                    name="search"
-                                />
+                                <div className="flex flex-col md:flex-row justify-between items-center space-y-2 md:space-y-0 md:space-x-4 text-xl font-semibold">
+                                    <Input
+                                        placeholder="Tên khách hàng, số điện thoại"
+                                        value={values?.search}
+                                        onChange={handleChange}
+                                        className="max-w-sm"
+                                        name="search"
+                                        type="search"
+                                    />
+
+                                    <Link className="text-sm flex items-center py-1 px-4 rounded-md border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground">
+                                        <Plus className="mr-2 w-4 h4" />
+                                        Thêm mới
+                                    </Link>
+                                </div>
 
                                 <Table className="my-4">
                                     <TableHeader className="bg-secondary">
@@ -132,8 +138,14 @@ export default function Index() {
                                                         "Không có"}
                                                 </TableCell>
                                                 <TableCell>
-                                                    {ticket.device.name} -{" "}
-                                                    {ticket.device.code}
+                                                    <div className="flex flex-col">
+                                                        <span className="font-semibold">
+                                                            {ticket.device.name}
+                                                        </span>
+                                                        <span className="text-mute-foreground">
+                                                            {ticket.device.code}
+                                                        </span>
+                                                    </div>
                                                 </TableCell>
                                                 <TableCell>
                                                     {formatMoney(ticket.amount)}
