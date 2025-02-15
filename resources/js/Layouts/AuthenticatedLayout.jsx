@@ -27,9 +27,12 @@ export default function AuthenticatedLayout({ header, children }) {
 
                                 <NavLink
                                     href={route("repair_ticket.index")}
-                                    active={route().current(
-                                        "repair_ticket.index"
-                                    )}
+                                    active={
+                                        route().current(
+                                            "repair_ticket.index"
+                                        ) ||
+                                        route().current("repair_ticket.create")
+                                    }
                                 >
                                     Tiếp nhận sửa chữa
                                 </NavLink>
@@ -140,7 +143,10 @@ export default function AuthenticatedLayout({ header, children }) {
 
                         <ResponsiveNavLink
                             href={route("repair_ticket.index")}
-                            active={route().current("repair_ticket.index")}
+                            active={
+                                route().current("repair_ticket.index") ||
+                                route().current("repair_ticket.create")
+                            }
                         >
                             Tiếp nhận sửa chữa
                         </ResponsiveNavLink>

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\GetRepairTicketRequest;
 use App\Models\RepairTicket;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -20,6 +22,7 @@ class RepairTicketController extends Controller
                       ->orWhere('phone_number', 'like', "%{$search}%");
                 });
             })
+            ->orderByDesc('created_at')
             ->get();
 
         return Inertia::render('RepairTicket/Index', [
@@ -28,15 +31,20 @@ class RepairTicketController extends Controller
         ]);
     }
 
-    public function create()
+    public function create(): Response
     {
+        return Inertia::render('RepairTicket/Create');
     }
 
     public function store()
     {
     }
 
-    public function destroy()
+    public function destroy(string|int $id): RedirectResponse
     {
+        $ticket = RepairTicket::findOrFail($id);
+        $ticket->device->delete();
+        $ticket->delete();
+        return Redirect::back();
     }
 }

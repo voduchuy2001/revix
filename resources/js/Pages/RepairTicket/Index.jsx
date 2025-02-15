@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-import { usePage, Head, router, Link } from "@inertiajs/react";
+import { usePage, Head, router, Link, useForm } from "@inertiajs/react";
 import { pickBy, debounce } from "lodash";
 import { usePrevious } from "react-use";
 import {
@@ -17,12 +17,26 @@ import { formatDate, formatMoney } from "@/utils/format";
 import { Pencil, Plus, Printer, Trash } from "lucide-react";
 import { DateRange } from "@/Components/DateRange";
 import { endOfMonth, startOfMonth } from "date-fns";
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/Components/ui/alert-dialog";
+import { Button } from "@/Components/ui/button";
+import toast from "react-hot-toast";
+import EmptyState from "@/Components/EmptyState";
 
 export default function Index() {
     const { tickets, filters } = usePage().props;
     const now = new Date();
     const [values, setValues] = useState({
-        search: filters?.search,
+        search: filters?.search || "",
         from: filters?.from || startOfMonth(now),
         to: filters?.to || endOfMonth(now),
     });
@@ -56,6 +70,13 @@ export default function Index() {
         }));
     }
 
+    const { processing, delete: destroy } = useForm();
+    const handleDeleteRepairTicket = (id) => {
+        destroy(route("repair_ticket.destroy", id), {
+            onSuccess: () => toast.success("Xóa thành công"),
+        });
+    };
+
     return (
         <AuthenticatedLayout
             header={
@@ -71,45 +92,53 @@ export default function Index() {
                     <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
                         <Card>
                             <CardHeader>
-                                <CardTitle className="flex flex-col md:flex-row justify-between items-center space-y-2 md:space-y-0 md:space-x-4 text-xl font-semibold">
+                                <CardTitle className="flex flex-col gap-3 text-xl font-semibold">
                                     <span>
                                         Danh sách phiếu tiếp nhận sửa chữa
                                     </span>
-                                    <DateRange
-                                        defaultValue={{
-                                            from: values?.from,
-                                            to: values?.to,
-                                        }}
-                                        onChange={(range) => {
-                                            setValues((prev) => ({
-                                                ...prev,
-                                                from: range?.from || "",
-                                                to: range?.to || "",
-                                            }));
-                                        }}
-                                        className="min-w-[200px]"
-                                    />
+
+                                    <div className="flex flex-col md:flex-row items-center gap-2 md:gap-4 justify-between">
+                                        <Input
+                                            placeholder="Tên khách hàng, số điện thoại"
+                                            value={values?.search}
+                                            onChange={handleChange}
+                                            className="w-full md:max-w-sm"
+                                            name="search"
+                                            type="search"
+                                        />
+
+                                        <div className="flex flex-col md:flex-row items-center gap-2 md:gap-4">
+                                            <DateRange
+                                                defaultValue={{
+                                                    from: values?.from,
+                                                    to: values?.to,
+                                                }}
+                                                onChange={(range) => {
+                                                    setValues((prev) => ({
+                                                        ...prev,
+                                                        from: range?.from || "",
+                                                        to: range?.to || "",
+                                                    }));
+                                                }}
+                                                className="md:min-w-[200px]"
+                                            />
+
+                                            <Link
+                                                href={route(
+                                                    "repair_ticket.create"
+                                                )}
+                                                className="text-sm bg-primary text-secondary flex items-center py-2 px-4 rounded-md border border-input shadow-sm hover:bg-accent hover:text-accent-foreground w-full md:w-auto justify-center"
+                                            >
+                                                <Plus className="mr-2 w-4 h-4" />
+                                                Thêm mới
+                                            </Link>
+                                        </div>
+                                    </div>
                                 </CardTitle>
                             </CardHeader>
                             <CardContent>
-                                <div className="flex flex-col md:flex-row justify-between items-center space-y-2 md:space-y-0 md:space-x-4 text-xl font-semibold">
-                                    <Input
-                                        placeholder="Tên khách hàng, số điện thoại"
-                                        value={values?.search}
-                                        onChange={handleChange}
-                                        className="max-w-sm"
-                                        name="search"
-                                        type="search"
-                                    />
-
-                                    <Link className="text-sm flex items-center py-1 px-4 rounded-md border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground">
-                                        <Plus className="mr-2 w-4 h4" />
-                                        Thêm mới
-                                    </Link>
-                                </div>
-
-                                <Table className="my-4">
-                                    <TableHeader className="bg-secondary">
+                                <Table>
+                                    <TableHeader className="bg-secondary rounded-md">
                                         <TableRow>
                                             <TableHead>Số phiếu</TableHead>
                                             <TableHead>
@@ -124,51 +153,120 @@ export default function Index() {
                                         </TableRow>
                                     </TableHeader>
                                     <TableBody>
-                                        {tickets?.map((ticket) => (
-                                            <TableRow key={ticket.code}>
-                                                <TableCell className="font-medium">
-                                                    {ticket.code}
-                                                </TableCell>
-                                                <TableCell className="font-medium">
-                                                    {ticket.customer.name}
-                                                </TableCell>
-                                                <TableCell>
-                                                    {ticket.customer
-                                                        .phone_number ||
-                                                        "Không có"}
-                                                </TableCell>
-                                                <TableCell>
-                                                    <div className="flex flex-col">
-                                                        <span className="font-semibold">
-                                                            {ticket.device.name}
-                                                        </span>
-                                                        <span className="text-mute-foreground">
-                                                            {ticket.device.code}
-                                                        </span>
-                                                    </div>
-                                                </TableCell>
-                                                <TableCell>
-                                                    {formatMoney(ticket.amount)}
-                                                </TableCell>
-                                                <TableCell>
-                                                    {formatDate(
-                                                        ticket.created_at
-                                                    )}
-                                                </TableCell>
-                                                <TableCell>
-                                                    {formatDate(
-                                                        ticket.updated_at
-                                                    )}
-                                                </TableCell>
-                                                <TableCell>
-                                                    <div className="flex space-x-4">
-                                                        <Printer className="h-4 w-4 cursor-pointer text-primary hover:text-blue-600 transition-colors" />
-                                                        <Pencil className="h-4 w-4 cursor-pointer text-yellow-500 hover:text-yellow-400 transition-colors" />
-                                                        <Trash className="h-4 w-4 cursor-pointer text-destructive hover:text-red-600 transition-colors" />
-                                                    </div>
+                                        {tickets?.length ? (
+                                            tickets.map((ticket) => (
+                                                <TableRow key={ticket.code}>
+                                                    <TableCell className="font-medium">
+                                                        {ticket.code}
+                                                    </TableCell>
+                                                    <TableCell className="font-medium">
+                                                        {ticket.customer.name}
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        {ticket.customer
+                                                            .phone_number ||
+                                                            "Không có"}
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        <div className="flex flex-col">
+                                                            <span className="font-semibold">
+                                                                {
+                                                                    ticket
+                                                                        .device
+                                                                        .name
+                                                                }
+                                                            </span>
+                                                            <span className="text-mute-foreground">
+                                                                {
+                                                                    ticket
+                                                                        .device
+                                                                        .code
+                                                                }
+                                                            </span>
+                                                        </div>
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        {formatMoney(
+                                                            ticket.amount
+                                                        )}
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        {formatDate(
+                                                            ticket.created_at
+                                                        )}
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        {formatDate(
+                                                            ticket.updated_at
+                                                        )}
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        <div className="flex space-x-4">
+                                                            <Printer className="h-4 w-4 cursor-pointer text-primary hover:text-blue-600 transition-colors" />
+                                                            <Pencil className="h-4 w-4 cursor-pointer text-yellow-500 hover:text-yellow-400 transition-colors" />
+                                                            <AlertDialog>
+                                                                <AlertDialogTrigger
+                                                                    asChild
+                                                                >
+                                                                    <Trash className="h-4 w-4 cursor-pointer text-destructive hover:text-red-600 transition-colors" />
+                                                                </AlertDialogTrigger>
+                                                                <AlertDialogContent>
+                                                                    <AlertDialogHeader>
+                                                                        <AlertDialogTitle>
+                                                                            Bạn
+                                                                            có
+                                                                            chắc
+                                                                            chắn?
+                                                                        </AlertDialogTitle>
+                                                                        <AlertDialogDescription>
+                                                                            Hành
+                                                                            động
+                                                                            này
+                                                                            không
+                                                                            thể
+                                                                            hoàn
+                                                                            tác.
+                                                                            Phiếu
+                                                                            sẽ
+                                                                            bị
+                                                                            xóa
+                                                                            vĩnh
+                                                                            viễn.
+                                                                        </AlertDialogDescription>
+                                                                    </AlertDialogHeader>
+                                                                    <AlertDialogFooter>
+                                                                        <AlertDialogCancel>
+                                                                            Hủy
+                                                                        </AlertDialogCancel>
+                                                                        <AlertDialogAction
+                                                                            disabled={
+                                                                                processing
+                                                                            }
+                                                                            onClick={() =>
+                                                                                handleDeleteRepairTicket(
+                                                                                    ticket.id
+                                                                                )
+                                                                            }
+                                                                        >
+                                                                            Xóa
+                                                                        </AlertDialogAction>
+                                                                    </AlertDialogFooter>
+                                                                </AlertDialogContent>
+                                                            </AlertDialog>
+                                                        </div>
+                                                    </TableCell>
+                                                </TableRow>
+                                            ))
+                                        ) : (
+                                            <TableRow>
+                                                <TableCell
+                                                    colSpan={8}
+                                                    className="text-center py-6 text-gray-500"
+                                                >
+                                                    <EmptyState />
                                                 </TableCell>
                                             </TableRow>
-                                        ))}
+                                        )}
                                     </TableBody>
                                 </Table>
                             </CardContent>
