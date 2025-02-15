@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { CalendarIcon } from "@radix-ui/react-icons";
-import { endOfMonth, format, startOfMonth } from "date-fns";
+import { format } from "date-fns";
 import { Button } from "@/Components/ui/button";
 import {
     Popover,
@@ -10,12 +10,17 @@ import {
 import { cn } from "@/lib/utils";
 import { Calendar } from "@/Components/ui/calendar";
 
-export function DateRange({ className, onChange }) {
-    const now = new Date();
+export function DateRange({ className, onChange, defaultValue }) {
     const [date, setDate] = useState({
-        from: startOfMonth(now),
-        to: endOfMonth(now),
+        from: defaultValue?.from,
+        to: defaultValue?.to,
     });
+
+    useEffect(() => {
+        if (defaultValue?.from && defaultValue?.to) {
+            setDate(defaultValue);
+        }
+    }, [defaultValue]);
 
     const handleDateChange = (selectedDate) => {
         setDate(selectedDate);
@@ -57,7 +62,7 @@ export function DateRange({ className, onChange }) {
                         mode="range"
                         defaultMonth={date?.from}
                         selected={date}
-                        onSelect={handleDateChange} // Handle date change
+                        onSelect={handleDateChange}
                         numberOfMonths={2}
                     />
                 </PopoverContent>

@@ -1,56 +1,62 @@
+import { useEffect, useState, useCallback } from "react";
+import { usePage, Head, router } from "@inertiajs/react";
+import { pickBy, debounce } from "lodash";
+import { usePrevious } from "react-use";
 import {
     Table,
     TableBody,
+    TableCaption,
     TableCell,
+    TableFooter,
     TableHead,
     TableHeader,
     TableRow,
 } from "@/Components/ui/table";
 import { Input } from "@/Components/ui/input";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, useForm, usePage } from "@inertiajs/react";
-import { useEffect, useState } from "react";
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-} from "@/Components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
 import { formatDate, formatMoney } from "@/utils/format";
-import { useDebounce } from "@/hooks/useDebounce";
 import { Pencil, Printer, Trash } from "lucide-react";
 import { DateRange } from "@/Components/DateRange";
+import { endOfMonth, startOfMonth } from "date-fns";
 
 export default function Index() {
-    const { tickets, fromDate, toDate } = usePage().props;
-    const { get } = useForm();
-    const [keyword, setKeyword] = useState("");
-    const debouncedSearch = useDebounce(keyword, 500);
+    const { tickets, filters } = usePage().props;
+    const now = new Date();
+    const [values, setValues] = useState({
+        search: filters?.search,
+        from: filters?.from || startOfMonth(now),
+        to: filters?.to || endOfMonth(now),
+    });
+
+    const prevValues = usePrevious(values);
+
+    const updateQuery = useCallback(
+        debounce((query) => {
+            router.get(route("repair_ticket.index"), query, {
+                replace: true,
+                preserveState: true,
+            });
+        }, 500),
+        []
+    );
 
     useEffect(() => {
-        if (debouncedSearch !== "") {
-            get(
-                route("repair_ticket.index"),
-                { search: debouncedSearch, fromDate, toDate },
-                { preserveState: true, replace: true }
-            );
+        if (prevValues) {
+            const query = Object.keys(pickBy(values)).length
+                ? pickBy(values)
+                : { remember: "forget" };
+            updateQuery(query);
         }
-    }, [debouncedSearch, fromDate, toDate, get]);
+    }, [values, updateQuery]);
 
-    const [selectedFromDate, setSelectedFromDate] = useState("");
-    const [selectedToDate, setSelectedToDate] = useState("");
-    const handleDateChange = (data) => {
-        setSelectedFromDate(data?.from);
-        setSelectedToDate(data?.to);
-    };
-
-    useEffect(() => {
-        if (selectedFromDate && selectedToDate) {
-            console.log("from date after update: ", selectedFromDate);
-            console.log("to date after update: ", selectedToDate);
-        }
-    }, [selectedFromDate, selectedToDate]);
+    function handleChange(e) {
+        const { name, value } = e.target;
+        setValues((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
+    }
 
     return (
         <AuthenticatedLayout
@@ -67,27 +73,33 @@ export default function Index() {
                     <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
                         <Card>
                             <CardHeader>
-                                <CardTitle className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0 md:space-x-4 p-4 text-xl font-semibold">
-                                    <span className="text-center md:text-left">
+                                <CardTitle className="flex flex-col md:flex-row justify-between items-center space-y-2 md:space-y-0 md:space-x-4 text-xl font-semibold">
+                                    <span>
                                         Danh sách phiếu tiếp nhận sửa chữa
                                     </span>
                                     <DateRange
-                                        onChange={handleDateChange}
+                                        defaultValue={{
+                                            from: values?.from,
+                                            to: values?.to,
+                                        }}
+                                        onChange={(range) => {
+                                            setValues((prev) => ({
+                                                ...prev,
+                                                from: range?.from || "",
+                                                to: range?.to || "",
+                                            }));
+                                        }}
                                         className="min-w-[200px]"
                                     />
                                 </CardTitle>
-
-                                <CardDescription>
-                                    Phiếu tiếp nhận sửa chữa từ ngày - ngày
-                                </CardDescription>
                             </CardHeader>
                             <CardContent>
                                 <Input
                                     placeholder="Tên khách hàng, số điện thoại"
-                                    value={keyword}
-                                    onChange={(e) => setKeyword(e.target.value)}
+                                    value={values?.search}
+                                    onChange={handleChange}
                                     className="max-w-sm"
-                                    name="keyword"
+                                    name="search"
                                 />
 
                                 <Table className="my-4">
@@ -120,7 +132,7 @@ export default function Index() {
                                                         "Không có"}
                                                 </TableCell>
                                                 <TableCell>
-                                                    {ticket.device.name}
+                                                    {ticket.device.name} -{" "}
                                                     {ticket.device.code}
                                                 </TableCell>
                                                 <TableCell>

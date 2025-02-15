@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\RepairTicket;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -15,12 +14,12 @@ class RepairTicketController extends Controller
     {
         $search = $request->input('search');
 
-        $fromDate = $request->input('from_date')
-            ? Carbon::parse($request->input('from_date'))->startOfDay()
+        $fromDate = $request->input('from')
+            ? Carbon::parse($request->input('from'))->startOfDay()
             : Carbon::now()->startOfMonth();
 
-        $toDate = $request->input('to_date')
-            ? Carbon::parse($request->input('to_date'))->endOfDay()
+        $toDate = $request->input('to')
+            ? Carbon::parse($request->input('to'))->endOfDay()
             : Carbon::now()->endOfMonth();
 
         $tickets = RepairTicket::with(['customer', 'device', 'technician'])
@@ -35,9 +34,7 @@ class RepairTicketController extends Controller
 
         return Inertia::render('RepairTicket/Index', [
             'tickets' => $tickets,
-            'search' => $search,
-            'fromDate' => $fromDate,
-            'toDate' => $toDate,
+            'filters' => $request->all('search', 'from', 'to'),
         ]);
     }
 
