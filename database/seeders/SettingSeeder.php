@@ -29,7 +29,8 @@ class SettingSeeder extends Seeder
                 '08 Đường CMT8, P.Cái Khế, Q.Ninh Kiều, TPCT',
                 'Gành Hào, Đông Hải, Bạc Liêu',
                 '196 Phú Lợi, Khóm 3, Phường 2, TP. Sóc Trăng'
-            ]
+            ],
+            'facebook' => 'https://www.facebook.com/suachuadienthoaididongcantho'
         ];
 
         Setting::create([

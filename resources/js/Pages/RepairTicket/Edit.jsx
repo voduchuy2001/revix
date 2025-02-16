@@ -22,7 +22,7 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/Components/ui/popover";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
     Select,
     SelectContent,
@@ -33,16 +33,15 @@ import {
 import { CreateUserDialog } from "../User/Partials/CreateUserDialog";
 import { formatMoney } from "@/utils/format";
 
-const Create = () => {
-    const { customers, technicians } = usePage().props;
-    const { data, setData, post, processing, errors } = useForm({
-        device_name: "",
-        imei: "",
-        amount: "",
-        condition: "",
-        note: "",
-        technician: "",
-        customer: "",
+const Edit = () => {
+    const { ticket, customers, technicians } = usePage().props;
+    const { data, setData, put, processing, errors } = useForm({
+        device_name: ticket.device.name,
+        imei: ticket.device.code,
+        amount: ticket.amount,
+        condition: ticket.condition,
+        note: ticket.note,
+        technician: ticket.technician.id.toString(),
         action: false,
     });
 
@@ -53,7 +52,7 @@ const Create = () => {
     const submit = (e) => {
         e.preventDefault();
 
-        post(route("repair_ticket.store"));
+        put(route("repair_ticket.update", { id: ticket.id }));
     };
 
     const handleAmountChange = (value) => {
@@ -174,6 +173,7 @@ const Create = () => {
                                                         Thợ phụ trách
                                                     </Label>
                                                     <Select
+                                                        value={data.technician}
                                                         name="technician"
                                                         onValueChange={(
                                                             value
@@ -221,6 +221,9 @@ const Create = () => {
                                                             Tình trạng máy
                                                         </Label>
                                                         <Textarea
+                                                            value={
+                                                                data.condition
+                                                            }
                                                             onChange={(e) =>
                                                                 setData(
                                                                     "condition",
@@ -244,6 +247,7 @@ const Create = () => {
                                                             Ghi chú
                                                         </Label>
                                                         <Textarea
+                                                            value={data.note}
                                                             onChange={(e) =>
                                                                 setData(
                                                                     "note",
@@ -266,112 +270,6 @@ const Create = () => {
                                         </div>
 
                                         <div className="order-1 md:order-2 col-span-1 md:col-span-3 w-full">
-                                            <div className="space-y-1">
-                                                <Label
-                                                    htmlFor="customer"
-                                                    required={true}
-                                                >
-                                                    Khách hàng
-                                                </Label>
-                                                <Popover
-                                                    open={openComboboxCustomer}
-                                                    onOpenChange={
-                                                        setOpenComboboxCustomer
-                                                    }
-                                                >
-                                                    <PopoverTrigger asChild>
-                                                        <div className="space-y-1">
-                                                            <Button
-                                                                variant="outline"
-                                                                role="combobox"
-                                                                aria-expanded={
-                                                                    openComboboxCustomer
-                                                                }
-                                                                className="w-full"
-                                                            >
-                                                                {(() => {
-                                                                    const customer =
-                                                                        customers.find(
-                                                                            (
-                                                                                customer
-                                                                            ) =>
-                                                                                customer.id.toString() ===
-                                                                                selectedCustomer
-                                                                        );
-                                                                    return selectedCustomer
-                                                                        ? `${
-                                                                              customer.name
-                                                                          } - ${
-                                                                              customer.phone_number ||
-                                                                              "Không có"
-                                                                          }`
-                                                                        : "";
-                                                                })()}
-                                                            </Button>
-                                                        </div>
-                                                    </PopoverTrigger>
-                                                    <PopoverContent className="w-[--radix-popover-trigger-width] p-0">
-                                                        <Command>
-                                                            <CommandInput />
-                                                            <CommandList>
-                                                                <CommandEmpty>
-                                                                    Không có
-                                                                </CommandEmpty>
-                                                                <CommandGroup>
-                                                                    {customers.map(
-                                                                        (
-                                                                            customer
-                                                                        ) => (
-                                                                            <CommandItem
-                                                                                key={`customer-${customer.id}`}
-                                                                                value={customer.id.toString()}
-                                                                                onSelect={(
-                                                                                    currentValue
-                                                                                ) => {
-                                                                                    setSelectedCustomer(
-                                                                                        currentValue ===
-                                                                                            selectedCustomer
-                                                                                            ? ""
-                                                                                            : currentValue
-                                                                                    );
-                                                                                    setData(
-                                                                                        "customer",
-                                                                                        currentValue
-                                                                                    );
-                                                                                    setOpenComboboxCustomer(
-                                                                                        false
-                                                                                    );
-                                                                                }}
-                                                                            >
-                                                                                <Check
-                                                                                    className={cn(
-                                                                                        "mr-2 h-4 w-4",
-                                                                                        selectedCustomer ===
-                                                                                            customer.id
-                                                                                            ? "opacity-100"
-                                                                                            : "opacity-0"
-                                                                                    )}
-                                                                                />
-                                                                                {`${
-                                                                                    customer.name
-                                                                                } - ${
-                                                                                    customer.phone_number ||
-                                                                                    "Không có"
-                                                                                }`}
-                                                                            </CommandItem>
-                                                                        )
-                                                                    )}
-                                                                </CommandGroup>
-                                                            </CommandList>
-                                                        </Command>
-                                                    </PopoverContent>
-                                                </Popover>
-                                                <InputError
-                                                    message={errors.customer}
-                                                    className="mt-2"
-                                                />
-                                            </div>
-
                                             <div
                                                 className="my-3 flex cursor-pointer items-center text-sm text-primary hover:text-secondary-foreground hover:underline"
                                                 onClick={() =>
@@ -428,4 +326,4 @@ const Create = () => {
     );
 };
 
-export default Create;
+export default Edit;

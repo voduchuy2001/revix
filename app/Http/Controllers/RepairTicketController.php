@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\GetRepairTicketRequest;
 use App\Http\Requests\StoreRepairTicketRequest;
+use App\Http\Requests\UpdateRepairTicketRequest;
 use App\Models\Device;
 use App\Models\RepairTicket;
 use App\Models\Setting;
@@ -65,25 +66,25 @@ class RepairTicketController extends Controller
 
         DB::beginTransaction();
         try {
-        $device = Device::create([
-            'code' => $data['imei'],
-            'name' => $data['device_name'],
-        ]);
+            $device = Device::create([
+                'code' => $data['imei'],
+                'name' => $data['device_name'],
+            ]);
 
-        $repairTicket = RepairTicket::create([
-            'device_id' => $device->id,
-            'customer_id' => $data['customer'],
-            'technician_id' => $data['technician'],
-            'amount' => $data['amount'],
-            'condition' => $data['condition'],
-            'note' => $data['note'],
-        ]);
+            $repairTicket = RepairTicket::create([
+                'device_id' => $device->id,
+                'customer_id' => $data['customer'],
+                'technician_id' => $data['technician'],
+                'amount' => $data['amount'],
+                'condition' => $data['condition'],
+                'note' => $data['note'],
+            ]);
 
-        DB::commit();
-        
-        return $request['action'] 
-            ? Redirect::route('repair_ticket.print', ['id' => $repairTicket->id]) 
-            : Redirect::route('repair_ticket.index');
+            DB::commit();
+
+            return $request['action']
+                ? Redirect::route('repair_ticket.print', ['id' => $repairTicket->id])
+                : Redirect::route('repair_ticket.index');
         } catch (QueryException $e) {
             DB::rollBack();
             Log::error($e->getMessage());
@@ -109,4 +110,57 @@ class RepairTicketController extends Controller
             'setting' =>  json_decode($setting->value)
         ]);
     }
+
+    public function edit(string|int $id): Response
+    {
+        $ticket = RepairTicket::with(['customer', 'device', 'technician'])->findOrFail($id);
+        $customers = User::query()
+            ->where('type', 'customer')
+            ->orderByDesc('created_at')
+            ->get();
+
+        $technicians = User::query()
+            ->where('type', 'customer')
+            ->orderByDesc('created_at')
+            ->get();
+
+        return Inertia::render('RepairTicket/Edit', [
+            'ticket' => $ticket,
+            'customers' => $customers,
+            'technicians' => $technicians,
+        ]);
+    }
+
+    public function update(UpdateRepairTicketRequest $request, string|int $id): RedirectResponse
+    {
+        $data = $request->validated();
+
+        DB::beginTransaction();
+        try {
+            $ticket = RepairTicket::findOrFail($id);
+            $ticket->load('device');
+
+            $device = $ticket->device;
+
+            if ($device) {
+                $device->update([
+                    'code' => $data['imei'],
+                    'name' => $data['device_name'],
+                ]);
+            }
+
+            $ticket->update($data);
+
+            DB::commit();
+
+            return $request['action']
+                ? Redirect::route('repair_ticket.print', ['id' => $ticket->id])
+                : Redirect::route('repair_ticket.index');
+        } catch (QueryException $e) {
+            DB::rollBack();
+            Log::error($e->getMessage());
+            return Redirect::back()->withErrors(['error' => 'Có lỗi xảy ra!']);
+        }
+    }
+
 }

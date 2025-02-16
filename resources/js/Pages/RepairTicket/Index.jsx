@@ -222,7 +222,21 @@ export default function Index() {
                                                                     )
                                                                 }
                                                             />
-                                                            <Pencil className="h-4 w-4 cursor-pointer text-yellow-500 hover:text-yellow-400 transition-colors" />
+
+                                                            <Pencil
+                                                                className="h-4 w-4 cursor-pointer text-yellow-500 hover:text-yellow-400 transition-colors"
+                                                                onClick={() => {
+                                                                    router.visit(
+                                                                        route(
+                                                                            "repair_ticket.edit",
+                                                                            {
+                                                                                id: ticket.id,
+                                                                            }
+                                                                        )
+                                                                    );
+                                                                }}
+                                                            />
+
                                                             <AlertDialog>
                                                                 <AlertDialogTrigger
                                                                     asChild
