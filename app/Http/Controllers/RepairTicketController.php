@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\GetRepairTicketRequest;
+use App\Http\Requests\StoreRepairTicketRequest;
+use App\Models\Device;
 use App\Models\RepairTicket;
+use App\Models\Setting;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
@@ -44,13 +47,34 @@ class RepairTicketController extends Controller
             ->orderByDesc('created_at')
             ->get();
 
+        $setting = Setting::where('key', 'info')->first();
+
         return Inertia::render('RepairTicket/Create', [
             'customers' => $customers,
-            'technicians' => $technicians
+            'technicians' => $technicians,
+            'setting' =>  json_decode($setting->value)
         ]);
     }
-    public function store()
+
+    public function store(StoreRepairTicketRequest $request): RedirectResponse
     {
+        $data = $request->validated();
+
+        $device = Device::create([
+            'code' => $data['imei'],
+            'name' => $data['device_name'],
+        ]);
+
+        RepairTicket::create([
+            'device_id' => $device->id,
+            'customer_id' => $data['customer'],
+            'technician_id' => $data['technician'],
+            'amount' => $data['amount'],
+            'condition' => $data['device_status'],
+            'note' => $data['note'],
+        ]);
+
+        return Redirect::route('repair_ticket.index');
     }
 
     public function destroy(string|int $id): RedirectResponse

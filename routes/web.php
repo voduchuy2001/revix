@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RepairTicketController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
 
@@ -41,8 +42,11 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/repair-ticket', [RepairTicketController::class, 'index'])->name('repair_ticket.index');
     Route::get('/repair-ticket/create', [RepairTicketController::class, 'create'])->name('repair_ticket.create');
+    Route::post('/repair-ticket/store', [RepairTicketController::class, 'store'])->name('repair_ticket.store');
     Route::delete('/repair-ticket/delete/{id}', [RepairTicketController::class, 'destroy'])->name('repair_ticket.destroy');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+
+    Route::post('/user/store', [UserController::class, 'store'])->name('user.store');
 });

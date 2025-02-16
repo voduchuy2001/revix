@@ -30,7 +30,7 @@ class ProfileUpdateRequest extends FormRequest
         ];
     }
 
-    public function messages()
+    public function messages(): array
     {
         return [
             'phone_number.regex' => 'Số điện thoại không hợp lệ. Vui lòng nhập số điện thoại di động Việt Nam.',

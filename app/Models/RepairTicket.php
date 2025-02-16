@@ -13,7 +13,7 @@ class RepairTicket extends Model
     protected $table = 'repair_tickets';
 
     protected $fillable = [
-        'user_id',
+        'customer_id',
         'device_id',
         'technician_id',
         'code',
@@ -22,13 +22,13 @@ class RepairTicket extends Model
         'status',
     ];
 
-    protected static function boot()
+    protected static function boot(): void
     {
         parent::boot();
 
         static::creating(function ($ticket) {
             $latestCode = self::where('code', 'LIKE', '#%')->orderByDesc('code')->value('code');
-            $latestCode ? $number = intval(substr($latestCode, 1)) + 1 : 1;
+            $number = $latestCode ? intval(substr($latestCode, 1)) + 1 : 1;
             $ticket->code = '#' . str_pad($number, 7, '0', STR_PAD_LEFT);
         });
     }

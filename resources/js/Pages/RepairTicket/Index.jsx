@@ -34,6 +34,7 @@ import EmptyState from "@/Components/EmptyState";
 
 export default function Index() {
     const { tickets, filters } = usePage().props;
+
     const now = new Date();
     const [values, setValues] = useState({
         search: filters?.search || "",
@@ -147,6 +148,7 @@ export default function Index() {
                                             <TableHead>Số điện thoại</TableHead>
                                             <TableHead>Thiết bị</TableHead>
                                             <TableHead>Giá</TableHead>
+                                            <TableHead>Thợ</TableHead>
                                             <TableHead>Ngày lập</TableHead>
                                             <TableHead>Cập nhật</TableHead>
                                             <TableHead>Hành động</TableHead>
@@ -189,6 +191,9 @@ export default function Index() {
                                                         {formatMoney(
                                                             ticket.amount
                                                         )}
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        {ticket.technician.name}
                                                     </TableCell>
                                                     <TableCell>
                                                         {formatDate(
