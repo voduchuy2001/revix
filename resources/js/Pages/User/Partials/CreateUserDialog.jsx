@@ -65,7 +65,9 @@ export function CreateUserDialog({
                     <form id={type} onSubmit={submit}>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
                             <div className="space-y-1">
-                                <Label htmlFor="name">Tên khách hàng</Label>
+                                <Label htmlFor="name" required={true}>
+                                    Tên khách hàng
+                                </Label>
                                 <Input
                                     id="name"
                                     type="text"
@@ -82,7 +84,7 @@ export function CreateUserDialog({
                             </div>
 
                             <div className="space-y-1">
-                                <Label htmlFor="phone_number">
+                                <Label htmlFor="phone_number" required={true}>
                                     Số điện thoại
                                 </Label>
                                 <Input
@@ -102,7 +104,9 @@ export function CreateUserDialog({
 
                             <div className="col-span-1 md:col-span-2 w-full space-y-4">
                                 <div className="space-y-1">
-                                    <Label htmlFor="address">Địa chỉ</Label>
+                                    <Label htmlFor="address" required={true}>
+                                        Địa chỉ
+                                    </Label>
                                     <Textarea
                                         id="address"
                                         type="text"

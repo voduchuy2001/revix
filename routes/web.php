@@ -44,6 +44,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/repair-ticket/create', [RepairTicketController::class, 'create'])->name('repair_ticket.create');
     Route::post('/repair-ticket/store', [RepairTicketController::class, 'store'])->name('repair_ticket.store');
     Route::delete('/repair-ticket/delete/{id}', [RepairTicketController::class, 'destroy'])->name('repair_ticket.destroy');
+    Route::get('/repair-ticket/print/{id}', [RepairTicketController::class, 'print'])->name('repair_ticket.print');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

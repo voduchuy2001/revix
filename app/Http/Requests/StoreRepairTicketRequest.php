@@ -17,10 +17,11 @@ class StoreRepairTicketRequest extends FormRequest
             'device_name' => ['required', 'string', 'max:191'],
             'imei' => ['required', 'string', 'max:191'],
             'amount' => ['required', 'integer', 'min:0', 'max:100000000'],
-            'device_status' => ['required', 'string', 'max:10000'],
             'note' => ['nullable', 'string', 'max:10000'],
+            'condition' => ['required', 'string', 'max:10000'],
             'customer' => ['required'],
-            'technician' => ['required']
+            'technician' => ['required'],
+            'action' => ['required', 'boolean']
         ];
     }
 
@@ -40,9 +41,9 @@ class StoreRepairTicketRequest extends FormRequest
             'amount.min' => 'Chi phí sửa chữa không được nhỏ hơn 0.',
             'amount.max' => 'Chi phí sửa chữa không được vượt quá 100.000.000.',
 
-            'device_status.required' => 'Tình trạng thiết bị không được để trống.',
-            'device_status.string' => 'Tình trạng thiết bị phải là một chuỗi ký tự.',
-            'device_status.max' => 'Tình trạng thiết bị không được vượt quá 10.000 ký tự.',
+            'condition.required' => 'Tình trạng thiết bị không được để trống.',
+            'condition.string' => 'Tình trạng thiết bị phải là một chuỗi ký tự.',
+            'condition.max' => 'Tình trạng thiết bị không được vượt quá 10.000 ký tự.',
 
             'note.string' => 'Ghi chú phải là một chuỗi ký tự.',
             'note.max' => 'Ghi chú không được vượt quá 10.000 ký tự.',
@@ -52,4 +53,3 @@ class StoreRepairTicketRequest extends FormRequest
         ];
     }
 }
-

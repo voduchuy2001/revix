@@ -39,7 +39,9 @@ export default function UpdateProfileInformation({ className = "" }) {
 
             <form onSubmit={submit} className="mt-6 space-y-6">
                 <div>
-                    <Label htmlFor="name">Tên</Label>
+                    <Label htmlFor="name" required={true}>
+                        Tên
+                    </Label>
                     <Input
                         id="name"
                         className="mt-1 block w-full"
@@ -51,7 +53,9 @@ export default function UpdateProfileInformation({ className = "" }) {
                 </div>
 
                 <div>
-                    <Label htmlFor="email">Email</Label>
+                    <Label htmlFor="email" required={true}>
+                        Email
+                    </Label>
                     <Input
                         id="email"
                         type="email"
@@ -64,7 +68,9 @@ export default function UpdateProfileInformation({ className = "" }) {
                 </div>
 
                 <div>
-                    <Label htmlFor="phone_number">Số điện thoại</Label>
+                    <Label htmlFor="phone_number" required={true}>
+                        Số điện thoại
+                    </Label>
                     <Input
                         id="phone_number"
                         className="mt-1 block w-full"

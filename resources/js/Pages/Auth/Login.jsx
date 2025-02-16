@@ -27,7 +27,9 @@ export default function Login({ canResetPassword }) {
 
             <form onSubmit={submit}>
                 <div>
-                    <Label htmlFor="email">Email</Label>
+                    <Label htmlFor="email" required={true}>
+                        Email
+                    </Label>
                     <Input
                         id="email"
                         type="email"
@@ -41,7 +43,9 @@ export default function Login({ canResetPassword }) {
                 </div>
 
                 <div className="mt-4">
-                    <Label htmlFor="password">Mật khẩu</Label>
+                    <Label htmlFor="password" required={true}>
+                        Mật khẩu
+                    </Label>
                     <Input
                         id="password"
                         type="password"

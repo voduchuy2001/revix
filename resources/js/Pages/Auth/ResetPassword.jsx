@@ -27,7 +27,9 @@ export default function ResetPassword({ token, email }) {
 
             <form onSubmit={submit}>
                 <div>
-                    <Label htmlFor="email">Email</Label>
+                    <Label htmlFor="email" required={true}>
+                        Email
+                    </Label>
                     <Input
                         readOnly
                         id="email"
@@ -42,7 +44,9 @@ export default function ResetPassword({ token, email }) {
                 </div>
 
                 <div className="mt-4">
-                    <Label htmlFor="password">Mật khẩu</Label>
+                    <Label htmlFor="password" required={true}>
+                        Mật khẩu
+                    </Label>
                     <Input
                         id="password"
                         type="password"
@@ -57,7 +61,7 @@ export default function ResetPassword({ token, email }) {
                 </div>
 
                 <div className="mt-4">
-                    <Label htmlFor="password_confirmation">
+                    <Label htmlFor="password_confirmation" required={true}>
                         Xác nhận mật khẩu
                     </Label>
                     <Input

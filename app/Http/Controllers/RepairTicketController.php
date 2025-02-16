@@ -8,7 +8,10 @@ use App\Models\Device;
 use App\Models\RepairTicket;
 use App\Models\Setting;
 use App\Models\User;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -29,9 +32,12 @@ class RepairTicketController extends Controller
             ->orderByDesc('created_at')
             ->get();
 
+        $setting = Setting::where('key', 'info')->first();
+
         return Inertia::render('RepairTicket/Index', [
             'tickets' => $tickets,
             'filters' => $request->only(['search', 'from', 'to']),
+            'setting' =>  json_decode($setting->value)
         ]);
     }
 
@@ -47,12 +53,9 @@ class RepairTicketController extends Controller
             ->orderByDesc('created_at')
             ->get();
 
-        $setting = Setting::where('key', 'info')->first();
-
         return Inertia::render('RepairTicket/Create', [
             'customers' => $customers,
             'technicians' => $technicians,
-            'setting' =>  json_decode($setting->value)
         ]);
     }
 
@@ -60,21 +63,32 @@ class RepairTicketController extends Controller
     {
         $data = $request->validated();
 
+        DB::beginTransaction();
+        try {
         $device = Device::create([
             'code' => $data['imei'],
             'name' => $data['device_name'],
         ]);
 
-        RepairTicket::create([
+        $repairTicket = RepairTicket::create([
             'device_id' => $device->id,
             'customer_id' => $data['customer'],
             'technician_id' => $data['technician'],
             'amount' => $data['amount'],
-            'condition' => $data['device_status'],
+            'condition' => $data['condition'],
             'note' => $data['note'],
         ]);
 
-        return Redirect::route('repair_ticket.index');
+        DB::commit();
+        
+        return $request['action'] 
+            ? Redirect::route('repair_ticket.print', ['id' => $repairTicket->id]) 
+            : Redirect::route('repair_ticket.index');
+        } catch (QueryException $e) {
+            DB::rollBack();
+            Log::error($e->getMessage());
+            Redirect::back();
+        }
     }
 
     public function destroy(string|int $id): RedirectResponse
@@ -82,5 +96,17 @@ class RepairTicketController extends Controller
         $ticket = RepairTicket::findOrFail($id);
         $ticket->delete();
         return Redirect::back();
+    }
+
+    public function print(string|int $id): Response
+    {
+        $ticket = RepairTicket::with(['customer', 'device', 'technician'])->findOrFail($id);
+
+        $setting = Setting::where('key', 'info')->first();
+
+        return Inertia::render('RepairTicket/Print', [
+            'ticket' => $ticket,
+            'setting' =>  json_decode($setting->value)
+        ]);
     }
 }

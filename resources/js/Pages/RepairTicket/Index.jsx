@@ -28,12 +28,12 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/Components/ui/alert-dialog";
-import { Button } from "@/Components/ui/button";
 import toast from "react-hot-toast";
 import EmptyState from "@/Components/EmptyState";
+import { PrintTicketView } from "./Partials/PrintTicketView";
 
 export default function Index() {
-    const { tickets, filters } = usePage().props;
+    const { tickets, filters, setting } = usePage().props;
 
     const now = new Date();
     const [values, setValues] = useState({
@@ -76,6 +76,13 @@ export default function Index() {
         destroy(route("repair_ticket.destroy", id), {
             onSuccess: () => toast.success("Xóa thành công"),
         });
+    };
+
+    const [ticketToPrint, setTicketToPrint] = useState(null);
+    const [print, setPrint] = useState(false);
+    const handlePrintTicket = (ticket) => {
+        setTicketToPrint(ticket);
+        setPrint(true);
     };
 
     return (
@@ -207,7 +214,14 @@ export default function Index() {
                                                     </TableCell>
                                                     <TableCell>
                                                         <div className="flex space-x-4">
-                                                            <Printer className="h-4 w-4 cursor-pointer text-primary hover:text-blue-600 transition-colors" />
+                                                            <Printer
+                                                                className="h-4 w-4 cursor-pointer text-primary hover:text-blue-600 transition-colors"
+                                                                onClick={() =>
+                                                                    handlePrintTicket(
+                                                                        ticket
+                                                                    )
+                                                                }
+                                                            />
                                                             <Pencil className="h-4 w-4 cursor-pointer text-yellow-500 hover:text-yellow-400 transition-colors" />
                                                             <AlertDialog>
                                                                 <AlertDialogTrigger
@@ -279,6 +293,10 @@ export default function Index() {
                     </div>
                 </div>
             </div>
+
+            {print && ticketToPrint && (
+                <PrintTicketView setting={setting} ticket={ticketToPrint} />
+            )}
         </AuthenticatedLayout>
     );
 }

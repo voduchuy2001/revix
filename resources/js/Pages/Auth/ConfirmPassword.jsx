@@ -29,7 +29,9 @@ export default function ConfirmPassword() {
 
             <form onSubmit={submit}>
                 <div className="mt-4">
-                    <Label htmlFor="password">Mật khẩu</Label>
+                    <Label htmlFor="password" required={true}>
+                        Mật khẩu
+                    </Label>
                     <Input
                         id="password"
                         type="password"

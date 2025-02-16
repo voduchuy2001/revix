@@ -32,18 +32,18 @@ import {
 } from "@/Components/ui/select";
 import { CreateUserDialog } from "../User/Partials/CreateUserDialog";
 import { formatMoney } from "@/utils/format";
-import { PrintInvoiceView } from "./Partials/PrintInvoiceView";
 
 const Create = () => {
-    const { customers, technicians, setting } = usePage().props;
+    const { customers, technicians } = usePage().props;
     const { data, setData, post, processing, errors } = useForm({
         device_name: "",
         imei: "",
         amount: "",
-        device_status: "",
+        condition: "",
         note: "",
         technician: "",
         customer: "",
+        action: false,
     });
 
     const [openComboboxCustomer, setOpenComboboxCustomer] = useState(false);
@@ -60,8 +60,6 @@ const Create = () => {
         const numericValue = Number(value.replace(/,/g, "").replace(/\D/g, ""));
         setData({ ...data, amount: numericValue });
     };
-
-    const [hasPrintAction, setPrintAction] = useState(false);
 
     return (
         <AuthenticatedLayout
@@ -88,7 +86,10 @@ const Create = () => {
                                         <div className="order-2 md:order-1 col-span-1 md:col-span-7">
                                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
                                                 <div className="space-y-1">
-                                                    <Label htmlFor="device_name">
+                                                    <Label
+                                                        htmlFor="device_name"
+                                                        required={true}
+                                                    >
                                                         Tên máy
                                                     </Label>
                                                     <Input
@@ -113,7 +114,10 @@ const Create = () => {
                                                 </div>
 
                                                 <div className="space-y-1">
-                                                    <Label htmlFor="imei">
+                                                    <Label
+                                                        htmlFor="imei"
+                                                        required={true}
+                                                    >
                                                         IMEI máy
                                                     </Label>
                                                     <Input
@@ -136,7 +140,10 @@ const Create = () => {
                                                 </div>
 
                                                 <div className="space-y-1">
-                                                    <Label htmlFor="amount">
+                                                    <Label
+                                                        htmlFor="amount"
+                                                        required={true}
+                                                    >
                                                         Chi phí sửa chữa
                                                     </Label>
                                                     <Input
@@ -160,7 +167,12 @@ const Create = () => {
                                                 </div>
 
                                                 <div className="space-y-1">
-                                                    <Label>Thợ phụ trách</Label>
+                                                    <Label
+                                                        htmlFor="technician"
+                                                        required={true}
+                                                    >
+                                                        Thợ phụ trách
+                                                    </Label>
                                                     <Select
                                                         name="technician"
                                                         onValueChange={(
@@ -202,23 +214,26 @@ const Create = () => {
 
                                                 <div className="col-span-1 md:col-span-2 w-full space-y-4">
                                                     <div className="space-y-1">
-                                                        <Label htmlFor="device_status">
+                                                        <Label
+                                                            htmlFor="condition"
+                                                            required={true}
+                                                        >
                                                             Tình trạng máy
                                                         </Label>
                                                         <Textarea
                                                             onChange={(e) =>
                                                                 setData(
-                                                                    "device_status",
+                                                                    "condition",
                                                                     e.target
                                                                         .value
                                                                 )
                                                             }
-                                                            id="device_status"
+                                                            id="condition"
                                                             className="w-full"
                                                         />
                                                         <InputError
                                                             message={
-                                                                errors.device_status
+                                                                errors.condition
                                                             }
                                                             className="mt-2"
                                                         />
@@ -252,7 +267,12 @@ const Create = () => {
 
                                         <div className="order-1 md:order-2 col-span-1 md:col-span-3 w-full">
                                             <div className="space-y-1">
-                                                <Label>Khách hàng</Label>
+                                                <Label
+                                                    htmlFor="customer"
+                                                    required={true}
+                                                >
+                                                    Khách hàng
+                                                </Label>
                                                 <Popover
                                                     open={openComboboxCustomer}
                                                     onOpenChange={
@@ -379,9 +399,9 @@ const Create = () => {
                                                 <Button
                                                     disabled={processing}
                                                     className="flex-1"
-                                                    type="button"
+                                                    type="submit"
                                                     onClick={() =>
-                                                        setPrintAction(true)
+                                                        setData("action", true)
                                                     }
                                                 >
                                                     <Printer className="w-4 h-4 mr-1" />
@@ -404,8 +424,6 @@ const Create = () => {
                     showTrigger={false}
                 />
             )}
-
-            {hasPrintAction && <PrintInvoiceView setting={setting} />}
         </AuthenticatedLayout>
     );
 };

@@ -63,7 +63,9 @@ export default function UpdatePasswordForm({ className = "" }) {
 
             <form onSubmit={updatePassword} className="mt-6 space-y-6">
                 <div>
-                    <Label htmlFor="current_password">Mật khẩu hiện tại</Label>
+                    <Label htmlFor="current_password" required={true}>
+                        Mật khẩu hiện tại
+                    </Label>
                     <Input
                         id="current_password"
                         ref={currentPasswordInput}
@@ -83,7 +85,9 @@ export default function UpdatePasswordForm({ className = "" }) {
                 </div>
 
                 <div>
-                    <Label htmlFor="password">Mật khẩu mới</Label>
+                    <Label htmlFor="password" required={true}>
+                        Mật khẩu mới
+                    </Label>
                     <Input
                         id="password"
                         ref={passwordInput}
@@ -98,7 +102,7 @@ export default function UpdatePasswordForm({ className = "" }) {
                 </div>
 
                 <div>
-                    <Label htmlFor="password_confirmation">
+                    <Label htmlFor="password_confirmation" required={true}>
                         Xác nhận mật khẩu mới
                     </Label>
                     <Input

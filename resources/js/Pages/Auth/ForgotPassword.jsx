@@ -34,7 +34,9 @@ export default function ForgotPassword({ status }) {
 
             <form onSubmit={submit}>
                 <div className="mt-4">
-                    <Label htmlFor="email">Email</Label>
+                    <Label htmlFor="email" required={true}>
+                        Email
+                    </Label>
                     <Input
                         id="email"
                         type="email"
