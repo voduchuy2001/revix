@@ -30,6 +30,7 @@ import { usePrevious } from "react-use";
 import { debounce, pickBy } from "lodash";
 import { Button } from "@/Components/ui/button";
 import { PlusIcon } from "@radix-ui/react-icons";
+import { CreateUserDialog } from "./Partials/CreateUserDialog";
 
 export default function Customer() {
     const { customers, filters } = usePage().props;
@@ -74,6 +75,9 @@ export default function Customer() {
         }
     }, [values, updateQuery]);
 
+    const [showCreateCustomerDialog, setShowCreateCustomerDialog] =
+        useState(false);
+
     return (
         <AuthenticatedLayout
             header={
@@ -107,7 +111,13 @@ export default function Customer() {
                                             type="search"
                                         />
 
-                                        <Button>
+                                        <Button
+                                            onClick={() =>
+                                                setShowCreateCustomerDialog(
+                                                    true
+                                                )
+                                            }
+                                        >
                                             <PlusIcon className="w-4 h-4 mr-2" />
                                             Thêm mới
                                         </Button>
@@ -224,8 +234,17 @@ export default function Customer() {
             {showUpdateCustomerDialog && (
                 <UpdateUserDialog
                     user={editingCustomer}
+                    type="customer"
                     open={showUpdateCustomerDialog}
                     onOpenChange={setShowUpdateCustomerDialog}
+                    showTrigger={false}
+                />
+            )}
+
+            {showCreateCustomerDialog && (
+                <CreateUserDialog
+                    open={showCreateCustomerDialog}
+                    onOpenChange={setShowCreateCustomerDialog}
                     showTrigger={false}
                 />
             )}

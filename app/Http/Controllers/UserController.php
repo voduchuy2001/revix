@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\GetUserRequest;
 use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
@@ -53,7 +54,7 @@ class UserController extends Controller
         return Redirect::back();
     }
 
-    public function update(StoreUserRequest $request, string|int $id): RedirectResponse
+    public function update(UpdateUserRequest $request, string|int $id): RedirectResponse
     {
         $data = $request->validated();
         $user = User::findOrFail($id);

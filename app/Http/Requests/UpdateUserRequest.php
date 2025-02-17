@@ -6,7 +6,7 @@ use App\Enums\UserType;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Enum;
 
-class StoreUserRequest extends FormRequest
+class UpdateUserRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -23,9 +23,6 @@ class StoreUserRequest extends FormRequest
             ],
             'address' => ['required', 'string', 'max:191'],
             'type' => ['required', new Enum(UserType::class)],
-            'email' => ['nullable', 'required_if:type,user', 'email', 'unique:users,email'],
-            'password' => ['nullable', 'required_if:type,user', 'string','max:64'],
-            'password_confirmation' => ['nullable', 'same:password'],
         ];
     }
 
@@ -46,16 +43,6 @@ class StoreUserRequest extends FormRequest
 
             'type.required' => 'Loại người dùng không được để trống.',
             'type.enum' => 'Loại người dùng không hợp lệ, chỉ chấp nhận "customer" hoặc "user".',
-
-            'email.required_if' => 'Email là bắt buộc.',
-            'email.email' => 'Email không hợp lệ.',
-            'email.unique' => 'Email này đã được sử dụng.',
-
-            'password.required_if' => 'Mật khẩu là bắt buộc.',
-            'password.string' => 'Mật khẩu phải là chuỗi ký tự.',
-            'password.max' => 'Mật khẩu không được vượt quá 64 ký tự.',
-
-            'password_confirmation.same' => 'Mật khẩu xác nhận không khớp với mật khẩu.',
         ];
     }
 }

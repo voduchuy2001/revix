@@ -57,12 +57,14 @@ export function UpdateUserDialog({
             <DialogContent className="md:h-auto md:max-w-2xl">
                 <DialogHeader>
                     <DialogTitle>
-                        Cập nhật thông tin khách hàng: {user.name} -{" "}
-                        {user.phone_number}
+                        Cập nhật thông tin{" "}
+                        {type === "customer" ? "khách hàng" : "người dùng"}:{" "}
+                        {user.name} - {user.phone_number}
                     </DialogTitle>
                     <DialogDescription>
-                        Thay đôi thông tin khách hàng bằng cách thay đổi các
-                        thông tin dưới đây
+                        Thay đôi thông tin{" "}
+                        {type === "customer" ? "khách hàng" : "người dùng"} bằng
+                        cách thay đổi các thông tin dưới đây
                     </DialogDescription>
                 </DialogHeader>
 

@@ -15,6 +15,7 @@ import { Label } from "@/Components/ui/label";
 import { Textarea } from "@/Components/ui/textarea";
 import { useForm } from "@inertiajs/react";
 import { PlusIcon } from "@radix-ui/react-icons";
+import { useEffect } from "react";
 import toast from "react-hot-toast";
 
 export function CreateUserDialog({
@@ -28,8 +29,15 @@ export function CreateUserDialog({
         name: "",
         phone_number: "",
         address: "",
+        email: "",
+        password: "",
+        password_confirmation: "",
         type,
     });
+
+    useEffect(() => {
+        setData("type", type);
+    }, [type]);
 
     const submit = (e) => {
         e.preventDefault();
@@ -55,9 +63,14 @@ export function CreateUserDialog({
 
             <DialogContent className="md:h-auto md:max-w-2xl">
                 <DialogHeader>
-                    <DialogTitle>Thêm khách hàng mới</DialogTitle>
+                    <DialogTitle>
+                        {type === "customer"
+                            ? "Thêm khách hàng mới"
+                            : "Thêm người dùng mới"}
+                    </DialogTitle>
                     <DialogDescription>
-                        Điền vào chi tiết phía dưới để thêm khách hàng mới
+                        Điền vào chi tiết phía dưới để thêm{" "}
+                        {type === "customer" ? "khách hàng" : "người dùng"} mới
                     </DialogDescription>
                 </DialogHeader>
 
@@ -98,6 +111,81 @@ export function CreateUserDialog({
                                 />
                                 <InputError
                                     message={errors.phone_number}
+                                    className="mt-2"
+                                />
+                            </div>
+
+                            <div
+                                className={`${
+                                    type === "user" ? "space-y-1" : "hidden"
+                                }`}
+                            >
+                                <Label htmlFor="email" required={true}>
+                                    Email
+                                </Label>
+                                <Input
+                                    id="email"
+                                    type="text"
+                                    name="email"
+                                    className="mt-1 block w-full"
+                                    onChange={(e) =>
+                                        setData("email", e.target.value)
+                                    }
+                                />
+                                <InputError
+                                    message={errors.email}
+                                    className="mt-2"
+                                />
+                            </div>
+
+                            <div
+                                className={`${
+                                    type === "user" ? "space-y-1" : "hidden"
+                                }`}
+                            >
+                                <Label htmlFor="password" required={true}>
+                                    Mật khẩu
+                                </Label>
+                                <Input
+                                    id="password"
+                                    type="password"
+                                    name="password"
+                                    className="mt-1 block w-full"
+                                    onChange={(e) =>
+                                        setData("password", e.target.value)
+                                    }
+                                />
+                                <InputError
+                                    message={errors.password}
+                                    className="mt-2"
+                                />
+                            </div>
+
+                            <div
+                                className={`${
+                                    type === "user" ? "space-y-1" : "hidden"
+                                }`}
+                            >
+                                <Label
+                                    htmlFor="password_confirmation"
+                                    required={true}
+                                >
+                                    Xác nhận mật khẩu
+                                </Label>
+                                <Input
+                                    id="password_confirmation"
+                                    type="password"
+                                    name="password_confirmation"
+                                    className="mt-1 block w-full"
+                                    onChange={(e) =>
+                                        setData(
+                                            "password_confirmation",
+                                            e.target.value
+                                        )
+                                    }
+                                />
+                                <InputError
+                                    message={errors.password_confirmation}
                                     className="mt-2"
                                 />
                             </div>

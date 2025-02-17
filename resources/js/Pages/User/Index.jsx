@@ -29,6 +29,7 @@ import { UpdateUserDialog } from "./Partials/UpdateUserDialog";
 import { usePrevious } from "react-use";
 import { debounce, pickBy } from "lodash";
 import { Button } from "@/Components/ui/button";
+import { CreateUserDialog } from "./Partials/CreateUserDialog";
 
 export default function Index() {
     const { users, filters } = usePage().props;
@@ -72,6 +73,8 @@ export default function Index() {
         }
     }, [values, updateQuery]);
 
+    const [showCreateUserDialog, setShowCreateUserDialog] = useState(false);
+
     return (
         <AuthenticatedLayout
             header={
@@ -104,7 +107,11 @@ export default function Index() {
                                             type="search"
                                         />
 
-                                        <Button>
+                                        <Button
+                                            onClick={() =>
+                                                setShowCreateUserDialog(true)
+                                            }
+                                        >
                                             <PlusIcon className="w-4 h-4 mr-2" />
                                             Thêm mới
                                         </Button>
@@ -223,6 +230,15 @@ export default function Index() {
                     user={editingCustomer}
                     open={showUpdateUserDialog}
                     onOpenChange={setShowUpdateUserDialog}
+                    showTrigger={false}
+                />
+            )}
+
+            {showCreateUserDialog && (
+                <CreateUserDialog
+                    type={"user"}
+                    open={showCreateUserDialog}
+                    onOpenChange={setShowCreateUserDialog}
                     showTrigger={false}
                 />
             )}

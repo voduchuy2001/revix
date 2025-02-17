@@ -419,6 +419,7 @@ const Create = () => {
 
             {showCreateUserDialog && (
                 <CreateUserDialog
+                    type="customer"
                     open={showCreateUserDialog}
                     onOpenChange={setShowCreateUserDialog}
                     showTrigger={false}

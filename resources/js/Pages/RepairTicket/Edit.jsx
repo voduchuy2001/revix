@@ -25,7 +25,7 @@ const Edit = () => {
     const { data, setData, put, processing, errors } = useForm({
         device_name: ticket.device.name,
         imei: ticket.device.code,
-        amount: ticket.amount,
+        amount: parseInt(ticket.amount),
         condition: ticket.condition,
         note: ticket.note,
         technician: ticket.technician.id.toString(),
@@ -38,10 +38,9 @@ const Edit = () => {
     const submit = (e) => {
         e.preventDefault();
 
-        put(
-            route("repair_ticket.update", { id: ticket.id }),
-            toast.success("Cập nhật thành công")
-        );
+        put(route("repair_ticket.update", { id: ticket.id }), {
+            onSuccess: () => toast.success("Cập nhật thành công"),
+        });
     };
 
     const handleAmountChange = (value) => {
@@ -321,6 +320,7 @@ const Edit = () => {
 
             {showUpdateUserDialog && (
                 <UpdateUserDialog
+                    type="customer"
                     user={ticket.customer}
                     open={showUpdateUserDialog}
                     onOpenChange={setShowUpdateUserDialog}
