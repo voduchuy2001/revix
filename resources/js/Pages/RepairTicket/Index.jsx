@@ -120,7 +120,7 @@ export default function Index() {
                         href={route('repair_ticket.create')}
                         className="text-sm bg-primary text-secondary flex items-center py-2 px-4 rounded-md border border-input shadow-sm hover:bg-accent hover:text-accent-foreground w-full md:w-auto justify-center"
                       >
-                        <Plus className="mr-2 w-4 h-4" />
+                        <Plus className="w-4 h-4 mr-2" />
                         Thêm mới
                       </Link>
                     </div>
@@ -160,26 +160,32 @@ export default function Index() {
                           <TableCell>{formatDate(ticket.created_at)}</TableCell>
                           <TableCell>{formatDate(ticket.updated_at)}</TableCell>
                           <TableCell>
-                            <div className="flex space-x-4">
-                              <Printer
-                                className="h-4 w-4 cursor-pointer text-primary hover:text-blue-600 transition-colors"
-                                onClick={() => handlePrintTicket(ticket)}
-                              />
+                            <div className="flex space-x-4 items-center">
+                              <div title="In phiếu tiếp nhận">
+                                <Printer
+                                  className="h-4 w-4 cursor-pointer text-primary hover:text-blue-600 transition-colors"
+                                  onClick={() => handlePrintTicket(ticket)}
+                                />
+                              </div>
 
-                              <Pencil
-                                className="h-4 w-4 cursor-pointer text-yellow-500 hover:text-yellow-400 transition-colors"
-                                onClick={() => {
-                                  router.visit(
-                                    route('repair_ticket.edit', {
-                                      id: ticket.id
-                                    })
-                                  )
-                                }}
-                              />
+                              <div title="Chỉnh sửa phiếu tiếp nhận">
+                                <Pencil
+                                  className="h-4 w-4 cursor-pointer text-yellow-500 hover:text-yellow-400 transition-colors"
+                                  onClick={() => {
+                                    router.visit(
+                                      route('repair_ticket.edit', {
+                                        id: ticket.id
+                                      })
+                                    )
+                                  }}
+                                />
+                              </div>
 
                               <AlertDialog>
                                 <AlertDialogTrigger asChild>
-                                  <Trash className="h-4 w-4 cursor-pointer text-destructive hover:text-red-600 transition-colors" />
+                                  <div title="Xóa phiếu tiếp nhận">
+                                    <Trash className="h-4 w-4 cursor-pointer text-destructive hover:text-red-600 transition-colors" />
+                                  </div>
                                 </AlertDialogTrigger>
                                 <AlertDialogContent>
                                   <AlertDialogHeader>

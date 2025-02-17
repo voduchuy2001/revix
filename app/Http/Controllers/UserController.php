@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\GetUserRequest;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Models\Setting;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
@@ -12,7 +13,7 @@ use Inertia\Inertia;
 
 class UserController extends Controller
 {
-    public function getUser(GetUserRequest $request)
+    public function getUsers(GetUserRequest $request)
     {
         $users = User::whereIn('type', ['technician', 'user'])
             ->when($request->filled('search'), function ($query) use ($request) {
@@ -30,7 +31,7 @@ class UserController extends Controller
     }
 
 
-    public function getCustomer(GetUserRequest $request)
+    public function getCustomers(GetUserRequest $request)
     {
         $customers = User::where('type', 'customer')
             ->when($request->filled('search'), function ($query) use ($request) {
@@ -38,11 +39,20 @@ class UserController extends Controller
                 $query->where('name', 'like', "%{$search}%")
                     ->orWhere('phone_number', 'like', "%{$search}%");
             })
+            ->with([
+                'repairTickets', 
+                'repairTickets.customer', 
+                'repairTickets.device', 
+                'repairTickets.technician'
+            ])
             ->orderByDesc('created_at')
             ->get();
 
+        $setting = Setting::where('key', 'info')->first();
+
         return Inertia::render('User/Customer', [
             'customers' => $customers,
+            'setting' => json_decode($setting->value),
             'filters' => $request->only(['search']),
         ]);
     }

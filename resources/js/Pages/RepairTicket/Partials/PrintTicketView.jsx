@@ -81,7 +81,7 @@ export function PrintTicketView({ setting, ticket }) {
           <div className="text-justify">
             <h3 className="font-bold mb-2">Chính sách bảo hành</h3>
             <div className="space-y-1 text-xs">
-              {setting.policies.map((policy, index) => (
+              {setting?.policies?.map((policy, index) => (
                 <div key={`policy-${index}`}>- {policy}</div>
               ))}
             </div>
@@ -90,7 +90,7 @@ export function PrintTicketView({ setting, ticket }) {
           <div>
             <h3 className="font-bold mb-2">Hệ thống cửa hàng</h3>
             <div className="space-y-1 text-xs">
-              {setting.branches.map((branch, index) => (
+              {setting?.branches?.map((branch, index) => (
                 <div key={`branch-${index}`}>- {branch}</div>
               ))}
             </div>

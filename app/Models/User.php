@@ -3,8 +3,10 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use PHPUnit\Framework\Attributes\Ticket;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
@@ -35,5 +37,10 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function repairTickets(): HasMany
+    {
+        return $this->hasMany(RepairTicket::class, 'customer_id');
     }
 }

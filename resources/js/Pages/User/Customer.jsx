@@ -4,7 +4,7 @@ import { Input } from '@/Components/ui/input'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/ui/table'
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
 import { Head, router, useForm, usePage } from '@inertiajs/react'
-import { Pencil, Trash } from 'lucide-react'
+import { Eye, Pencil, Trash } from 'lucide-react'
 import { useCallback, useEffect, useState } from 'react'
 
 import {
@@ -24,6 +24,7 @@ import { debounce, pickBy } from 'lodash'
 import { Button } from '@/Components/ui/button'
 import { PlusIcon } from '@radix-ui/react-icons'
 import { CreateUserDialog } from './Partials/CreateUserDialog'
+import RepairHistoryDialog from './Partials/RepairHistoryDialog'
 
 export default function Customer() {
   const { customers, filters } = usePage().props
@@ -66,6 +67,12 @@ export default function Customer() {
   }, [values, updateQuery])
 
   const [showCreateCustomerDialog, setShowCreateCustomerDialog] = useState(false)
+  const [showRepairHistory, setShowRepairHistory] = useState(false)
+  const [getCustomerRepairHistory, setGetCustomerRepairHistory] = useState(false)
+  const handleGetCustomerRepairHistory = (customer) => {
+    setGetCustomerRepairHistory(customer)
+    setShowRepairHistory(true)
+  }
 
   return (
     <AuthenticatedLayout
@@ -97,7 +104,7 @@ export default function Customer() {
                     />
 
                     <Button onClick={() => setShowCreateCustomerDialog(true)}>
-                      <PlusIcon className="w-4 h-4 mr-2" />
+                      <PlusIcon className="w-4 h-4" />
                       Thêm mới
                     </Button>
                   </div>
@@ -107,11 +114,11 @@ export default function Customer() {
                 <Table>
                   <TableHeader className="bg-secondary rounded-md">
                     <TableRow>
-                      <TableHead>STT</TableHead>
-                      <TableHead>Tên khách hàng</TableHead>
-                      <TableHead>Số điện thoại</TableHead>
-                      <TableHead>Địa chỉ</TableHead>
-                      <TableHead>Hành động</TableHead>
+                      <TableHead className="flex-1">STT</TableHead>
+                      <TableHead className="flex-1 min-w-32">Tên người dùng</TableHead>
+                      <TableHead className="flex-1 min-w-28">Số điện thoại</TableHead>
+                      <TableHead className="flex-1 min-w-48">Địa chỉ</TableHead>
+                      <TableHead className="flex-1">Hành động</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -123,15 +130,26 @@ export default function Customer() {
                           <TableCell className="font-medium">{customer.phone_number || 'Không có'}</TableCell>
                           <TableCell className="font-medium">{customer.address || 'Không có'}</TableCell>
                           <TableCell>
-                            <div className="flex space-x-4">
-                              <Pencil
-                                className="h-4 w-4 cursor-pointer text-yellow-500 hover:text-yellow-400 transition-colors"
-                                onClick={() => handleEditCustomer(customer)}
-                              />
+                            <div className="flex space-x-4 items-center">
+                              <div title="Xem lịch sử sửa chữa">
+                                <Eye
+                                  className="h-4 w-4 cursor-pointer transition-colors"
+                                  onClick={() => handleGetCustomerRepairHistory(customer)}
+                                />
+                              </div>
+
+                              <div title="Cập nhật thông tin khách hàng">
+                                <Pencil
+                                  className="h-4 w-4 cursor-pointer text-yellow-500 hover:text-yellow-400 transition-colors"
+                                  onClick={() => handleEditCustomer(customer)}
+                                />
+                              </div>
 
                               <AlertDialog>
                                 <AlertDialogTrigger asChild>
-                                  <Trash className="h-4 w-4 cursor-pointer text-destructive hover:text-red-600 transition-colors" />
+                                  <div title="Xóa khách hàng">
+                                    <Trash className="h-4 w-4 cursor-pointer text-destructive hover:text-red-600 transition-colors" />
+                                  </div>
                                 </AlertDialogTrigger>
                                 <AlertDialogContent>
                                   <AlertDialogHeader>
@@ -182,6 +200,15 @@ export default function Customer() {
         <CreateUserDialog
           open={showCreateCustomerDialog}
           onOpenChange={setShowCreateCustomerDialog}
+          showTrigger={false}
+        />
+      )}
+
+      {showRepairHistory && (
+        <RepairHistoryDialog
+          customer={getCustomerRepairHistory}
+          open={showRepairHistory}
+          onOpenChange={setShowRepairHistory}
           showTrigger={false}
         />
       )}

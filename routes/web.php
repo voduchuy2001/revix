@@ -53,7 +53,7 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/user/store', [UserController::class, 'store'])->name('user.store');
     Route::put('/user/update/{id}', [UserController::class, 'update'])->name('user.update');
-    Route::get('/user', [UserController::class, 'getUser'])->name('user.index');
-    Route::get('/customer', [UserController::class, 'getCustomer'])->name('customer.index');
+    Route::get('/user', [UserController::class, 'getUsers'])->name('user.index');
+    Route::get('/customer', [UserController::class, 'getCustomers'])->name('customer.index');
     Route::delete('/user/delete/{id}', [UserController::class, 'destroy'])->name('user.destroy');
 });

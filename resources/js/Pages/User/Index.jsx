@@ -40,8 +40,8 @@ export default function Index() {
   }
 
   const [showUpdateUserDialog, setShowUpdateUserDialog] = useState(false)
-  const [editingCustomer, setEditingUser] = useState(null)
-  const handleEditCustomer = (user) => {
+  const [editingUser, setEditingUser] = useState(null)
+  const handleEditUser = (user) => {
     setShowUpdateUserDialog(true)
     setEditingUser(user)
   }
@@ -96,7 +96,7 @@ export default function Index() {
                     />
 
                     <Button onClick={() => setShowCreateUserDialog(true)}>
-                      <PlusIcon className="w-4 h-4 mr-2" />
+                      <PlusIcon className="w-4 h-4" />
                       Thêm mới
                     </Button>
                   </div>
@@ -106,11 +106,11 @@ export default function Index() {
                 <Table>
                   <TableHeader className="bg-secondary rounded-md">
                     <TableRow>
-                      <TableHead>STT</TableHead>
-                      <TableHead>Tên người dùng</TableHead>
-                      <TableHead>Số điện thoại</TableHead>
-                      <TableHead>Địa chỉ</TableHead>
-                      <TableHead>Hành động</TableHead>
+                      <TableHead className="flex-1">STT</TableHead>
+                      <TableHead className="flex-1 min-w-32">Tên người dùng</TableHead>
+                      <TableHead className="flex-1 min-w-28">Số điện thoại</TableHead>
+                      <TableHead className="flex-1 min-w-48">Địa chỉ</TableHead>
+                      <TableHead className="flex-1">Hành động</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -123,14 +123,18 @@ export default function Index() {
                           <TableCell className="font-medium">{user.address || 'Không có'}</TableCell>
                           <TableCell>
                             <div className="flex space-x-4">
-                              <Pencil
-                                className="h-4 w-4 cursor-pointer text-yellow-500 hover:text-yellow-400 transition-colors"
-                                onClick={() => handleEditCustomer(user)}
-                              />
+                              <div title="Cập nhật thông tin người dùng">
+                                <Pencil
+                                  className="h-4 w-4 cursor-pointer text-yellow-500 hover:text-yellow-400 transition-colors"
+                                  onClick={() => handleEditUser(user)}
+                                />
+                              </div>
 
                               <AlertDialog>
                                 <AlertDialogTrigger asChild>
-                                  <Trash className="h-4 w-4 cursor-pointer text-destructive hover:text-red-600 transition-colors" />
+                                  <div title="Xóa người dùng">
+                                    <Trash className="h-4 w-4 cursor-pointer text-destructive hover:text-red-600 transition-colors" />
+                                  </div>
                                 </AlertDialogTrigger>
                                 <AlertDialogContent>
                                   <AlertDialogHeader>
@@ -166,7 +170,7 @@ export default function Index() {
 
       {showUpdateUserDialog && (
         <UpdateUserDialog
-          user={editingCustomer}
+          user={editingUser}
           open={showUpdateUserDialog}
           onOpenChange={setShowUpdateUserDialog}
           showTrigger={false}

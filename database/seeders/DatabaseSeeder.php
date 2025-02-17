@@ -24,15 +24,12 @@ class DatabaseSeeder extends Seeder
           'type' => 'customer',
         ]);
 
-        // Create multiple technicians
         $technicians = User::factory()->count(5)->create([
             'type' => 'technician',
         ]);
 
-        // Create multiple devices (without user_id)
         $devices = Device::factory()->count(30)->create();
 
-        // Create multiple repair tickets
         $devices->each(function ($device) use ($customers, $technicians) {
             RepairTicket::factory()->count(2)->create([
                 'customer_id' => $customers->random()->id,

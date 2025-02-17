@@ -2,7 +2,7 @@ import { InboxIcon } from 'lucide-react'
 
 const EmptyState = () => {
   return (
-    <div className="flex flex-col items-center justify-center h-[50vh] gap-6">
+    <div className="flex flex-col items-center justify-center h-[20vh] gap-6">
       <div className="flex items-center justify-center w-20 h-20 rounded-full">
         <InboxIcon className="w-10 h-10" />
       </div>
