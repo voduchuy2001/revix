@@ -1,0 +1,17 @@
+{
+  "semi": false,
+  "trailingComma": "none",
+  "tabWidth": 2,
+  "endOfLine": "auto",
+  "useTabs": false,
+  "singleQuote": true,
+  "printWidth": 120,
+  "overrides": [
+    {
+      "files": "resources/**/*.{js,jsx,ts,tsx,vue,css,scss}",
+      "options": {
+        "tabWidth": 2
+      }
+    }
+  ]
+}
