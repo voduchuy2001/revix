@@ -309,7 +309,9 @@ export default function Index() {
             </div>
 
             {print && ticketToPrint && (
-                <PrintTicketView setting={setting} ticket={ticketToPrint} />
+                <div className="hidden">
+                    <PrintTicketView setting={setting} ticket={ticketToPrint} />
+                </div>
             )}
         </AuthenticatedLayout>
     );

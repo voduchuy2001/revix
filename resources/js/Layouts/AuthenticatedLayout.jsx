@@ -31,7 +31,10 @@ export default function AuthenticatedLayout({ header, children }) {
                                         route().current(
                                             "repair_ticket.index"
                                         ) ||
-                                        route().current("repair_ticket.create")
+                                        route().current(
+                                            "repair_ticket.create"
+                                        ) ||
+                                        route().current("repair_ticket.edit")
                                     }
                                 >
                                     Tiếp nhận sửa chữa
@@ -145,7 +148,8 @@ export default function AuthenticatedLayout({ header, children }) {
                             href={route("repair_ticket.index")}
                             active={
                                 route().current("repair_ticket.index") ||
-                                route().current("repair_ticket.create")
+                                route().current("repair_ticket.create") ||
+                                route().current("repair_ticket.edit")
                             }
                         >
                             Tiếp nhận sửa chữa

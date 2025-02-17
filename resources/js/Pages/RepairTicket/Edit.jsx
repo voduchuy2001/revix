@@ -5,24 +5,10 @@ import { Label } from "@/Components/ui/label";
 import { Textarea } from "@/Components/ui/textarea";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, useForm, usePage } from "@inertiajs/react";
-import { Check, File, Plus, Printer } from "lucide-react";
+import { File, Plus } from "lucide-react";
 
-import { cn } from "@/lib/utils";
 import { Button } from "@/Components/ui/button";
-import {
-    Command,
-    CommandEmpty,
-    CommandGroup,
-    CommandInput,
-    CommandItem,
-    CommandList,
-} from "@/Components/ui/command";
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@/Components/ui/popover";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
     Select,
     SelectContent,
@@ -30,11 +16,12 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/Components/ui/select";
-import { CreateUserDialog } from "../User/Partials/CreateUserDialog";
 import { formatMoney } from "@/utils/format";
+import { UpdateUserDialog } from "@/Pages/User/Partials/UpdateUserDialog.jsx";
+import toast from "react-hot-toast";
 
 const Edit = () => {
-    const { ticket, customers, technicians } = usePage().props;
+    const { ticket, technicians } = usePage().props;
     const { data, setData, put, processing, errors } = useForm({
         device_name: ticket.device.name,
         imei: ticket.device.code,
@@ -43,16 +30,18 @@ const Edit = () => {
         note: ticket.note,
         technician: ticket.technician.id.toString(),
         action: false,
+        customer: ticket.customer.id.toString(),
     });
 
-    const [openComboboxCustomer, setOpenComboboxCustomer] = useState(false);
-    const [selectedCustomer, setSelectedCustomer] = useState(null);
-    const [showCreateUserDialog, setShowCreateUserDialog] = useState(false);
+    const [showUpdateUserDialog, setShowUpdateUserDialog] = useState(false);
 
     const submit = (e) => {
         e.preventDefault();
 
-        put(route("repair_ticket.update", { id: ticket.id }));
+        put(
+            route("repair_ticket.update", { id: ticket.id }),
+            toast.success("Cập nhật thành công")
+        );
     };
 
     const handleAmountChange = (value) => {
@@ -270,10 +259,37 @@ const Edit = () => {
                                         </div>
 
                                         <div className="order-1 md:order-2 col-span-1 md:col-span-3 w-full">
+                                            <div className="space-y-1">
+                                                <Label
+                                                    htmlFor="customer"
+                                                    required={true}
+                                                >
+                                                    Khách hàng
+                                                </Label>
+
+                                                <div className="grid flex-1 text-left text-sm leading-tight">
+                                                    <span className="truncate font-semibold">
+                                                        {ticket.customer.name}
+                                                    </span>
+
+                                                    <span className="truncate">
+                                                        {
+                                                            ticket.customer
+                                                                .phone_number
+                                                        }{" "}
+                                                        -{" "}
+                                                        {
+                                                            ticket.customer
+                                                                .address
+                                                        }
+                                                    </span>
+                                                </div>
+                                            </div>
+
                                             <div
                                                 className="my-3 flex cursor-pointer items-center text-sm text-primary hover:text-secondary-foreground hover:underline"
                                                 onClick={() =>
-                                                    setShowCreateUserDialog(
+                                                    setShowUpdateUserDialog(
                                                         true
                                                     )
                                                 }
@@ -281,7 +297,7 @@ const Edit = () => {
                                                 <div className="mr-2 h-4 w-4">
                                                     <Plus className="h-4 w-4" />
                                                 </div>
-                                                Thêm khách hàng mới
+                                                Cập nhật thông tin khách hàng
                                             </div>
 
                                             <div className="flex flex-wrap md:flex-nowrap items-center bottom-0 gap-2 my-2 w-full">
@@ -293,18 +309,6 @@ const Edit = () => {
                                                     <File className="w-4 h-4 mr-1" />
                                                     Lưu
                                                 </Button>
-
-                                                <Button
-                                                    disabled={processing}
-                                                    className="flex-1"
-                                                    type="submit"
-                                                    onClick={() =>
-                                                        setData("action", true)
-                                                    }
-                                                >
-                                                    <Printer className="w-4 h-4 mr-1" />
-                                                    Lưu và in
-                                                </Button>
                                             </div>
                                         </div>
                                     </div>
@@ -315,10 +319,11 @@ const Edit = () => {
                 </div>
             </div>
 
-            {showCreateUserDialog && (
-                <CreateUserDialog
-                    open={showCreateUserDialog}
-                    onOpenChange={setShowCreateUserDialog}
+            {showUpdateUserDialog && (
+                <UpdateUserDialog
+                    customer={ticket.customer}
+                    open={showUpdateUserDialog}
+                    onOpenChange={setShowUpdateUserDialog}
                     showTrigger={false}
                 />
             )}

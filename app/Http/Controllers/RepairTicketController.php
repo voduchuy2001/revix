@@ -27,7 +27,7 @@ class RepairTicketController extends Controller
                 $search = $request->input('search');
                 $query->whereHas('customer', function ($q) use ($search) {
                     $q->where('name', 'like', "%{$search}%")
-                      ->orWhere('phone_number', 'like', "%{$search}%");
+                        ->orWhere('phone_number', 'like', "%{$search}%");
                 });
             })
             ->orderByDesc('created_at')
@@ -38,7 +38,7 @@ class RepairTicketController extends Controller
         return Inertia::render('RepairTicket/Index', [
             'tickets' => $tickets,
             'filters' => $request->only(['search', 'from', 'to']),
-            'setting' =>  json_decode($setting->value)
+            'setting' => json_decode($setting->value),
         ]);
     }
 
@@ -50,7 +50,7 @@ class RepairTicketController extends Controller
             ->get();
 
         $technicians = User::query()
-            ->where('type', 'customer')
+            ->where('type', 'technician')
             ->orderByDesc('created_at')
             ->get();
 
@@ -88,7 +88,7 @@ class RepairTicketController extends Controller
         } catch (QueryException $e) {
             DB::rollBack();
             Log::error($e->getMessage());
-            Redirect::back();
+            return Redirect::back();
         }
     }
 
@@ -96,6 +96,7 @@ class RepairTicketController extends Controller
     {
         $ticket = RepairTicket::findOrFail($id);
         $ticket->delete();
+
         return Redirect::back();
     }
 
@@ -107,7 +108,7 @@ class RepairTicketController extends Controller
 
         return Inertia::render('RepairTicket/Print', [
             'ticket' => $ticket,
-            'setting' =>  json_decode($setting->value)
+            'setting' => json_decode($setting->value),
         ]);
     }
 
@@ -120,7 +121,7 @@ class RepairTicketController extends Controller
             ->get();
 
         $technicians = User::query()
-            ->where('type', 'customer')
+            ->where('type', 'technician')
             ->orderByDesc('created_at')
             ->get();
 
@@ -149,18 +150,23 @@ class RepairTicketController extends Controller
                 ]);
             }
 
-            $ticket->update($data);
+            $ticket->update([
+                'device_id' => $device->id,
+                'customer_id' => $data['customer'],
+                'technician_id' => $data['technician'],
+                'amount' => $data['amount'],
+                'condition' => $data['condition'],
+                'note' => $data['note'],
+            ]);
 
             DB::commit();
 
-            return $request['action']
-                ? Redirect::route('repair_ticket.print', ['id' => $ticket->id])
-                : Redirect::route('repair_ticket.index');
+
+            return Redirect::back();
         } catch (QueryException $e) {
             DB::rollBack();
             Log::error($e->getMessage());
             return Redirect::back()->withErrors(['error' => 'Có lỗi xảy ra!']);
         }
     }
-
 }

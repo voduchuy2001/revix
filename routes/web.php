@@ -52,4 +52,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
 
     Route::post('/user/store', [UserController::class, 'store'])->name('user.store');
+    Route::put('/user/update/{id}', [UserController::class, 'update'])->name('user.update');
+    Route::get('/user', [UserController::class, 'getUser'])->name('user.index');
+    Route::get('/customer', [UserController::class, 'getCustomer'])->name('customer.index');
 });
