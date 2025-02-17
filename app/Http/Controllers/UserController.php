@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\GetUserRequest;
 use App\Http\Requests\StoreUserRequest;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
@@ -10,23 +11,39 @@ use Inertia\Inertia;
 
 class UserController extends Controller
 {
-    public function getUser()
+    public function getUser(GetUserRequest $request)
     {
-        $users = User::where('type', 'technician')
-            ->orWhere('type', 'user')
+        $users = User::whereIn('type', ['technician', 'user'])
+            ->when($request->filled('search'), function ($query) use ($request) {
+                $search = $request->input('search');
+                $query->where('name', 'like', "%{$search}%")
+                    ->orWhere('phone_number', 'like', "%{$search}%");
+            })
             ->orderByDesc('created_at')
             ->get();
 
-        return Inertia::render('User/Index', ['users' => $users]);
+        return Inertia::render('User/Index', [
+            'users' => $users,
+            'filters' => $request->only(['search']),
+        ]);
     }
 
-    public function getCustomer()
+
+    public function getCustomer(GetUserRequest $request)
     {
         $customers = User::where('type', 'customer')
+            ->when($request->filled('search'), function ($query) use ($request) {
+                $search = $request->input('search');
+                $query->where('name', 'like', "%{$search}%")
+                    ->orWhere('phone_number', 'like', "%{$search}%");
+            })
             ->orderByDesc('created_at')
             ->get();
 
-        return Inertia::render('User/Customer', ['customers' => $customers]);
+        return Inertia::render('User/Customer', [
+            'customers' => $customers,
+            'filters' => $request->only(['search']),
+        ]);
     }
 
     public function store(StoreUserRequest $request): RedirectResponse
@@ -48,7 +65,6 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
         $user->delete();
-
         return Redirect::back();
     }
 }

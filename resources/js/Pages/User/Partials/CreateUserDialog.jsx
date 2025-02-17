@@ -66,7 +66,7 @@ export function CreateUserDialog({
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
                             <div className="space-y-1">
                                 <Label htmlFor="name" required={true}>
-                                    Tên khách hàng
+                                    Tên
                                 </Label>
                                 <Input
                                     id="name"

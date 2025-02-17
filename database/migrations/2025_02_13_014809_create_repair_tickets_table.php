@@ -14,9 +14,9 @@ return new class () extends Migration {
             $table->id();
             $table->string('code')->unique();
             $table->foreignId('customer_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('device_id')->constrained('devices')->onDelete('cascade');  // Assuming 'devices' table exists
+            $table->foreignId('device_id')->constrained('devices')->onDelete('cascade');
             $table->foreignId('technician_id')->constrained('users')->onDelete('cascade');
-            $table->decimal('amount', 10, 2)->nullable();  // Use decimal for amount
+            $table->decimal('amount', 10, 2)->nullable();
             $table->text('condition')->nullable();
             $table->text('note')->nullable();
             $table->string('status', 50)->default('pending');

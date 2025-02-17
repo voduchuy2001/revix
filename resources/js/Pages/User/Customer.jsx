@@ -10,9 +10,9 @@ import {
     TableRow,
 } from "@/Components/ui/table";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, useForm, usePage } from "@inertiajs/react";
+import { Head, router, useForm, usePage } from "@inertiajs/react";
 import { Pencil, Trash } from "lucide-react";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import {
     AlertDialog,
@@ -26,11 +26,15 @@ import {
     AlertDialogTrigger,
 } from "@/Components/ui/alert-dialog";
 import { UpdateUserDialog } from "./Partials/UpdateUserDialog";
+import { usePrevious } from "react-use";
+import { debounce, pickBy } from "lodash";
+import { Button } from "@/Components/ui/button";
+import { PlusIcon } from "@radix-ui/react-icons";
 
 export default function Customer() {
     const { customers, filters } = usePage().props;
 
-    const { processing, delete: destroy, submit } = useForm();
+    const { processing, delete: destroy } = useForm();
     const [values, setValues] = useState({
         search: filters?.search || "",
     });
@@ -48,6 +52,27 @@ export default function Customer() {
         setShowUpdateCustomerDialog(true);
         setEditingCustomer(customer);
     };
+
+    const prevValues = usePrevious(values);
+
+    const updateQuery = useCallback(
+        debounce((query) => {
+            router.get(route("customer.index"), query, {
+                replace: true,
+                preserveState: true,
+            });
+        }, 500),
+        []
+    );
+
+    useEffect(() => {
+        if (prevValues) {
+            const query = Object.keys(pickBy(values)).length
+                ? pickBy(values)
+                : { remember: "forget" };
+            updateQuery(query);
+        }
+    }, [values, updateQuery]);
 
     return (
         <AuthenticatedLayout
@@ -67,19 +92,26 @@ export default function Customer() {
                                 <CardTitle className="flex flex-col gap-3 text-xl font-semibold">
                                     <span>Danh sách khách hàng</span>
 
-                                    <Input
-                                        placeholder="Tên khách hàng, số điện thoại"
-                                        value={values?.search}
-                                        onChange={(e) =>
-                                            setValues((prev) => ({
-                                                ...prev,
-                                                search: e.target.value,
-                                            }))
-                                        }
-                                        className="w-full md:max-w-sm"
-                                        name="search"
-                                        type="search"
-                                    />
+                                    <div className="flex flex-col md:flex-row items-center gap-2 md:gap-4 justify-between">
+                                        <Input
+                                            placeholder="Tên khách hàng, số điện thoại"
+                                            value={values?.search}
+                                            onChange={(e) =>
+                                                setValues((prev) => ({
+                                                    ...prev,
+                                                    search: e.target.value,
+                                                }))
+                                            }
+                                            className="w-full md:max-w-sm"
+                                            name="search"
+                                            type="search"
+                                        />
+
+                                        <Button>
+                                            <PlusIcon className="w-4 h-4 mr-2" />
+                                            Thêm mới
+                                        </Button>
+                                    </div>
                                 </CardTitle>
                             </CardHeader>
                             <CardContent>
@@ -146,12 +178,6 @@ export default function Customer() {
                                                                             thể
                                                                             hoàn
                                                                             tác.
-                                                                            Phiếu
-                                                                            sẽ
-                                                                            bị
-                                                                            xóa
-                                                                            vĩnh
-                                                                            viễn.
                                                                         </AlertDialogDescription>
                                                                     </AlertDialogHeader>
                                                                     <AlertDialogFooter>
