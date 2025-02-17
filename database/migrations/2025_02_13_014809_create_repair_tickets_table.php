@@ -13,16 +13,17 @@ return new class () extends Migration {
         Schema::create('repair_tickets', function (Blueprint $table) {
             $table->id();
             $table->string('code')->unique();
-            $table->foreignId('customer_id')->onDelete('cascade');
-            $table->foreignId('device_id')->onDelete('cascade');
-            $table->foreignId('technician_id')->onDelete('set null');
-            $table->double('amount')->nullable();
+            $table->foreignId('customer_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('device_id')->constrained('devices')->onDelete('cascade');  // Assuming 'devices' table exists
+            $table->foreignId('technician_id')->constrained('users')->onDelete('cascade');
+            $table->decimal('amount', 10, 2)->nullable();  // Use decimal for amount
             $table->text('condition')->nullable();
             $table->text('note')->nullable();
             $table->string('status', 50)->default('pending');
             $table->timestamps();
         });
     }
+
 
     /**
      * Reverse the migrations.

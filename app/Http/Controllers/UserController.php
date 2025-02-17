@@ -10,19 +10,23 @@ use Inertia\Inertia;
 
 class UserController extends Controller
 {
-    public function getUser() {
+    public function getUser()
+    {
         $users = User::where('type', 'technician')
-        ->orWhere('type', 'user')
-        ->orderByDesc('created_at')->get();
+            ->orWhere('type', 'user')
+            ->orderByDesc('created_at')
+            ->get();
 
-        return Inertia::render('Users/Index', ['users' => $users]);
+        return Inertia::render('User/Index', ['users' => $users]);
     }
 
-    public function getCustomer() {
-        $users = User::where('type', 'customer')
-        ->orderByDesc('created_at')->get();
-        
-        return Inertia::render('Users/Customer', ['users' => $users]);
+    public function getCustomer()
+    {
+        $customers = User::where('type', 'customer')
+            ->orderByDesc('created_at')
+            ->get();
+
+        return Inertia::render('User/Customer', ['customers' => $customers]);
     }
 
     public function store(StoreUserRequest $request): RedirectResponse
@@ -37,6 +41,14 @@ class UserController extends Controller
         $data = $request->validated();
         $user = User::findOrFail($id);
         $user->update($data);
+        return Redirect::back();
+    }
+
+    public function destroy(string|int $id): RedirectResponse
+    {
+        $user = User::findOrFail($id);
+        $user->delete();
+
         return Redirect::back();
     }
 }

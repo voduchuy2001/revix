@@ -3,9 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Enums\UserType;
-use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
 
 class StoreUserRequest extends FormRequest
@@ -15,18 +13,18 @@ class StoreUserRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-public function rules(): array
-{
-    return [
-        'name' => ['required', 'string', 'max:191'],
-        'phone_number' => [
-            'required',
-            'regex:/^(0?)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}$/',
-        ],
-        'address' => ['required', 'string', 'max:191'],
-        'type' => ['required', new Enum(UserType::class)]
-    ];
-}
+    public function rules(): array
+    {
+        return [
+            'name' => ['required', 'string', 'max:191'],
+            'phone_number' => [
+                'required',
+                'regex:/^(0?)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}$/',
+            ],
+            'address' => ['required', 'string', 'max:191'],
+            'type' => ['required', new Enum(UserType::class)]
+        ];
+    }
 
     public function messages(): array
     {

@@ -18,24 +18,24 @@ import { PlusIcon } from "@radix-ui/react-icons";
 import toast from "react-hot-toast";
 
 export function UpdateUserDialog({
-    customer,
+    user,
     open,
     onOpenChange,
     showTrigger = true,
-    type = "customer",
+    type = "user",
     ...props
 }) {
     const { reset, setData, data, errors, processing, put } = useForm({
-        name: customer.name,
-        phone_number: customer.phone_number,
-        address: customer.address,
-        type: customer.type || type,
+        name: user.name,
+        phone_number: user.phone_number,
+        address: user.address,
+        type: user.type || type,
     });
 
     const submit = (e) => {
         e.preventDefault();
 
-        put(route("user.update", { id: customer.id }), {
+        put(route("user.update", { id: user.id }), {
             onSuccess: () => {
                 onOpenChange?.(false);
                 toast.success("Cập nhật thành công");
@@ -57,8 +57,8 @@ export function UpdateUserDialog({
             <DialogContent className="md:h-auto md:max-w-2xl">
                 <DialogHeader>
                     <DialogTitle>
-                        Cập nhật thông tin khách hàng: {customer.name} -{" "}
-                        {customer.phone_number}
+                        Cập nhật thông tin khách hàng: {user.name} -{" "}
+                        {user.phone_number}
                     </DialogTitle>
                     <DialogDescription>
                         Thay đôi thông tin khách hàng bằng cách thay đổi các

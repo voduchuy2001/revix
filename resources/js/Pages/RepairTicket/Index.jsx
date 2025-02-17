@@ -146,7 +146,7 @@ export default function Index() {
                             </CardHeader>
                             <CardContent>
                                 <Table>
-                                    <TableHeader className="bg-secondary rounded-md">
+                                    <TableHeader className="sticky top-0 z-10 bg-secondary">
                                         <TableRow>
                                             <TableHead>Số phiếu</TableHead>
                                             <TableHead>
@@ -293,7 +293,7 @@ export default function Index() {
                                         ) : (
                                             <TableRow>
                                                 <TableCell
-                                                    colSpan={8}
+                                                    colSpan={9}
                                                     className="text-center py-6 text-gray-500"
                                                 >
                                                     <EmptyState />

@@ -321,7 +321,7 @@ const Edit = () => {
 
             {showUpdateUserDialog && (
                 <UpdateUserDialog
-                    customer={ticket.customer}
+                    user={ticket.customer}
                     open={showUpdateUserDialog}
                     onOpenChange={setShowUpdateUserDialog}
                     showTrigger={false}

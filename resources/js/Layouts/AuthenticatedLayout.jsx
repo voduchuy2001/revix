@@ -46,6 +46,20 @@ export default function AuthenticatedLayout({ header, children }) {
                                 >
                                     Tiếp nhận sửa chữa
                                 </NavLink>
+
+                                <NavLink
+                                    href={route("customer.index")}
+                                    active={route().current("customer.index")}
+                                >
+                                    Khách hàng
+                                </NavLink>
+
+                                <NavLink
+                                    href={route("user.index")}
+                                    active={route().current("user.index")}
+                                >
+                                    Người dùng
+                                </NavLink>
                             </div>
                         </div>
 
