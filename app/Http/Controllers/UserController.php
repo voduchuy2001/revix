@@ -40,9 +40,9 @@ class UserController extends Controller
                     ->orWhere('phone_number', 'like', "%{$search}%");
             })
             ->with([
-                'repairTickets', 
-                'repairTickets.customer', 
-                'repairTickets.device', 
+                'repairTickets',
+                'repairTickets.customer',
+                'repairTickets.device',
                 'repairTickets.technician'
             ])
             ->orderByDesc('created_at')
