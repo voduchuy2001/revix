@@ -1,8 +1,8 @@
 import { TrendingUp } from 'lucide-react'
 import { Bar, BarChart, CartesianGrid, XAxis } from 'recharts'
 
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart'
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/Components/ui/card'
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/Components/ui/chart'
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
 import { Head, usePage } from '@inertiajs/react'
 
