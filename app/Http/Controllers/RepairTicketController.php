@@ -129,7 +129,7 @@ class RepairTicketController extends Controller
             ->get();
 
         $technicians = User::query()
-            ->where('type', 'technician')
+            ->whereIn('type', ['technician', 'user'])
             ->orderByDesc('created_at')
             ->get();
 
