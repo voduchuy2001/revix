@@ -27,7 +27,7 @@ export default function ForgotPassword({ status }) {
 
       {status && <div className="mb-4 text-sm font-medium text-green-600">{status}</div>}
 
-      <form onSubmit={submit}>
+      <form onSubmit={submit} autoComplete="off">
         <div className="mt-4">
           <Label htmlFor="email" required={true}>
             Email

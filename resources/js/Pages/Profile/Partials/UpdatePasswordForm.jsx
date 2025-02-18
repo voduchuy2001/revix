@@ -50,7 +50,7 @@ export default function UpdatePasswordForm({ className = '' }) {
         </p>
       </header>
 
-      <form onSubmit={updatePassword} className="mt-6 space-y-6">
+      <form onSubmit={updatePassword} className="mt-6 space-y-6" autoComplete="off">
         <div>
           <Label htmlFor="current_password" required={true}>
             Mật khẩu hiện tại

@@ -64,7 +64,7 @@ export function CreateUserDialog({ open, onOpenChange, showTrigger = true, type 
         </DialogHeader>
 
         <div className="max-h-[65vh] overflow-auto md:max-h-[75vh]">
-          <form id={type} onSubmit={submit}>
+          <form id={type} onSubmit={submit} autoComplete="off">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
               <div className="space-y-1">
                 <Label htmlFor="name" required={true}>

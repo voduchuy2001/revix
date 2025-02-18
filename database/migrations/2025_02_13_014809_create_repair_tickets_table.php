@@ -20,6 +20,8 @@ return new class () extends Migration {
             $table->text('condition')->nullable();
             $table->text('note')->nullable();
             $table->string('status', 50)->default('pending');
+            $table->bigInteger('created_by');
+            $table->bigInteger('updated_by');
             $table->timestamps();
         });
     }

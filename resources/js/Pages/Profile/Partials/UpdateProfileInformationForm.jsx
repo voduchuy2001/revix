@@ -32,7 +32,7 @@ export default function UpdateProfileInformation({ className = '' }) {
         <p className="mt-1 text-sm text-gray-600">Cập nhật thông tin hồ sơ tài khoản và địa chỉ email của bạn.</p>
       </header>
 
-      <form onSubmit={submit} className="mt-6 space-y-6">
+      <form onSubmit={submit} className="mt-6 space-y-6" autoComplete="off">
         <div>
           <Label htmlFor="name" required={true}>
             Tên
