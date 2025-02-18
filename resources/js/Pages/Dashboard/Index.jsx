@@ -1,11 +1,10 @@
 import { TrendingUp } from 'lucide-react'
-import { Bar, BarChart, CartesianGrid, LabelList, XAxis } from 'recharts'
+import { Bar, BarChart, CartesianGrid, XAxis } from 'recharts'
 
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart'
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
 import { Head, usePage } from '@inertiajs/react'
-import { formatMoney } from '@/utils/format'
 
 const chartConfig = {
   amount: {
@@ -17,7 +16,7 @@ const chartConfig = {
 export default function Index() {
   const { revenues: data } = usePage().props
   const formattedData = data.map((item) => ({
-    month: `Tháng ${item.month}`,
+    month: `T ${item.month}`,
     amount: Number(item.amount)
   }))
 
@@ -36,29 +35,10 @@ export default function Index() {
               <CardContent>
                 <ChartContainer config={chartConfig}>
                   <BarChart accessibilityLayer data={formattedData}>
-                    <CartesianGrid vertical={true} />
-                    <XAxis dataKey="month" tickLine={true} tickMargin={10} axisLine={true} />
+                    <CartesianGrid vertical={false} />
+                    <XAxis dataKey="month" tickLine={false} tickMargin={10} axisLine={false} />
                     <ChartTooltip cursor={true} content={<ChartTooltipContent hideLabel />} />
-                    <Bar dataKey="amount" fill="var(--color-amount)" radius={[8, 8, 0, 0]}>
-                      <LabelList
-                        position="top"
-                        offset={12}
-                        className="fill-foreground"
-                        fontSize={12}
-                        content={({ x, y, width, value }) => (
-                          <text
-                            x={x + width / 2}
-                            y={y - 10}
-                            textAnchor="middle"
-                            dominantBaseline="middle"
-                            className="fill-foreground"
-                            fontSize={12}
-                          >
-                            {formatMoney(value)}
-                          </text>
-                        )}
-                      />
-                    </Bar>
+                    <Bar dataKey="amount" fill="var(--color-amount)" radius={8}></Bar>
                   </BarChart>
                 </ChartContainer>
               </CardContent>
