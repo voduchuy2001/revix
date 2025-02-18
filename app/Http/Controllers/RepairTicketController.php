@@ -11,6 +11,7 @@ use App\Models\Setting;
 use App\Models\User;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
@@ -86,6 +87,8 @@ class RepairTicketController extends Controller
                 'amount' => $data['amount'],
                 'condition' => $data['condition'],
                 'note' => $data['note'],
+                'created_by' => Auth::id(),
+                'updated_by' => Auth::id(),
             ]);
 
             DB::commit();
@@ -165,6 +168,7 @@ class RepairTicketController extends Controller
                 'amount' => $data['amount'],
                 'condition' => $data['condition'],
                 'note' => $data['note'],
+                'updated_by' => Auth::id(),
             ]);
 
             DB::commit();

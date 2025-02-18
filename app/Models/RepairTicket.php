@@ -17,7 +17,9 @@ class RepairTicket extends Model
         'amount',
         'note',
         'status',
-        'condition'
+        'condition',
+        'created_by',
+        'updated_by',
     ];
 
     protected static function boot(): void
