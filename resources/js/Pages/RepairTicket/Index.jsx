@@ -132,8 +132,8 @@ export default function Index() {
                   <TableHeader className="sticky top-0 z-10 bg-secondary">
                     <TableRow>
                       <TableHead>Số phiếu</TableHead>
-                      <TableHead>Tên khách hàng</TableHead>
-                      <TableHead>Số điện thoại</TableHead>
+                      <TableHead className="min-w-32">Tên khách hàng</TableHead>
+                      <TableHead className="min-w-28">Số điện thoại</TableHead>
                       <TableHead>Thiết bị</TableHead>
                       <TableHead>Giá</TableHead>
                       <TableHead>Thợ</TableHead>

@@ -69,13 +69,13 @@ export default function RepairHistoryDialog({ customer, open, onOpenChange, show
             <DialogDescription></DialogDescription>
           </DialogHeader>
 
-          <div className="max-h-[65vh] overflow-auto md:max-h-[75vh]">
+          <div className="overflow-hidden">
             <Table>
               <TableHeader className="sticky top-0 z-10 bg-secondary">
                 <TableRow>
                   <TableHead>Số phiếu</TableHead>
-                  <TableHead>Tên khách hàng</TableHead>
-                  <TableHead>Số điện thoại</TableHead>
+                  <TableHead className="min-w-32">Tên khách hàng</TableHead>
+                  <TableHead className="min-w-28">Số điện thoại</TableHead>
                   <TableHead>Thiết bị</TableHead>
                   <TableHead>Giá</TableHead>
                   <TableHead>Thợ</TableHead>

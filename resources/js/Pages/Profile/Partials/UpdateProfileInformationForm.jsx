@@ -63,7 +63,7 @@ export default function UpdateProfileInformation({ className = '' }) {
         </div>
 
         <div>
-          <Label htmlFor="phone_number" required={true}>
+          <Label htmlFor="phone_number" required={false}>
             Số điện thoại
           </Label>
           <Input
