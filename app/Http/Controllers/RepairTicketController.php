@@ -22,7 +22,15 @@ class RepairTicketController extends Controller
     public function index(GetRepairTicketRequest $request): Response
     {
         $tickets = RepairTicket::with(['customer', 'device', 'technician'])
-            ->whereBetween('created_at', [$request->input('from'), $request->input('to')])
+            ->when($request->filled('from') && !$request->filled('to'), function ($query) use ($request) {
+                $query->where('created_at', '>=', $request->input('from'));
+            })
+            ->when($request->filled('to') && !$request->filled('from'), function ($query) use ($request) {
+                $query->where('created_at', '<=', $request->input('to'));
+            })
+            ->when($request->filled(['from', 'to']), function ($query) use ($request) {
+                $query->whereBetween('created_at', [$request->input('from'), $request->input('to')]);
+            })
             ->when($request->filled('search'), function ($query) use ($request) {
                 $search = $request->input('search');
                 $query->whereHas('customer', function ($q) use ($search) {
