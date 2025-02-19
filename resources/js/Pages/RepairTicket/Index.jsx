@@ -65,7 +65,8 @@ export default function Index() {
   const { processing, delete: destroy } = useForm()
   const handleDeleteRepairTicket = (id) => {
     destroy(route('repair_ticket.destroy', id), {
-      onSuccess: () => toast.success('Xóa thành công')
+      onSuccess: () => toast.success('Xóa thành công'),
+      onError: (error) => toast.error(error[0] || 'Lỗi khi xóa')
     })
   }
 
@@ -156,7 +157,7 @@ export default function Index() {
                             </div>
                           </TableCell>
                           <TableCell>{formatMoney(ticket.amount)}</TableCell>
-                          <TableCell>{ticket.technician.name}</TableCell>
+                          <TableCell>{ticket.technician || 'Không có'}</TableCell>
                           <TableCell>{formatDate(ticket.created_at)}</TableCell>
                           <TableCell>{formatDate(ticket.updated_at)}</TableCell>
                           <TableCell>
@@ -226,7 +227,7 @@ export default function Index() {
 
       {print && ticketToPrint && (
         <div className="hidden">
-          <PrintTicketView setting={setting} ticket={ticketToPrint} />
+          <PrintTicketView redirectAfterPrint={false} setting={setting} ticket={ticketToPrint} />
         </div>
       )}
     </AuthenticatedLayout>

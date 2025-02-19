@@ -1,4 +1,5 @@
 import InputError from '@/Components/InputError'
+import NameInput from '@/Components/NameInput'
 import { PasswordInput } from '@/Components/PasswordInput'
 import { Button } from '@/Components/ui/Button'
 import {
@@ -16,23 +17,25 @@ import { Label } from '@/Components/ui/label'
 import { Textarea } from '@/Components/ui/textarea'
 import { useForm } from '@inertiajs/react'
 import { PlusIcon } from '@radix-ui/react-icons'
-import { useEffect } from 'react'
 import toast from 'react-hot-toast'
 
-export function CreateUserDialog({ open, onOpenChange, showTrigger = true, type = 'customer', ...props }) {
-  const { reset, setData, errors, processing, post } = useForm({
+export function CreateUserDialog({
+  open,
+  onOpenChange,
+  showTrigger = true,
+  type = 'customer',
+  initialPhoneNumber = '',
+  ...props
+}) {
+  const { reset, data, setData, errors, processing, post } = useForm({
     name: '',
-    phone_number: '',
+    phone_number: initialPhoneNumber,
     address: '',
     email: '',
     password: '',
     password_confirmation: '',
     type
   })
-
-  useEffect(() => {
-    setData('type', type)
-  }, [type])
 
   const submit = (e) => {
     e.preventDefault()
@@ -71,7 +74,7 @@ export function CreateUserDialog({ open, onOpenChange, showTrigger = true, type 
                 <Label htmlFor="name" required={true}>
                   Tên
                 </Label>
-                <Input
+                <NameInput
                   id="name"
                   type="text"
                   name="name"
@@ -90,6 +93,7 @@ export function CreateUserDialog({ open, onOpenChange, showTrigger = true, type 
                   type="text"
                   name="phone_number"
                   className="mt-1 block w-full"
+                  value={data.phone_number}
                   onChange={(e) => setData('phone_number', e.target.value)}
                 />
                 <InputError message={errors.phone_number} className="mt-2" />
@@ -139,7 +143,7 @@ export function CreateUserDialog({ open, onOpenChange, showTrigger = true, type 
 
               <div className="col-span-1 md:col-span-2 w-full space-y-4">
                 <div className="space-y-1">
-                  <Label htmlFor="address" required={true}>
+                  <Label htmlFor="address" required={false}>
                     Địa chỉ
                   </Label>
                   <Textarea

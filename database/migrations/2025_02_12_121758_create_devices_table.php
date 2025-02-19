@@ -12,7 +12,7 @@ return new class () extends Migration {
     {
         Schema::create('devices', function (Blueprint $table) {
             $table->id();
-            $table->string('code');
+            $table->string('code')->nullable();
             $table->string('name');
             $table->string('type')->nullable();
             $table->longText('description')->nullable();

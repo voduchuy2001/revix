@@ -12,12 +12,12 @@ import { Button } from '@/Components/ui/button'
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/Components/ui/command'
 import { Popover, PopoverContent, PopoverTrigger } from '@/Components/ui/popover'
 import { useState } from 'react'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/Components/ui/select'
 import { CreateUserDialog } from '../User/Partials/CreateUserDialog'
 import { formatMoney } from '@/utils/format'
+import NameInput from '@/Components/NameInput'
 
 const Create = () => {
-  const { customers, technicians } = usePage().props
+  const { customers } = usePage().props
   const { data, setData, post, processing, errors } = useForm({
     device_name: '',
     imei: '',
@@ -44,6 +44,8 @@ const Create = () => {
     setData({ ...data, amount: numericValue })
   }
 
+  const [phoneNumber, setPhoneNumber] = useState('')
+
   return (
     <AuthenticatedLayout
       header={<h2 className="text-xl font-semibold leading-tight text-gray-800">Thêm phiếu tiếp nhận sửa chữa</h2>}
@@ -66,7 +68,8 @@ const Create = () => {
                           <Label htmlFor="device_name" required={true}>
                             Tên máy
                           </Label>
-                          <Input
+                          <NameInput
+                            tabIndex={1}
                             id="device_name"
                             type="text"
                             name="device_name"
@@ -78,10 +81,11 @@ const Create = () => {
                         </div>
 
                         <div className="space-y-1">
-                          <Label htmlFor="imei" required={true}>
+                          <Label htmlFor="imei" required={false}>
                             IMEI máy
                           </Label>
                           <Input
+                            tabIndex={2}
                             id="imei"
                             type="text"
                             name="imei"
@@ -93,10 +97,11 @@ const Create = () => {
                         </div>
 
                         <div className="space-y-1">
-                          <Label htmlFor="amount" required={true}>
+                          <Label htmlFor="amount" required={false}>
                             Chi phí sửa chữa
                           </Label>
                           <Input
+                            tabIndex={3}
                             id="amount"
                             type="text"
                             name="amount"
@@ -108,21 +113,18 @@ const Create = () => {
                         </div>
 
                         <div className="space-y-1">
-                          <Label htmlFor="technician" required={true}>
+                          <Label htmlFor="technician" required={false}>
                             Thợ phụ trách
                           </Label>
-                          <Select name="technician" onValueChange={(value) => setData('technician', value)}>
-                            <SelectTrigger className="w-full">
-                              <SelectValue />
-                            </SelectTrigger>
-                            <SelectContent>
-                              {technicians.map((technician) => (
-                                <SelectItem key={`technician-${technician.id}`} value={technician.id.toString()}>
-                                  {technician.name}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
+                          <NameInput
+                            tabIndex={4}
+                            id="technician"
+                            type="text"
+                            name="technician"
+                            value={data.technician}
+                            className="mt-1 block w-full"
+                            onChange={(e) => setData('technician', e.target.value)}
+                          />
                           <InputError message={errors.technician} className="mt-2" />
                         </div>
 
@@ -132,6 +134,7 @@ const Create = () => {
                               Tình trạng máy
                             </Label>
                             <Textarea
+                              tabIndex={5}
                               onChange={(e) => setData('condition', e.target.value)}
                               id="condition"
                               className="w-full"
@@ -141,7 +144,12 @@ const Create = () => {
 
                           <div className="space-y-1">
                             <Label htmlFor="note">Ghi chú</Label>
-                            <Textarea onChange={(e) => setData('note', e.target.value)} id="note" className="w-full" />
+                            <Textarea
+                              tabIndex={6}
+                              onChange={(e) => setData('note', e.target.value)}
+                              id="note"
+                              className="w-full"
+                            />
                             <InputError message={errors.note} className="mt-2" />
                           </div>
                         </div>
@@ -157,6 +165,7 @@ const Create = () => {
                           <PopoverTrigger asChild>
                             <div className="space-y-1">
                               <Button
+                                tabIndex={7}
                                 variant="outline"
                                 role="combobox"
                                 aria-expanded={openComboboxCustomer}
@@ -175,17 +184,23 @@ const Create = () => {
                           </PopoverTrigger>
                           <PopoverContent className="w-[--radix-popover-trigger-width] p-0">
                             <Command>
-                              <CommandInput />
+                              <CommandInput value={phoneNumber} onValueChange={setPhoneNumber} />
                               <CommandList>
-                                <CommandEmpty>Không có</CommandEmpty>
+                                <CommandEmpty>
+                                  <div className="flex items-center justify-center">
+                                    <Button variant="outline" onClick={() => setShowCreateUserDialog(true)}>
+                                      Thêm - {phoneNumber}
+                                    </Button>
+                                  </div>
+                                </CommandEmpty>
                                 <CommandGroup>
                                   {customers.map((customer) => (
                                     <CommandItem
                                       key={`customer-${customer.id}`}
-                                      value={customer.id.toString()}
+                                      value={`${customer.id} ${customer.name.toLowerCase()} ${customer.phone_number?.toLowerCase() || ''}`}
                                       onSelect={(currentValue) => {
-                                        setSelectedCustomer(currentValue === selectedCustomer ? '' : currentValue)
-                                        setData('customer', currentValue)
+                                        setSelectedCustomer(currentValue.split(' ')[0])
+                                        setData('customer', currentValue.split(' ')[0])
                                         setOpenComboboxCustomer(false)
                                       }}
                                     >
@@ -204,16 +219,6 @@ const Create = () => {
                           </PopoverContent>
                         </Popover>
                         <InputError message={errors.customer} className="mt-2" />
-                      </div>
-
-                      <div
-                        className="my-3 flex cursor-pointer items-center text-sm text-primary hover:text-secondary-foreground hover:underline"
-                        onClick={() => setShowCreateUserDialog(true)}
-                      >
-                        <div className="mr-2 h-4 w-4">
-                          <Plus className="h-4 w-4" />
-                        </div>
-                        Thêm khách hàng mới
                       </div>
 
                       <div className="flex flex-wrap md:flex-nowrap items-center bottom-0 gap-2 my-2 w-full">
@@ -243,6 +248,7 @@ const Create = () => {
 
       {showCreateUserDialog && (
         <CreateUserDialog
+          initialPhoneNumber={phoneNumber}
           type="customer"
           open={showCreateUserDialog}
           onOpenChange={setShowCreateUserDialog}

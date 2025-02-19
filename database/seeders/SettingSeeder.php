@@ -30,7 +30,20 @@ class SettingSeeder extends Seeder
                 'Gành Hào, Đông Hải, Bạc Liêu',
                 '196 Phú Lợi, Khóm 3, Phường 2, TP. Sóc Trăng'
             ],
-            'facebook' => 'https://www.facebook.com/suachuadienthoaididongcantho'
+            'support_phone_number' => '0918.677.708',
+            'facebook' => 'https://www.facebook.com/suachuadienthoaididongcantho',
+            'zalo' => '',
+            'gmail' => '',
+            'youtube' => '',
+            'instagram' => '',
+            'twitter' => '',
+            'linkedin' => '',
+            'pinterest' => '',
+            'tiktok' => '',
+            'whatsapp' => '',
+            'telegram' => '',
+            'viber' => '',
+            'line' => ''
         ];
 
         Setting::create([

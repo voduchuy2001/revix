@@ -1,4 +1,5 @@
 import InputError from '@/Components/InputError'
+import NameInput from '@/Components/NameInput'
 import { Button } from '@/Components/ui/button'
 import { Input } from '@/Components/ui/input'
 import { Label } from '@/Components/ui/label'
@@ -37,7 +38,7 @@ export default function UpdateProfileInformation({ className = '' }) {
           <Label htmlFor="name" required={true}>
             Tên
           </Label>
-          <Input
+          <NameInput
             id="name"
             className="mt-1 block w-full"
             value={data.name}

@@ -35,7 +35,8 @@ export default function Index() {
 
   const handleDeleteUser = (id) => {
     destroy(route('user.destroy', id), {
-      onSuccess: () => toast.success('Xóa thành công')
+      onSuccess: () => toast.success('Xóa thành công'),
+      onError: (error) => toast.error(error[0] || 'Lỗi khi xóa')
     })
   }
 

@@ -9,20 +9,20 @@ import { File, Plus } from 'lucide-react'
 
 import { Button } from '@/Components/ui/button'
 import { useState } from 'react'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/Components/ui/select'
 import { formatMoney } from '@/utils/format'
 import { UpdateUserDialog } from '@/Pages/User/Partials/UpdateUserDialog.jsx'
 import toast from 'react-hot-toast'
+import NameInput from '@/Components/NameInput'
 
 const Edit = () => {
-  const { ticket, technicians } = usePage().props
+  const { ticket } = usePage().props
   const { data, setData, put, processing, errors } = useForm({
     device_name: ticket.device.name,
-    imei: ticket.device.code,
-    amount: parseInt(ticket.amount),
+    imei: ticket.device.code || '',
+    amount: parseInt(ticket.amount) || 0,
     condition: ticket.condition,
-    note: ticket.note,
-    technician: ticket.technician.id.toString(),
+    note: ticket.note || '',
+    technician: ticket.technician || '',
     action: false,
     customer: ticket.customer.id.toString()
   })
@@ -44,7 +44,11 @@ const Edit = () => {
 
   return (
     <AuthenticatedLayout
-      header={<h2 className="text-xl font-semibold leading-tight text-gray-800">Thêm phiếu tiếp nhận sửa chữa</h2>}
+      header={
+        <h2 className="text-xl font-semibold leading-tight text-gray-800">
+          Cập nhật phiếu tiếp nhận sửa chữa: {ticket.code}
+        </h2>
+      }
     >
       <Head title="Thêm phiếu tiếp nhận sửa chữa" />
 
@@ -64,7 +68,8 @@ const Edit = () => {
                           <Label htmlFor="device_name" required={true}>
                             Tên máy
                           </Label>
-                          <Input
+                          <NameInput
+                            tabIndex={1}
                             id="device_name"
                             type="text"
                             name="device_name"
@@ -76,10 +81,11 @@ const Edit = () => {
                         </div>
 
                         <div className="space-y-1">
-                          <Label htmlFor="imei" required={true}>
+                          <Label htmlFor="imei" required={false}>
                             IMEI máy
                           </Label>
                           <Input
+                            tabIndex={2}
                             id="imei"
                             type="text"
                             name="imei"
@@ -91,10 +97,11 @@ const Edit = () => {
                         </div>
 
                         <div className="space-y-1">
-                          <Label htmlFor="amount" required={true}>
+                          <Label htmlFor="amount" required={false}>
                             Chi phí sửa chữa
                           </Label>
                           <Input
+                            tabIndex={3}
                             id="amount"
                             type="text"
                             name="amount"
@@ -106,25 +113,18 @@ const Edit = () => {
                         </div>
 
                         <div className="space-y-1">
-                          <Label htmlFor="technician" required={true}>
+                          <Label htmlFor="technician" required={false}>
                             Thợ phụ trách
                           </Label>
-                          <Select
-                            value={data.technician}
+                          <NameInput
+                            tabIndex={4}
+                            id="technician"
+                            type="text"
                             name="technician"
-                            onValueChange={(value) => setData('technician', value)}
-                          >
-                            <SelectTrigger className="w-full">
-                              <SelectValue />
-                            </SelectTrigger>
-                            <SelectContent>
-                              {technicians.map((technician) => (
-                                <SelectItem key={`technician-${technician.id}`} value={technician.id.toString()}>
-                                  {technician.name}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
+                            value={data.technician}
+                            className="mt-1 block w-full"
+                            onChange={(e) => setData('technician', e.target.value)}
+                          />
                           <InputError message={errors.technician} className="mt-2" />
                         </div>
 
@@ -134,6 +134,7 @@ const Edit = () => {
                               Tình trạng máy
                             </Label>
                             <Textarea
+                              tabIndex={5}
                               value={data.condition}
                               onChange={(e) => setData('condition', e.target.value)}
                               id="condition"
@@ -145,6 +146,7 @@ const Edit = () => {
                           <div className="space-y-1">
                             <Label htmlFor="note">Ghi chú</Label>
                             <Textarea
+                              tabIndex={6}
                               value={data.note}
                               onChange={(e) => setData('note', e.target.value)}
                               id="note"
@@ -166,7 +168,7 @@ const Edit = () => {
                           <span className="truncate font-semibold">{ticket.customer.name}</span>
 
                           <span className="truncate">
-                            {ticket.customer.phone_number} - {ticket.customer.address}
+                            {ticket.customer.phone_number || 'Không có'} - {ticket.customer.address || 'Không có'}
                           </span>
                         </div>
                       </div>

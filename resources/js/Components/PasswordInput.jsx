@@ -1,14 +1,13 @@
-import { useRef, useState } from 'react'
+import { useState, forwardRef } from 'react'
 import { Button } from '@/Components/ui/button'
 import { Eye, EyeOff } from 'lucide-react'
 
-export function PasswordInput({ className, ...props }) {
+export const PasswordInput = forwardRef(({ className, ...props }, ref) => {
   const [showPassword, setShowPassword] = useState(false)
-  const inputRef = useRef(null)
 
   const togglePasswordVisibility = () => {
-    if (inputRef.current) {
-      inputRef.current.type = showPassword ? 'password' : 'text'
+    if (ref?.current) {
+      ref.current.type = showPassword ? 'password' : 'text'
     }
     setShowPassword((prev) => !prev)
   }
@@ -16,7 +15,7 @@ export function PasswordInput({ className, ...props }) {
   return (
     <div className="relative rounded-md">
       <input
-        ref={inputRef}
+        ref={ref}
         type="password"
         className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors focus:outline-none focus:ring-1 focus:ring-ring"
         {...props}
@@ -32,4 +31,6 @@ export function PasswordInput({ className, ...props }) {
       </Button>
     </div>
   )
-}
+})
+
+PasswordInput.displayName = 'PasswordInput'

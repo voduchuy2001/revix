@@ -3,16 +3,21 @@ import { QRCodeCanvas } from 'qrcode.react'
 import { useEffect, useRef } from 'react'
 import { useReactToPrint } from 'react-to-print'
 
-export function PrintTicketView({ setting, ticket }) {
+export function PrintTicketView({ setting, ticket, redirectAfterPrint = true }) {
   const contentRef = useRef(null)
   const reactToPrintFn = useReactToPrint({
     contentRef,
-    documentTitle: ticket?.code ? `Phiếu ${ticket?.code}` : 'Phiếu tiếp nhận sửa chữa'
+    documentTitle: ticket?.code ? `Phiếu ${ticket?.code}` : 'Phiếu tiếp nhận sửa chữa',
+    onAfterPrint: () => {
+      if (redirectAfterPrint) {
+        window.location.href = route('repair_ticket.create')
+      }
+    }
   })
 
   useEffect(() => {
     reactToPrintFn()
-  }, [reactToPrintFn])
+  }, [])
 
   return (
     <div ref={contentRef} className="mx-auto w-64 bg-white p-4 text-xs">
@@ -45,32 +50,30 @@ export function PrintTicketView({ setting, ticket }) {
         </p>
       </div>
 
-      <div className="mt-2 border-t pt-2">
+      <div className="mt-2 border-t border-black border-dashed pt-2">
         <p>
           <b>Thiết bị:</b> {ticket.device.name}
         </p>
         <p>
-          <b>IMEI:</b> {ticket.device.code}
+          <b>IMEI:</b> {ticket.device.code || 'Không có'}
         </p>
         <p>
           <b>Tình trạng:</b> {ticket.condition}
         </p>
         <p>
-          <b>Giá:</b> {formatMoney(ticket.amount)}
+          <b>Giá:</b> {ticket.amount ? formatMoney(ticket.amount) : 'Không có'}
         </p>
-      </div>
 
-      <div className="mt-2 border-t pt-2">
         <p>
           <b>Ghi chú:</b> {ticket.note || 'Không có'}
         </p>
         <p>
-          <b>Số tiền bằng chữ:</b> {toVietnamese(ticket?.amount)}
+          <b>Số tiền bằng chữ:</b> {ticket?.amount ? toVietnamese(ticket?.amount) : 'Không có'}
         </p>
       </div>
 
-      <div className="mt-2 border-t pt-2">
-        <h3 className="font-bold text-center">Chính sách bảo hành</h3>
+      <div className="mt-2 border-t border-black border-dashed pt-2">
+        <h3 className="font-bold text-center uppercase">Chính sách bảo hành</h3>
         <div className="text-justify">
           {setting?.policies?.map((policy, index) => (
             <p key={`policy-${index}`}>- {policy}</p>
@@ -78,8 +81,12 @@ export function PrintTicketView({ setting, ticket }) {
         </div>
       </div>
 
-      <div className="mt-2 border-t pt-2">
-        <h3 className="font-bold text-center">Hệ thống cửa hàng</h3>
+      <div className="mt-2">
+        <b>Kỹ thuật: </b> {setting?.support_phone_number}
+      </div>
+
+      <div className="mt-2 border-t border-black border-dashed pt-2">
+        <h3 className="font-bold text-center uppercase">Hệ thống cửa hàng</h3>
         <div className="text-justify">
           {setting?.branches?.map((branch, index) => (
             <p key={`branch-${index}`}>- {branch}</p>
@@ -87,7 +94,9 @@ export function PrintTicketView({ setting, ticket }) {
         </div>
       </div>
 
-      <p className="text-center mt-4">Cảm ơn quý khách đã sử dụng dịch vụ!</p>
+      <div className="mt-2">
+        <b className="text-center">Cảm ơn Quý khách hàng đã tin tưởng!</b>
+      </div>
     </div>
   )
 }

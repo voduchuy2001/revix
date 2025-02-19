@@ -17,6 +17,7 @@ class UserSeeder extends Seeder
             'phone_number' => '0962785101',
             'address' => 'An Hòa, Ninh Kiều, Cần Thơ',
             'type' => UserType::USER->value,
+            'super_user' => true,
         ]);
     }
 }

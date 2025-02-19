@@ -98,7 +98,7 @@ export default function RepairHistoryDialog({ customer, open, onOpenChange, show
                         </div>
                       </TableCell>
                       <TableCell>{formatMoney(ticket.amount)}</TableCell>
-                      <TableCell>{ticket.technician.name}</TableCell>
+                      <TableCell>{ticket.technician}</TableCell>
                       <TableCell>{formatDate(ticket.created_at)}</TableCell>
                       <TableCell>{formatDate(ticket.updated_at)}</TableCell>
                       <TableCell>

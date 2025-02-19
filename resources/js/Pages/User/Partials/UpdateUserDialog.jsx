@@ -1,4 +1,5 @@
 import InputError from '@/Components/InputError'
+import NameInput from '@/Components/NameInput'
 import { Button } from '@/Components/ui/Button'
 import {
   Dialog,
@@ -65,7 +66,7 @@ export function UpdateUserDialog({ user, open, onOpenChange, showTrigger = true,
                 <Label htmlFor="name" required={true}>
                   Tên khách hàng
                 </Label>
-                <Input
+                <NameInput
                   id="name"
                   type="text"
                   name="name"
@@ -93,7 +94,7 @@ export function UpdateUserDialog({ user, open, onOpenChange, showTrigger = true,
 
               <div className="col-span-1 md:col-span-2 w-full space-y-4">
                 <div className="space-y-1">
-                  <Label htmlFor="address" required={true}>
+                  <Label htmlFor="address" required={false}>
                     Địa chỉ
                   </Label>
                   <Textarea

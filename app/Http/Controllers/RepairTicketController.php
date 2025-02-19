@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\UserType;
 use App\Http\Requests\GetRepairTicketRequest;
 use App\Http\Requests\StoreRepairTicketRequest;
 use App\Http\Requests\UpdateRepairTicketRequest;
@@ -23,7 +22,7 @@ class RepairTicketController extends Controller
 {
     public function index(GetRepairTicketRequest $request): Response
     {
-        $tickets = RepairTicket::with(['customer', 'device', 'technician'])
+        $tickets = RepairTicket::with(['customer', 'device'])
             ->when($request->filled('from') && !$request->filled('to'), function ($query) use ($request) {
                 $query->where('created_at', '>=', $request->input('from'));
             })
@@ -59,14 +58,8 @@ class RepairTicketController extends Controller
             ->orderByDesc('created_at')
             ->get();
 
-        $technicians = User::query()
-            ->where('type', UserType::USER->value)
-            ->orderByDesc('created_at')
-            ->get();
-
         return Inertia::render('RepairTicket/Create', [
-            'customers' => $customers,
-            'technicians' => $technicians,
+        'customers' => $customers,
         ]);
     }
 
@@ -106,6 +99,10 @@ class RepairTicketController extends Controller
 
     public function destroy(string|int $id): RedirectResponse
     {
+        if (!Auth::user()->isSuperUser()) {
+            return Redirect::back()->withErrors('Bạn không thể thực hiện hành động này.');
+        }
+
         $ticket = RepairTicket::findOrFail($id);
         $ticket->delete();
 
@@ -132,15 +129,9 @@ class RepairTicketController extends Controller
             ->orderByDesc('created_at')
             ->get();
 
-        $technicians = User::query()
-            ->where('type', UserType::USER->value)
-            ->orderByDesc('created_at')
-            ->get();
-
         return Inertia::render('RepairTicket/Edit', [
             'ticket' => $ticket,
             'customers' => $customers,
-            'technicians' => $technicians,
         ]);
     }
 

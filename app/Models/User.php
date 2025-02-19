@@ -22,7 +22,8 @@ class User extends Authenticatable
         'password',
         'phone_number',
         'address',
-        'type'
+        'type',
+        'super_user',
     ];
 
     protected $hidden = [
@@ -35,11 +36,17 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'super_user' => 'boolean',
         ];
     }
 
     public function repairTickets(): HasMany
     {
         return $this->hasMany(RepairTicket::class, 'customer_id');
+    }
+
+    public function isSuperUser(): bool
+    {
+        return (bool) $this->super_user;
     }
 }

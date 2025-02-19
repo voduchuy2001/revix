@@ -9,6 +9,7 @@ use App\Http\Requests\UpdateUserRequest;
 use App\Models\Setting;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
@@ -74,6 +75,10 @@ class UserController extends Controller
 
     public function destroy(string|int $id): RedirectResponse
     {
+        if (!Auth::user()->isSuperUser() || Auth::id() === (int) $id) {
+            return Redirect::back()->withErrors('Bạn không thể thực hiện hành động này.');
+        }
+
         $user = User::findOrFail($id);
         $user->delete();
         return Redirect::back();
