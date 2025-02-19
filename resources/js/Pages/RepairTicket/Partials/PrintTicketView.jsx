@@ -15,88 +15,79 @@ export function PrintTicketView({ setting, ticket }) {
   }, [reactToPrintFn])
 
   return (
-    <div ref={contentRef} className="mx-auto max-w-3xl bg-white p-6 text-sm">
-      <div className="mb-6 flex items-center justify-between">
-        <div className="mb-1 space-y-1">
-          <h1 className="font-semibold">{setting?.name}</h1>
-          <div className="text-xs">
-            <div>Điện thoại: {setting?.phone_number}</div>
-            <div>Địa chỉ: {setting?.address}</div>
-            <div>
-              Website: <a href={setting?.website}>{setting?.website}</a>
-            </div>
-          </div>
+    <div ref={contentRef} className="mx-auto w-64 bg-white p-4 text-xs">
+      <div className="text-center mb-4">
+        <h1 className="font-bold">{setting?.name}</h1>
+        <p>Điện thoại: {setting?.phone_number}</p>
+        <p>Địa chỉ: {setting?.address}</p>
+        <p>
+          Website: <a href={setting?.website}>{setting?.website}</a>
+        </p>
+        <div className="flex justify-center mt-2">
+          <QRCodeCanvas value={setting.website} size={50} />
         </div>
-
-        <QRCodeCanvas value={setting.website} size={70} bgColor={'#ffffff'} fgColor={'#000000'} level={'M'} />
       </div>
 
-      <h2 className="mb-4 text-center text-xl font-bold uppercase">Phiếu tiếp nhận sửa chữa</h2>
-
-      <p className="mb-4 text-center">
+      <h2 className="text-center text-sm font-bold uppercase mb-2">Phiếu tiếp nhận sửa chữa</h2>
+      <p className="text-center">
         Số: {ticket?.code} - Ngày: {formatDate(ticket?.created_at)}
       </p>
 
-      <div className="mb-6 space-y-1">
-        <div>Khách hàng: {ticket?.customer?.name}</div>
-        <div>Điện thoại: {ticket?.customer.phone_number || 'Không có số điện thoại'}</div>
-        <div>Địa chỉ: {ticket?.customer.address || 'Không có địa chỉ'}</div>
+      <div className="mt-2">
+        <p>
+          <b>Khách hàng:</b> {ticket?.customer?.name}
+        </p>
+        <p>
+          <b>Điện thoại:</b> {ticket?.customer.phone_number || 'Không có'}
+        </p>
+        <p>
+          <b>Địa chỉ:</b> {ticket?.customer.address || 'Không có'}
+        </p>
       </div>
 
-      <table className="w-full">
-        <thead>
-          <tr className="border bg-secondary">
-            <th className="border p-2 text-center w-32">Thiết bị</th>
-            <th className="border p-2 text-center">Tình trạng</th>
-            <th className="border p-2 text-center w-32">Giá</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr className="border">
-            <td className="border p-2">
-              <div className="flex flex-col">
-                <div className="font-bold">{ticket.device.name}</div>
-                <div className="text-xs">IMEI: {ticket.device.code}</div>
-              </div>
-            </td>
-            <td className="border p-2">{ticket.condition}</td>
-            <td className="border p-2 text-center">{formatMoney(ticket.amount)}</td>
-          </tr>
-        </tbody>
-      </table>
+      <div className="mt-2 border-t pt-2">
+        <p>
+          <b>Thiết bị:</b> {ticket.device.name}
+        </p>
+        <p>
+          <b>IMEI:</b> {ticket.device.code}
+        </p>
+        <p>
+          <b>Tình trạng:</b> {ticket.condition}
+        </p>
+        <p>
+          <b>Giá:</b> {formatMoney(ticket.amount)}
+        </p>
+      </div>
 
-      <div className="flex justify-between items-start my-4">
-        <div className="w-1/2">
-          <span className="font-bold">Ghi chú:</span> {ticket.note || 'Không có ghi chú'}
-        </div>
+      <div className="mt-2 border-t pt-2">
+        <p>
+          <b>Ghi chú:</b> {ticket.note || 'Không có'}
+        </p>
+        <p>
+          <b>Số tiền bằng chữ:</b> {toVietnamese(ticket?.amount)}
+        </p>
+      </div>
 
-        <div className="w-1/2">
-          <span className="font-bold">Số tiền bằng chữ: </span>
-          {toVietnamese(ticket?.amount)}
+      <div className="mt-2 border-t pt-2">
+        <h3 className="font-bold text-center">Chính sách bảo hành</h3>
+        <div className="text-justify">
+          {setting?.policies?.map((policy, index) => (
+            <p key={`policy-${index}`}>- {policy}</p>
+          ))}
         </div>
       </div>
 
-      <div className="space-y-4 border-t pt-4">
-        <div className="grid grid-cols-2 gap-6">
-          <div className="text-justify">
-            <h3 className="font-bold mb-2">Chính sách bảo hành</h3>
-            <div className="space-y-1 text-xs">
-              {setting?.policies?.map((policy, index) => (
-                <div key={`policy-${index}`}>- {policy}</div>
-              ))}
-            </div>
-          </div>
-
-          <div>
-            <h3 className="font-bold mb-2">Hệ thống cửa hàng</h3>
-            <div className="space-y-1 text-xs">
-              {setting?.branches?.map((branch, index) => (
-                <div key={`branch-${index}`}>- {branch}</div>
-              ))}
-            </div>
-          </div>
+      <div className="mt-2 border-t pt-2">
+        <h3 className="font-bold text-center">Hệ thống cửa hàng</h3>
+        <div className="text-justify">
+          {setting?.branches?.map((branch, index) => (
+            <p key={`branch-${index}`}>- {branch}</p>
+          ))}
         </div>
       </div>
+
+      <p className="text-center mt-4">Cảm ơn quý khách đã sử dụng dịch vụ!</p>
     </div>
   )
 }

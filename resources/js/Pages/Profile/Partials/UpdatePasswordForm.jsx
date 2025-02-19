@@ -25,17 +25,6 @@ export default function UpdatePasswordForm({ className = '' }) {
       onSuccess: () => {
         reset()
         toast.success('Cập nhật thành công')
-      },
-      onError: (errors) => {
-        if (errors.password) {
-          reset('password', 'password_confirmation')
-          passwordInput.current.focus()
-        }
-
-        if (errors.current_password) {
-          reset('current_password')
-          currentPasswordInput.current.focus()
-        }
       }
     })
   }
