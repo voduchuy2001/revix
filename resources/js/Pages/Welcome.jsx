@@ -1,3 +1,4 @@
+import Footer from '@/Components/Footer'
 import { Button } from '@/Components/ui/button'
 import { Head, Link } from '@inertiajs/react'
 import { motion } from 'framer-motion'
@@ -28,6 +29,8 @@ export default function Welcome() {
       <Link href={route('login')}>
         <Button className="w-full sm:w-auto px-6 py-3 text-lg">Đi đến trang đăng nhập</Button>
       </Link>
+
+      <Footer />
     </div>
   )
 }

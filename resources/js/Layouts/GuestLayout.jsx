@@ -1,3 +1,4 @@
+import Footer from '@/Components/Footer'
 import { Toaster } from 'react-hot-toast'
 
 export default function GuestLayout({ children }) {
@@ -8,6 +9,8 @@ export default function GuestLayout({ children }) {
 
         <Toaster />
       </div>
+
+      <Footer />
     </div>
   )
 }
