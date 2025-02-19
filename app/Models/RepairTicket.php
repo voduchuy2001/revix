@@ -12,7 +12,7 @@ class RepairTicket extends Model
     protected $fillable = [
         'customer_id',
         'device_id',
-        'technician_id',
+        'technician',
         'code',
         'amount',
         'note',
@@ -41,10 +41,5 @@ class RepairTicket extends Model
     public function device(): BelongsTo
     {
         return $this->belongsTo(Device::class, 'device_id');
-    }
-
-    public function technician(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'technician_id');
     }
 }

@@ -15,7 +15,7 @@ return new class () extends Migration {
             $table->string('code')->unique();
             $table->foreignId('customer_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('device_id')->constrained('devices')->onDelete('cascade');
-            $table->foreignId('technician_id')->constrained('users')->onDelete('cascade');
+            $table->string('technician')->nullable();
             $table->decimal('amount', 10, 2)->nullable();
             $table->text('condition')->nullable();
             $table->text('note')->nullable();

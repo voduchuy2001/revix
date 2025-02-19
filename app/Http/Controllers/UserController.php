@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\UserType;
 use App\Http\Requests\GetUserRequest;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
@@ -15,7 +16,7 @@ class UserController extends Controller
 {
     public function getUsers(GetUserRequest $request)
     {
-        $users = User::whereIn('type', ['technician', 'user'])
+        $users = User::where('type', UserType::USER->value)
             ->when($request->filled('search'), function ($query) use ($request) {
                 $search = $request->input('search');
                 $query->where('name', 'like', "%{$search}%")
@@ -33,7 +34,7 @@ class UserController extends Controller
 
     public function getCustomers(GetUserRequest $request)
     {
-        $customers = User::where('type', 'customer')
+        $customers = User::where('type', UserType::CUSTOMER->value)
             ->when($request->filled('search'), function ($query) use ($request) {
                 $search = $request->input('search');
                 $query->where('name', 'like', "%{$search}%")
@@ -43,7 +44,6 @@ class UserController extends Controller
                 'repairTickets',
                 'repairTickets.customer',
                 'repairTickets.device',
-                'repairTickets.technician'
             ])
             ->orderByDesc('created_at')
             ->get();

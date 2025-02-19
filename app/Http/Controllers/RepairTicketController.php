@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\UserType;
 use App\Http\Requests\GetRepairTicketRequest;
 use App\Http\Requests\StoreRepairTicketRequest;
 use App\Http\Requests\UpdateRepairTicketRequest;
@@ -59,7 +60,7 @@ class RepairTicketController extends Controller
             ->get();
 
         $technicians = User::query()
-            ->whereIn('type', ['technician', 'user'])
+            ->where('type', UserType::USER->value)
             ->orderByDesc('created_at')
             ->get();
 
@@ -83,7 +84,7 @@ class RepairTicketController extends Controller
             $repairTicket = RepairTicket::create([
                 'device_id' => $device->id,
                 'customer_id' => $data['customer'],
-                'technician_id' => $data['technician'],
+                'technician' => $data['technician'],
                 'amount' => $data['amount'],
                 'condition' => $data['condition'],
                 'note' => $data['note'],
@@ -113,7 +114,7 @@ class RepairTicketController extends Controller
 
     public function print(string|int $id): Response
     {
-        $ticket = RepairTicket::with(['customer', 'device', 'technician'])->findOrFail($id);
+        $ticket = RepairTicket::with(['customer', 'device'])->findOrFail($id);
 
         $setting = Setting::where('key', 'info')->first();
 
@@ -125,14 +126,14 @@ class RepairTicketController extends Controller
 
     public function edit(string|int $id): Response
     {
-        $ticket = RepairTicket::with(['customer', 'device', 'technician'])->findOrFail($id);
+        $ticket = RepairTicket::with(['customer', 'device'])->findOrFail($id);
         $customers = User::query()
             ->where('type', 'customer')
             ->orderByDesc('created_at')
             ->get();
 
         $technicians = User::query()
-            ->whereIn('type', ['technician', 'user'])
+            ->where('type', UserType::USER->value)
             ->orderByDesc('created_at')
             ->get();
 
@@ -164,7 +165,7 @@ class RepairTicketController extends Controller
             $ticket->update([
                 'device_id' => $device->id,
                 'customer_id' => $data['customer'],
-                'technician_id' => $data['technician'],
+                'technician' => $data['technician'],
                 'amount' => $data['amount'],
                 'condition' => $data['condition'],
                 'note' => $data['note'],

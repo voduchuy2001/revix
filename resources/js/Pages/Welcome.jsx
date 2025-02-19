@@ -2,11 +2,15 @@ import Footer from '@/Components/Footer'
 import { Button } from '@/Components/ui/button'
 import { Head, Link } from '@inertiajs/react'
 import { motion } from 'framer-motion'
+import logo from '@/assets/logo-tc.png'
 
 export default function Welcome() {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-gray-100 px-4 sm:px-0">
       <Head title="Táo cười" />
+      <div className="max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl">
+        <img src={logo} alt="Táo cười" className="w-full" />
+      </div>
 
       <motion.h1
         className="text-2xl sm:text-4xl font-bold mb-4 text-center"
