@@ -25,7 +25,7 @@ export default function Login({ canResetPassword }) {
     <GuestLayout>
       <Head title="Đăng nhập" />
 
-      <form onSubmit={submit}>
+      <form onSubmit={submit} autoComplete="off">
         <div>
           <Label htmlFor="email" required={true}>
             Email

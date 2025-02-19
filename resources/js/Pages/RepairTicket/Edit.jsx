@@ -56,7 +56,7 @@ const Edit = () => {
                 <CardTitle className="flex flex-col gap-3 text-xl font-semibold">Thông tin tiếp nhận</CardTitle>
               </CardHeader>
               <CardContent>
-                <form onSubmit={submit}>
+                <form onSubmit={submit} autoComplete="off">
                   <div className="grid grid-cols-1 md:grid-cols-10 gap-4 w-full">
                     <div className="order-2 md:order-1 col-span-1 md:col-span-7">
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">

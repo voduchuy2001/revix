@@ -25,7 +25,7 @@ export default function ResetPassword({ token, email }) {
     <GuestLayout>
       <Head title="Reset Password" />
 
-      <form onSubmit={submit}>
+      <form onSubmit={submit} autoComplete="off">
         <div>
           <Label htmlFor="email" required={true}>
             Email

@@ -26,7 +26,7 @@ export default function ConfirmPassword() {
         Đây là khu vực an toàn của ứng dụng. Vui lòng xác nhận mật khẩu của bạn trước khi tiếp tục.
       </div>
 
-      <form onSubmit={submit}>
+      <form onSubmit={submit} autoComplete="off">
         <div className="mt-4">
           <Label htmlFor="password" required={true}>
             Mật khẩu
