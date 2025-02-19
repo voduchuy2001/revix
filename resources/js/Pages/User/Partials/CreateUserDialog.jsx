@@ -1,4 +1,5 @@
 import InputError from '@/Components/InputError'
+import { PasswordInput } from '@/Components/PasswordInput'
 import { Button } from '@/Components/ui/Button'
 import {
   Dialog,
@@ -112,7 +113,7 @@ export function CreateUserDialog({ open, onOpenChange, showTrigger = true, type 
                 <Label htmlFor="password" required={true}>
                   Mật khẩu
                 </Label>
-                <Input
+                <PasswordInput
                   id="password"
                   type="password"
                   name="password"
@@ -126,7 +127,7 @@ export function CreateUserDialog({ open, onOpenChange, showTrigger = true, type 
                 <Label htmlFor="password_confirmation" required={true}>
                   Xác nhận mật khẩu
                 </Label>
-                <Input
+                <PasswordInput
                   id="password_confirmation"
                   type="password"
                   name="password_confirmation"

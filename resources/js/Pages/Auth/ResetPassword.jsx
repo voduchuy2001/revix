@@ -1,4 +1,5 @@
 import InputError from '@/Components/InputError'
+import { PasswordInput } from '@/Components/PasswordInput'
 import { Button } from '@/Components/ui/button'
 import { Input } from '@/Components/ui/input'
 import { Label } from '@/Components/ui/label'
@@ -47,7 +48,7 @@ export default function ResetPassword({ token, email }) {
           <Label htmlFor="password" required={true}>
             Mật khẩu
           </Label>
-          <Input
+          <PasswordInput
             id="password"
             type="password"
             name="password"
@@ -64,7 +65,7 @@ export default function ResetPassword({ token, email }) {
           <Label htmlFor="password_confirmation" required={true}>
             Xác nhận mật khẩu
           </Label>
-          <Input
+          <PasswordInput
             type="password"
             id="password_confirmation"
             name="password_confirmation"

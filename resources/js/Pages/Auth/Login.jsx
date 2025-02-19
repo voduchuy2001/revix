@@ -1,4 +1,5 @@
 import InputError from '@/Components/InputError'
+import { PasswordInput } from '@/Components/PasswordInput'
 import { Button } from '@/Components/ui/button'
 import { Checkbox } from '@/Components/ui/checkbox'
 import { Input } from '@/Components/ui/input'
@@ -46,7 +47,7 @@ export default function Login({ canResetPassword }) {
           <Label htmlFor="password" required={true}>
             Mật khẩu
           </Label>
-          <Input
+          <PasswordInput
             id="password"
             type="password"
             name="password"

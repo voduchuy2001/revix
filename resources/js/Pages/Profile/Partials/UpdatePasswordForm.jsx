@@ -1,6 +1,6 @@
 import InputError from '@/Components/InputError'
+import { PasswordInput } from '@/Components/PasswordInput'
 import { Button } from '@/Components/ui/button'
-import { Input } from '@/Components/ui/input'
 import { Label } from '@/Components/ui/label'
 import { Transition } from '@headlessui/react'
 import { useForm } from '@inertiajs/react'
@@ -55,7 +55,7 @@ export default function UpdatePasswordForm({ className = '' }) {
           <Label htmlFor="current_password" required={true}>
             Mật khẩu hiện tại
           </Label>
-          <Input
+          <PasswordInput
             id="current_password"
             ref={currentPasswordInput}
             value={data.current_password}
@@ -72,7 +72,7 @@ export default function UpdatePasswordForm({ className = '' }) {
           <Label htmlFor="password" required={true}>
             Mật khẩu mới
           </Label>
-          <Input
+          <PasswordInput
             id="password"
             ref={passwordInput}
             value={data.password}
@@ -89,7 +89,7 @@ export default function UpdatePasswordForm({ className = '' }) {
           <Label htmlFor="password_confirmation" required={true}>
             Xác nhận mật khẩu mới
           </Label>
-          <Input
+          <PasswordInput
             id="password_confirmation"
             value={data.password_confirmation}
             onChange={(e) => setData('password_confirmation', e.target.value)}

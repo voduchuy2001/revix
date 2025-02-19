@@ -25,7 +25,7 @@ class StoreUserRequest extends FormRequest
             'type' => ['required', new Enum(UserType::class)],
             'email' => ['nullable', 'required_if:type,user', 'email', 'unique:users,email'],
             'password' => ['nullable', 'required_if:type,user', 'string','max:64'],
-            'password_confirmation' => ['nullable', 'same:password'],
+            'password_confirmation' => ['required_with:password', 'same:password'],
         ];
     }
 
