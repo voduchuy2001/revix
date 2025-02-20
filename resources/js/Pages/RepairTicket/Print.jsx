@@ -16,7 +16,7 @@ export default function Print() {
       <div className="w-full min-h-screen flex items-center justify-center">
         <Button
           className="text-sm bg-primary text-secondary flex items-center py-2 px-4 rounded-md border border-input shadow-sm hover:bg-accent hover:text-accent-foreground w-full md:w-auto justify-center"
-          onClick={() => location.reload()}
+          onClick={() => window.location.reload()}
         >
           <Printer className="w-4 h-4 mr-2" /> In phiếu
         </Button>

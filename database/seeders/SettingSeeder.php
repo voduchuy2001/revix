@@ -13,7 +13,8 @@ class SettingSeeder extends Seeder
     public function run(): void
     {
         $setting = (object) [
-            'name' => 'TRUNG TÂM SỬA CHỮA ĐIỆN THOẠI TRẦN ÚT - TÁO CƯỜI',
+            'type' => 'TRUNG TÂM SỬA CHỮA ĐIỆN THOẠI',
+            'name' => 'TRẦN ÚT - TÁO CƯỜI',
             'phone_number' => '085.222.7282',
             'address' => 'Số 333 Nguyễn Văn Linh, P.An Khánh, Q.Ninh Kiều, TPCT',
             'website' => 'https://taocuoi.vn',
