@@ -5,7 +5,7 @@ import { Label } from '@/Components/ui/label'
 import { Textarea } from '@/Components/ui/textarea'
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
 import { Head, useForm, usePage } from '@inertiajs/react'
-import { Check, File, Plus, Printer } from 'lucide-react'
+import { Check, File, Printer } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
 import { Button } from '@/Components/ui/button'
@@ -186,11 +186,12 @@ const Create = () => {
                             <Command>
                               <CommandInput value={phoneNumber} onValueChange={setPhoneNumber} />
                               <CommandList>
-                                <CommandEmpty>
+                                <CommandEmpty
+                                  className="cursor-pointer p-8 hover:bg-secondary"
+                                  onClick={() => setShowCreateUserDialog(true)}
+                                >
                                   <div className="flex items-center justify-center">
-                                    <Button variant="outline" onClick={() => setShowCreateUserDialog(true)}>
-                                      Thêm - {phoneNumber}
-                                    </Button>
+                                    Bấm vào đây để thêm: {phoneNumber}
                                   </div>
                                 </CommandEmpty>
                                 <CommandGroup>
