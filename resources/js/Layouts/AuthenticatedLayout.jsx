@@ -37,7 +37,7 @@ export default function AuthenticatedLayout({ header, children }) {
                     route().current('repair_ticket.edit')
                   }
                 >
-                  Tiếp nhận sửa chữa
+                  Sửa chữa
                 </NavLink>
 
                 <NavLink href={route('customer.index')} active={route().current('customer.index')}>
@@ -46,6 +46,10 @@ export default function AuthenticatedLayout({ header, children }) {
 
                 <NavLink href={route('user.index')} active={route().current('user.index')}>
                   Người dùng
+                </NavLink>
+
+                <NavLink href={route('branch.detail', { id: 1 })} active={route().current('branch.detail')}>
+                  Kho 1
                 </NavLink>
               </div>
             </div>
@@ -127,7 +131,7 @@ export default function AuthenticatedLayout({ header, children }) {
                 route().current('repair_ticket.edit')
               }
             >
-              Tiếp nhận sửa chữa
+              Sửa chữa
             </ResponsiveNavLink>
 
             <ResponsiveNavLink href={route('customer.index')} active={route().current('customer.index')}>
@@ -136,6 +140,10 @@ export default function AuthenticatedLayout({ header, children }) {
 
             <ResponsiveNavLink href={route('user.index')} active={route().current('user.index')}>
               Người dùng
+            </ResponsiveNavLink>
+
+            <ResponsiveNavLink href={route('branch.detail', { id: 1 })} active={route().current('branch.detail')}>
+              Kho 1
             </ResponsiveNavLink>
           </div>
 

@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Device;
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,8 +15,8 @@ return new class () extends Migration {
         Schema::create('repair_tickets', function (Blueprint $table) {
             $table->id();
             $table->string('code')->unique();
-            $table->foreignId('customer_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('device_id')->constrained('devices')->onDelete('cascade');
+            $table->foreignIdFor(User::class, 'user_id')->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Device::class, 'device_id')->constrained()->cascadeOnDelete();
             $table->string('technician')->nullable();
             $table->decimal('amount', 10, 2)->nullable();
             $table->text('condition')->nullable();

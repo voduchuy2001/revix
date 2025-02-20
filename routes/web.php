@@ -5,7 +5,9 @@ use App\Http\Controllers\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
+use App\Http\Controllers\BranchController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RepairTicketController;
 use App\Http\Controllers\UserController;
@@ -56,4 +58,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/user', [UserController::class, 'getUsers'])->name('user.index');
     Route::get('/customer', [UserController::class, 'getCustomers'])->name('customer.index');
     Route::delete('/user/delete/{id}', [UserController::class, 'destroy'])->name('user.destroy');
+
+    Route::get('/product', [ProductController::class, 'index'])->name('product.index');
+    Route::post('/product/store', [ProductController::class, 'store'])->name('product.store');
+    Route::put('/product/update/{id}', [ProductController::class, 'update'])->name('product.update');
+    Route::delete('/product/delete/{id}', [ProductController::class, 'destroy'])->name('product.destroy');
+
+    Route::get('/brand/detail/{id}', [BranchController::class, 'detail'])->name('branch.detail');
 });
