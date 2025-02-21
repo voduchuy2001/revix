@@ -16,7 +16,8 @@ class BranchController extends Controller
         }, 'products.stockMovement'])->findOrFail($id);
 
         return Inertia::render('Branch/Detail', [
-            'products' => $branch->products
+            'products' => $branch->products,
+            'branchId' => $branch->id,
         ]);
     }
 }

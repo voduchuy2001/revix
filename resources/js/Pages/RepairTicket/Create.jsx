@@ -172,8 +172,8 @@ const Create = () => {
                                 className="w-full"
                               >
                                 {(() => {
-                                  const customer = customers.find(
-                                    (customer) => customer.id.toString() === selectedCustomer
+                                  const customer = customers?.find(
+                                    (customer) => customer.id?.toString() === selectedCustomer
                                   )
                                   return selectedCustomer
                                     ? `${customer.name} - ${customer.phone_number || 'Không có'}`
@@ -195,10 +195,10 @@ const Create = () => {
                                   </div>
                                 </CommandEmpty>
                                 <CommandGroup>
-                                  {customers.map((customer) => (
+                                  {customers?.map((customer) => (
                                     <CommandItem
                                       key={`customer-${customer.id}`}
-                                      value={`${customer.id} ${customer.name.toLowerCase()} ${customer.phone_number?.toLowerCase() || ''}`}
+                                      value={`${customer.id} ${customer.name?.toLowerCase()} ${customer.phone_number?.toLowerCase() || ''}`}
                                       onSelect={(currentValue) => {
                                         setSelectedCustomer(currentValue.split(' ')[0])
                                         setData('customer', currentValue.split(' ')[0])

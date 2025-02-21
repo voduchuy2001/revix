@@ -26,6 +26,8 @@ class ProductSeeder extends Seeder
                 'type'        => ProductType::IMPORT->value,
                 'created_by'  => 1,
                 'updated_by'  => 1,
+                'created_at'  => now(),
+                'updated_at'  => now(),
             ],
             [
                 'branch_id'   => 1,
@@ -39,6 +41,8 @@ class ProductSeeder extends Seeder
                 'type'        => ProductType::IMPORT->value,
                 'created_by'  => 1,
                 'updated_by'  => 1,
+                'created_at'  => now(),
+                'updated_at'  => now(),
             ],
             [
                 'branch_id'   => 1,
@@ -52,6 +56,8 @@ class ProductSeeder extends Seeder
                 'type'        => ProductType::EXPORT->value,
                 'created_by'  => 2,
                 'updated_by'  => 2,
+                'created_at'  => now(),
+                'updated_at'  => now(),
             ],
         ];
 

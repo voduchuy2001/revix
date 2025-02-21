@@ -9,80 +9,85 @@ import {
   getSortedRowModel,
   useReactTable
 } from '@tanstack/react-table'
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger
-} from '@/Components/ui/dropdown-menu'
 import { Button } from '@/Components/ui/button'
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from 'lucide-react'
+import { ArrowUpDown, FileDown, FileUp, Pencil, Plus, Trash2 } from 'lucide-react'
 import { useState } from 'react'
+import { formatMoney } from '@/utils/format'
+import CreateProductDialog from '../Product/Partials/CreateProductDialog'
 
 export default function Detail() {
-  const { products: data } = usePage().props
-
-  console.log(data)
+  const { products: data, branchId } = usePage().props
 
   const columns = [
     {
-      accessorKey: 'status',
-      header: 'Status',
-      cell: ({ row }) => <div className="capitalize">{row.getValue('status')}</div>
+      accessorKey: 'id',
+      header: 'STT',
+      cell: ({ row }) => <div className="uppercase">{Number(row.id) + 1}</div>
     },
     {
-      accessorKey: 'email',
-      header: ({ column }) => {
-        return (
-          <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
-            Email
-            <ArrowUpDown />
-          </Button>
-        )
-      },
-      cell: ({ row }) => <div className="lowercase">{row.getValue('email')}</div>
+      accessorKey: 'sku',
+      header: 'Mã sản phẩm',
+      cell: ({ row }) => <div className="uppercase">{row.getValue('sku')}</div>
     },
     {
-      accessorKey: 'amount',
-      header: () => <div className="text-right">Amount</div>,
+      accessorKey: 'name',
+      header: 'Tên sản phẩm',
+      cell: ({ row }) => <div className="font-medium">{row.getValue('name')}</div>
+    },
+    {
+      accessorKey: 'category',
+      header: 'Danh mục',
+      cell: ({ row }) => <div className="capitalize">{row.getValue('category')}</div>
+    },
+    {
+      accessorKey: 'sale_price',
+      header: ({ column }) => (
+        <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+          Giá nhập <ArrowUpDown />
+        </Button>
+      ),
       cell: ({ row }) => {
-        const amount = parseFloat(row.getValue('amount'))
+        return <div className="text-center font-medium">{formatMoney(row.getValue('sale_price'))}</div>
+      }
+    },
+    {
+      accessorKey: 'stock',
+      header: ({ column }) => (
+        <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+          Tồn kho <ArrowUpDown />
+        </Button>
+      ),
+      cell: function Cell({ row }) {
+        const [showMovementHistoryDialog, setShowMovementHistoryDialog] = useState(false)
 
-        const formatted = new Intl.NumberFormat('en-US', {
-          style: 'currency',
-          currency: 'USD'
-        }).format(amount)
-
-        return <div className="text-right font-medium">{formatted}</div>
+        return <div className="text-center cursor-pointer">{row.getValue('stock')}</div>
       }
     },
     {
       id: 'actions',
+      header: 'Hành động',
       enableHiding: false,
       cell: ({ row }) => {
-        const payment = row.original
+        const product = row.original
 
         return (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontal />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <DropdownMenuItem onClick={() => navigator.clipboard.writeText(payment.id)}>
-                Copy payment ID
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>View customer</DropdownMenuItem>
-              <DropdownMenuItem>View payment details</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <div className="flex space-x-4 items-center">
+            <div title="Nhập kho">
+              <FileDown className="h-4 w-4 cursor-pointer text-primary hover:text-blue-600 transition-colors" />
+            </div>
+
+            <div title="Xuất kho">
+              <FileUp className="h-4 w-4 cursor-pointer text-yellow-500 hover:text-yellow-400 transition-colors" />
+            </div>
+
+            <div title="Cập nhật sản phẩm">
+              <Pencil className="h-4 w-4 cursor-pointer text-yellow-500 hover:text-yellow-400 transition-colors" />
+            </div>
+
+            <div title="Cập nhật sản phẩm">
+              <Trash2 className="h-4 w-4 cursor-pointer text-yellow-500 hover:text-yellow-400 transition-colors" />
+            </div>
+          </div>
         )
       }
     }
@@ -91,6 +96,7 @@ export default function Detail() {
   const [sorting, setSorting] = useState([])
   const [columnFilters, setColumnFilters] = useState([])
   const [columnVisibility, setColumnVisibility] = useState({})
+  const [globalFilter, setGlobalFilter] = useState('')
 
   const table = useReactTable({
     data,
@@ -101,12 +107,18 @@ export default function Detail() {
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
+    filterFns: {
+      globalFilter: globalFilterFunction
+    },
     state: {
       sorting,
       columnFilters,
-      columnVisibility
+      columnVisibility,
+      globalFilter
     }
   })
+
+  const [showCreateImportProductDialog, setShowCreateImportProductDialog] = useState(false)
 
   return (
     <AuthenticatedLayout
@@ -120,39 +132,19 @@ export default function Detail() {
             <div className="w-full">
               <div className="flex items-center py-4">
                 <Input
-                  placeholder="Filter emails..."
-                  value={table.getColumn('email')?.getFilterValue() ?? ''}
-                  onChange={(event) => table.getColumn('email')?.setFilterValue(event.target.value)}
+                  placeholder="Nhập mã, tên sản phẩm, danh mục"
+                  value={globalFilter}
+                  onChange={(e) => setGlobalFilter(e.target.value)}
                   className="max-w-sm"
                 />
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="outline" className="ml-auto">
-                      Hiển thị <ChevronDown />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    {table
-                      .getAllColumns()
-                      .filter((column) => column.getCanHide())
-                      .map((column) => {
-                        return (
-                          <DropdownMenuCheckboxItem
-                            key={column.id}
-                            className="capitalize"
-                            checked={column.getIsVisible()}
-                            onCheckedChange={(value) => column.toggleVisibility(!!value)}
-                          >
-                            {column.id}
-                          </DropdownMenuCheckboxItem>
-                        )
-                      })}
-                  </DropdownMenuContent>
-                </DropdownMenu>
+
+                <Button variant="outline" className="ml-auto" onClick={() => setShowCreateImportProductDialog(true)}>
+                  <Plus className="w-4 h-4 mr-2" /> Thêm sản phẩm
+                </Button>
               </div>
               <div className="rounded-md border">
                 <Table>
-                  <TableHeader>
+                  <TableHeader className="sticky top-0 z-10 bg-secondary">
                     {table.getHeaderGroups().map((headerGroup) => (
                       <TableRow key={headerGroup.id}>
                         {headerGroup.headers.map((header) => {
@@ -192,6 +184,23 @@ export default function Detail() {
           </div>
         </div>
       </div>
+
+      {showCreateImportProductDialog && (
+        <CreateProductDialog
+          type="import"
+          branchId={branchId}
+          open={showCreateImportProductDialog}
+          onOpenChange={setShowCreateImportProductDialog}
+          showTrigger={false}
+        />
+      )}
     </AuthenticatedLayout>
+  )
+}
+
+export const globalFilterFunction = (row, filterValue) => {
+  if (!filterValue) return true
+  return ['name', 'sku', 'category'].some((key) =>
+    row.getValue(key)?.toString().toLowerCase().includes(filterValue.toLowerCase())
   )
 }

@@ -15,7 +15,7 @@ return new class () extends Migration {
         Schema::create('repair_tickets', function (Blueprint $table) {
             $table->id();
             $table->string('code')->unique();
-            $table->foreignIdFor(User::class, 'user_id')->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(User::class, 'customer_id')->constrained()->cascadeOnDelete();
             $table->foreignIdFor(Device::class, 'device_id')->constrained()->cascadeOnDelete();
             $table->string('technician')->nullable();
             $table->decimal('amount', 10, 2)->nullable();

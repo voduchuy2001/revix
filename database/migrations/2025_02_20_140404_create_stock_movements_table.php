@@ -14,7 +14,7 @@ return new class () extends Migration {
         Schema::create('stock_movements', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Product::class, 'product_id')->constrained()->cascadeOnDelete();
-            $table->enum('type', ['import', 'export']);
+            $table->string('type');
             $table->integer('quantity');
             $table->text('note')->nullable();
             $table->bigInteger('created_by');
