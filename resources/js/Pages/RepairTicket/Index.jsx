@@ -96,7 +96,7 @@ export default function Index() {
                       placeholder="Tên khách hàng, số điện thoại"
                       value={values?.search}
                       onChange={handleChange}
-                      className="w-full md:max-w-sm"
+                      className="max-w-sm"
                       name="search"
                       type="search"
                     />
@@ -212,7 +212,7 @@ export default function Index() {
                       ))
                     ) : (
                       <TableRow>
-                        <TableCell colSpan={9} className="text-center py-6 text-gray-500">
+                        <TableCell colSpan={9} className="h-24 text-center">
                           <EmptyState />
                         </TableCell>
                       </TableRow>

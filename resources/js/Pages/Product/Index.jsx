@@ -1,7 +1,10 @@
+import { Button } from '@/Components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
 import { Input } from '@/Components/ui/input'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/ui/table'
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
 import { Head, useForm, usePage } from '@inertiajs/react'
+import { ArrowUpDown, Pencil, Plus, Trash } from 'lucide-react'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/ui/table'
 import {
   flexRender,
   getCoreRowModel,
@@ -9,11 +12,9 @@ import {
   getSortedRowModel,
   useReactTable
 } from '@tanstack/react-table'
-import { Button } from '@/Components/ui/button'
-import { ArrowUpDown, FileDown, FileUp, Pencil, Plus, Trash } from 'lucide-react'
 import { useState } from 'react'
-import { formatDate, formatMoney } from '@/utils/format'
-import CreateProductDialog from '../Product/Partials/CreateProductDialog'
+import EmptyState from '@/Components/EmptyState'
+import UpdateProductDialog from './Partials/UpdateProductDialog'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -25,22 +26,17 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger
 } from '@/Components/ui/alert-dialog'
-import toast from 'react-hot-toast'
-import UpdateProductDialog from '../Product/Partials/UpdateProductDialog'
-import EmptyState from '@/Components/EmptyState'
-import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
-import UpdateProductStockDialog from '../Product/Partials/UpdateProductStockDialog'
-import { Badge } from '@/Components/ui/badge'
-import MovementProductHistoryDialog from '../Product/Partials/MovementProductHistoryDialog'
+import { formatDate, formatMoney } from '@/utils/format'
+import CreateProductDialog from './Partials/CreateProductDialog'
 
-export default function Detail() {
-  const { products: data, branchId } = usePage().props
+export default function Index() {
+  const { products: data } = usePage().props
+
   const [sorting, setSorting] = useState([])
   const [columnFilters, setColumnFilters] = useState([])
   const [columnVisibility, setColumnVisibility] = useState({})
   const [globalFilter, setGlobalFilter] = useState('')
-
-  const [showCreateImportProductDialog, setShowCreateImportProductDialog] = useState(false)
+  const [showCreateExportProductDialog, setShowCreateExportProductDialog] = useState(false)
 
   const columns = [
     {
@@ -67,40 +63,11 @@ export default function Detail() {
       accessorKey: 'price',
       header: ({ column }) => (
         <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
-          Giá nhập <ArrowUpDown />
+          Giá bán <ArrowUpDown />
         </Button>
       ),
       cell: ({ row }) => {
         return <div className="text-center font-medium">{formatMoney(row.getValue('price'))}</div>
-      }
-    },
-    {
-      accessorKey: 'stock',
-      header: ({ column }) => (
-        <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
-          Tồn kho <ArrowUpDown />
-        </Button>
-      ),
-      cell: function Cell({ row }) {
-        const [showMovementHistoryDialog, setShowMovementHistoryDialog] = useState(false)
-        const product = row.original
-
-        return (
-          <>
-            <div className="text-center cursor-pointer" onClick={() => setShowMovementHistoryDialog(true)}>
-              <Badge variant={Number(row.getValue('stock')) <= 5 ? '' : 'secondary'}> {row.getValue('stock')}</Badge>
-            </div>
-
-            {showMovementHistoryDialog && (
-              <MovementProductHistoryDialog
-                product={product}
-                open={showMovementHistoryDialog}
-                onOpenChange={setShowMovementHistoryDialog}
-                showTrigger={false}
-              />
-            )}
-          </>
-        )
       }
     },
     {
@@ -124,40 +91,9 @@ export default function Detail() {
         }
 
         const [showUpdateProductDialog, setShowUpdateProductDialog] = useState(false)
-        const [showUpdateProductStockDialog, setShowUpdateProductStockDialog] = useState(false)
-        const [productStockType, setProductStockType] = useState('')
-        const [productUpdateStockQuantity, setProductUpdateStockQuantity] = useState(0)
-        const handleShowImportProductStockDialog = (product, type = 'import') => {
-          setShowUpdateProductStockDialog(true)
-          setProductUpdateStockQuantity(product)
-          setProductStockType(type)
-        }
-
-        const handleShowExportProductStockDialog = (product, type = 'export') => {
-          setShowUpdateProductStockDialog(true)
-          setProductUpdateStockQuantity(product)
-          setProductStockType(type)
-        }
 
         return (
           <div className="flex space-x-4 items-center">
-            <div title="Nhập kho" onClick={() => handleShowImportProductStockDialog(product)}>
-              <FileDown className="h-4 w-4 cursor-pointer text-blue-400 hover:text-blue-600 transition-colors" />
-            </div>
-            {showUpdateProductStockDialog && (
-              <UpdateProductStockDialog
-                product={productUpdateStockQuantity}
-                type={productStockType}
-                open={showUpdateProductStockDialog}
-                onOpenChange={setShowUpdateProductStockDialog}
-                showTrigger={false}
-              />
-            )}
-
-            <div title="Xuất kho" onClick={() => handleShowExportProductStockDialog(product)}>
-              <FileUp className="h-4 w-4 cursor-pointer text-slate-500 hover:text-slate-400 transition-colors" />
-            </div>
-
             <div title="Cập nhật sản phẩm" onClick={() => setShowUpdateProductDialog(true)}>
               <Pencil className="h-4 w-4 cursor-pointer text-yellow-500 hover:text-yellow-400 transition-colors" />
             </div>
@@ -217,12 +153,11 @@ export default function Detail() {
       globalFilter
     }
   })
-
   return (
     <AuthenticatedLayout
-      header={<h2 className="text-xl font-semibold leading-tight text-gray-800">Kho chi nhánh 1</h2>}
+      header={<h2 className="text-xl font-semibold leading-tight text-gray-800">Danh sách sản phẩm bán ra</h2>}
     >
-      <Head title="Kho chi nhánh 1" />
+      <Head title="Danh sách sản phẩm bán ra" />
 
       <div className="py-12">
         <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
@@ -230,7 +165,7 @@ export default function Detail() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex flex-col gap-3 text-xl font-semibold">
-                  <span>Kho chi nhánh 1</span>
+                  <span>Danh sách sản phẩm bán ra</span>
                   <div className="flex flex-col md:flex-row items-center gap-2 md:gap-4 justify-between">
                     <Input
                       type="search"
@@ -240,7 +175,7 @@ export default function Detail() {
                       className="w-full md:max-w-sm"
                     />
 
-                    <Button onClick={() => setShowCreateImportProductDialog(true)}>
+                    <Button onClick={() => setShowCreateExportProductDialog(true)}>
                       <Plus className="w-4 h-4" /> Thêm sản phẩm
                     </Button>
                   </div>
@@ -289,12 +224,11 @@ export default function Detail() {
         </div>
       </div>
 
-      {showCreateImportProductDialog && (
+      {showCreateExportProductDialog && (
         <CreateProductDialog
-          type="import"
-          branchId={branchId}
-          open={showCreateImportProductDialog}
-          onOpenChange={setShowCreateImportProductDialog}
+          type="export"
+          open={showCreateExportProductDialog}
+          onOpenChange={setShowCreateExportProductDialog}
           showTrigger={false}
         />
       )}

@@ -25,10 +25,10 @@ export function PrintTicketView({ setting, ticket, redirectAfterPrint = true }) 
           <h1 className="font-bold">{setting?.name}</h1>
 
           <p>Điện thoại: {setting?.phone_number}</p>
-          <p>Địa chỉ: {setting?.address}</p>
           <p>
             Website: <a href={setting?.website}>{setting?.website}</a>
           </p>
+          <p>Địa chỉ: {setting?.address}</p>
           <div className="flex justify-center mt-2">
             <QRCodeCanvas value={setting.website} size={50} />
           </div>
@@ -62,11 +62,10 @@ export function PrintTicketView({ setting, ticket, redirectAfterPrint = true }) 
             <b>Tình trạng:</b> {ticket.condition}
           </p>
           <p>
-            <b>Giá:</b> {ticket.amount ? formatMoney(ticket.amount) : 'Không có'}
-          </p>
-
-          <p>
             <b>Ghi chú:</b> {ticket.note || 'Không có'}
+          </p>
+          <p>
+            <b>Giá:</b> {ticket.amount ? formatMoney(ticket.amount) : 'Không có'}
           </p>
           <p>
             <b>Số tiền bằng chữ:</b> {ticket?.amount ? toVietnamese(ticket?.amount) : 'Không có'}

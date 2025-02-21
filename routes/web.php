@@ -63,6 +63,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/product/store', [ProductController::class, 'store'])->name('product.store');
     Route::put('/product/update/{id}', [ProductController::class, 'update'])->name('product.update');
     Route::delete('/product/delete/{id}', [ProductController::class, 'destroy'])->name('product.destroy');
+    Route::post('/product/update-stock/{id}', [ProductController::class, 'updateStock'])->name('product.update_stock');
 
     Route::get('/brand/detail/{id}', [BranchController::class, 'detail'])->name('branch.detail');
 });

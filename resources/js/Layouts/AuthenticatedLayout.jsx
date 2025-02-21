@@ -51,6 +51,10 @@ export default function AuthenticatedLayout({ header, children }) {
                 <NavLink href={route('branch.detail', { id: 1 })} active={route().current('branch.detail')}>
                   Kho 1
                 </NavLink>
+
+                <NavLink href={route('product.index', { id: 1 })} active={route().current('product.index')}>
+                  Giá bán
+                </NavLink>
               </div>
             </div>
 
@@ -144,6 +148,10 @@ export default function AuthenticatedLayout({ header, children }) {
 
             <ResponsiveNavLink href={route('branch.detail', { id: 1 })} active={route().current('branch.detail')}>
               Kho 1
+            </ResponsiveNavLink>
+
+            <ResponsiveNavLink href={route('product.index', { id: 1 })} active={route().current('product.index')}>
+              Giá bán
             </ResponsiveNavLink>
           </div>
 

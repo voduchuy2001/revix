@@ -165,7 +165,6 @@ class RepairTicketController extends Controller
 
             DB::commit();
 
-
             return Redirect::back();
         } catch (QueryException $e) {
             DB::rollBack();

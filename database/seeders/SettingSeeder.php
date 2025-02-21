@@ -13,7 +13,7 @@ class SettingSeeder extends Seeder
             'type' => 'TRUNG TÂM SỬA CHỮA ĐIỆN THOẠI',
             'name' => 'TRẦN ÚT - TÁO CƯỜI',
             'phone_number' => '085.222.7282',
-            'address' => 'Số 333 Nguyễn Văn Linh, P.An Khánh, Q.Ninh Kiều, TPCT',
+            'address' => 'Số 333, Nguyễn Văn Linh, P. An Khánh, Q. Ninh Kiều, Tp. Cần Thơ',
             'website' => 'https://taocuoi.vn',
             'policies' => [
                 'Biên nhận có giá trị trong vòng 30 ngày. Khách hàng làm
@@ -46,7 +46,7 @@ class SettingSeeder extends Seeder
 
         Setting::create([
             'key' => 'info',
-            'value' => json_encode($setting, JSON_UNESCAPED_UNICODE) // Chuyển object thành JSON để lưu vào DB
+            'value' => json_encode($setting, JSON_UNESCAPED_UNICODE)
         ]);
     }
 

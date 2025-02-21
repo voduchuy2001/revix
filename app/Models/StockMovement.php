@@ -21,4 +21,9 @@ class StockMovement extends Model
     {
         return $this->belongsTo(Product::class, 'product_id');
     }
+
+    public function createdBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
 }

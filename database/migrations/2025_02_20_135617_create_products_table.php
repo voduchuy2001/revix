@@ -13,7 +13,7 @@ return new class () extends Migration {
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Branch::class, 'branch_id')->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Branch::class, 'branch_id')->nullable()->constrained()->cascadeOnDelete();
             $table->string('name');
             $table->string('sku')->nullable();
             $table->string('price')->nullable();
@@ -21,7 +21,7 @@ return new class () extends Migration {
             $table->string('stock')->nullable();
             $table->string('category')->nullable();
             $table->longText('note')->nullable();
-            $table->string('type');
+            $table->string('type')->nullable();
             $table->bigInteger('created_by');
             $table->bigInteger('updated_by');
             $table->timestamps();

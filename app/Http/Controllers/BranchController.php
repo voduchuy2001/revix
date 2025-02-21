@@ -11,9 +11,16 @@ class BranchController extends Controller
 {
     public function detail(string|int $id): Response
     {
-        $branch = Branch::with(['products' => function ($query) {
-            $query->where('type', ProductType::IMPORT->value);
-        }, 'products.stockMovement'])->findOrFail($id);
+        $branch = Branch::with([
+            'products' => function ($query) {
+                $query->where('type', ProductType::IMPORT->value);
+            },
+            'products.stockMovement' => function ($query) {
+                $query->orderBy('created_at', 'desc');
+            },
+            'products.stockMovement.createdBy'
+        ])->findOrFail($id);
+
 
         return Inertia::render('Branch/Detail', [
             'products' => $branch->products,
