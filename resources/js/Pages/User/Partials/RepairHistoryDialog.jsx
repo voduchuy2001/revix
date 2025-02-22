@@ -174,7 +174,7 @@ export default function RepairHistoryDialog({ customer, open, onOpenChange, show
 
       {print && ticketToPrint && (
         <div className="hidden">
-          <PrintTicketView setting={setting} ticket={ticketToPrint} />
+          <PrintTicketView redirectAfterPrint={false} setting={setting} ticket={ticketToPrint} />
         </div>
       )}
     </>
