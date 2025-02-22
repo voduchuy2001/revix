@@ -1,7 +1,7 @@
 import { Input } from '@/Components/ui/input'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/ui/table'
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
-import { Head, useForm, usePage } from '@inertiajs/react'
+import { Head, Link, useForm, usePage } from '@inertiajs/react'
 import {
   flexRender,
   getCoreRowModel,
@@ -218,8 +218,6 @@ export default function Detail() {
     }
   })
 
-  const [downloadMovementReports, setDownloadMovementReports] = useState(false)
-
   return (
     <AuthenticatedLayout
       header={<h2 className="text-xl font-semibold leading-tight text-gray-800">Kho chi nhánh 1</h2>}
@@ -243,8 +241,10 @@ export default function Detail() {
                     />
 
                     <div>
-                      <Button variant="outline" className="mr-2" onClick={() => setDownloadMovementReports(true)}>
-                        <Download className="w-4 h-4" /> Tải báo cáo
+                      <Button asChild variant="outline" className="mr-2">
+                        <Link href={route('branch.get_reports', { id: branchId })}>
+                          <Download className="w-4 h-4" /> Tải báo cáo
+                        </Link>
                       </Button>
 
                       <Button onClick={() => setShowCreateImportProductDialog(true)}>

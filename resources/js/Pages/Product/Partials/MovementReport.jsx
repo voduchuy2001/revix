@@ -6,7 +6,7 @@ import { formatDate, formatMoney } from '@/utils/format'
 
 export default function MovementReport() {
   const { reports } = usePage().props
-  const { products, setting } = reports
+  const { products } = reports
 
   useEffect(() => {
     const exportAndGoBack = async () => {
@@ -14,6 +14,7 @@ export default function MovementReport() {
       const worksheet = workbook.addWorksheet('Stock Report')
 
       worksheet.columns = [
+        { header: 'STT', key: 'index', width: 8 },
         { header: 'Tên sản phẩm', key: 'name', width: 20 },
         { header: 'Mã sản phẩm', key: 'sku', width: 15 },
         { header: 'Danh mục', key: 'category', width: 15 },
@@ -23,17 +24,17 @@ export default function MovementReport() {
         { header: 'Ngày tạo', key: 'created_at', width: 20 }
       ]
 
-      products.forEach((product) => {
-        product.stock_movement.forEach((movement) => {
-          worksheet.addRow({
-            name: product.name,
-            sku: product.sku,
-            category: product.category,
-            price: formatMoney(product.price),
-            stock: product.stock,
-            note: movement.note,
-            created_at: formatDate(movement.created_at)
-          })
+      let index = 1
+      products.forEach(({ name, sku, category, price, stock, note, created_at }) => {
+        worksheet.addRow({
+          index: index++,
+          name: name,
+          sku: sku,
+          category: category,
+          price: formatMoney(price),
+          stock: stock,
+          note: note,
+          created_at: formatDate(created_at)
         })
       })
 
