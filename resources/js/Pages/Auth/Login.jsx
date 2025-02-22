@@ -6,6 +6,7 @@ import { Input } from '@/Components/ui/input'
 import { Label } from '@/Components/ui/label'
 import GuestLayout from '@/Layouts/GuestLayout'
 import { Head, Link, useForm } from '@inertiajs/react'
+import { useRef } from 'react'
 
 export default function Login({ canResetPassword }) {
   const { data, setData, post, processing, errors, reset } = useForm({
@@ -13,6 +14,8 @@ export default function Login({ canResetPassword }) {
     password: '',
     remember: false
   })
+
+  const passwordInput = useRef()
 
   const submit = (e) => {
     e.preventDefault()
@@ -54,6 +57,7 @@ export default function Login({ canResetPassword }) {
             value={data.password}
             className="mt-1 block w-full"
             autoComplete="current-password"
+            ref={passwordInput}
             onChange={(e) => setData('password', e.target.value)}
           />
 

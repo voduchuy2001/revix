@@ -11,7 +11,7 @@ export default function MovementReport() {
   useEffect(() => {
     const exportAndGoBack = async () => {
       const workbook = new ExcelJS.Workbook()
-      const worksheet = workbook.addWorksheet('Stock Report')
+      const worksheet = workbook.addWorksheet('Báo cáo kho')
 
       worksheet.columns = [
         { header: 'STT', key: 'index', width: 8 },
@@ -48,7 +48,9 @@ export default function MovementReport() {
         type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
       })
 
-      saveAs(blob, 'Stock_Report.xlsx')
+      const now = new Date()
+      const fileName = `BC-${String(now.getDate()).padStart(2, '0')}-${String(now.getMonth() + 1).padStart(2, '0')}-${now.getFullYear()}.xlsx`
+      saveAs(blob, fileName)
 
       window.history.back()
     }
