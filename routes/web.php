@@ -65,5 +65,6 @@ Route::middleware('auth')->group(function () {
     Route::delete('/product/delete/{id}', [ProductController::class, 'destroy'])->name('product.destroy');
     Route::post('/product/update-stock/{id}', [ProductController::class, 'updateStock'])->name('product.update_stock');
 
-    Route::get('/brand/detail/{id}', [BranchController::class, 'detail'])->name('branch.detail');
+    Route::get('/branch/detail/{id}', [BranchController::class, 'detail'])->name('branch.detail');
+    Route::get('/branch/report/{id}', [BranchController::class, 'getReports'])->name('branch.get_reports');
 });

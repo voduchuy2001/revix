@@ -10,7 +10,7 @@ import {
   useReactTable
 } from '@tanstack/react-table'
 import { Button } from '@/Components/ui/button'
-import { ArrowUpDown, FileDown, FileUp, Pencil, Plus, Trash } from 'lucide-react'
+import { ArrowUpDown, Download, FileDown, FileUp, Pencil, Plus, Trash } from 'lucide-react'
 import { useState } from 'react'
 import { formatDate, formatMoney } from '@/utils/format'
 import CreateProductDialog from '../Product/Partials/CreateProductDialog'
@@ -218,6 +218,8 @@ export default function Detail() {
     }
   })
 
+  const [downloadMovementReports, setDownloadMovementReports] = useState(false)
+
   return (
     <AuthenticatedLayout
       header={<h2 className="text-xl font-semibold leading-tight text-gray-800">Kho chi nhánh 1</h2>}
@@ -240,9 +242,15 @@ export default function Detail() {
                       className="w-full md:max-w-sm"
                     />
 
-                    <Button onClick={() => setShowCreateImportProductDialog(true)}>
-                      <Plus className="w-4 h-4" /> Thêm sản phẩm
-                    </Button>
+                    <div>
+                      <Button variant="outline" className="mr-2" onClick={() => setDownloadMovementReports(true)}>
+                        <Download className="w-4 h-4" /> Tải báo cáo
+                      </Button>
+
+                      <Button onClick={() => setShowCreateImportProductDialog(true)}>
+                        <Plus className="w-4 h-4" /> Thêm sản phẩm
+                      </Button>
+                    </div>
                   </div>
                 </CardTitle>
               </CardHeader>
