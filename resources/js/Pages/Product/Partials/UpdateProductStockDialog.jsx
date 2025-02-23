@@ -38,7 +38,8 @@ export default function UpdateProductStockDialog({
       onSuccess: () => {
         onOpenChange?.(false)
         toast.success('Cập nhật thành công')
-      }
+      },
+      onError: ({ error }) => toast.error(error)
     })
   }
 

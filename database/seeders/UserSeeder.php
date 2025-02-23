@@ -11,11 +11,11 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         User::create([
-            'name' => 'Võ Đức Huy',
-            'email' => 'voduchuy2001@gmail.com',
-            'password' => 'admin123@',
+            'name' => 'Admin',
+            'email' => 'admin@gmail.com',
+            'password' => 'Admintaocuoi',
             'phone_number' => '0962785101',
-            'address' => 'An Hòa, Ninh Kiều, Cần Thơ',
+            'address' => 'Ninh Kiều, Cần Thơ',
             'type' => UserType::USER->value,
             'super_user' => true,
         ]);

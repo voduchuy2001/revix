@@ -3,7 +3,9 @@
 namespace App\Http\Requests;
 
 use App\Enums\UserType;
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
 
 class UpdateUserRequest extends FormRequest
@@ -15,10 +17,15 @@ class UpdateUserRequest extends FormRequest
      */
     public function rules(): array
     {
+        $type = $this->input('type');
+
         return [
             'name' => ['required', 'string', 'max:191'],
             'phone_number' => [
                 'required',
+                Rule::unique(User::class)
+                    ->where(fn ($query) => $query->where('type', $type))
+                    ->ignore($this->route('id')),
                 'regex:/^(0?)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}$/',
             ],
             'address' => ['nullable', 'string', 'max:191'],

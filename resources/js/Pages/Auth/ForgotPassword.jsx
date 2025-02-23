@@ -4,6 +4,7 @@ import { Input } from '@/Components/ui/input'
 import { Label } from '@/Components/ui/label'
 import GuestLayout from '@/Layouts/GuestLayout'
 import { Head, useForm } from '@inertiajs/react'
+import { QRCodeCanvas } from 'qrcode.react'
 
 export default function ForgotPassword({ status }) {
   const { data, setData, post, processing, errors } = useForm({
@@ -20,14 +21,15 @@ export default function ForgotPassword({ status }) {
     <GuestLayout>
       <Head title="Quên mật khẩu" />
 
-      <div className="mb-4 text-sm text-gray-600">
-        Quên mật khẩu? Không vấn đề gì. Chỉ cần cho chúng tôi biết địa chỉ email của bạn và chúng tôi sẽ gửi cho bạn
-        liên kết đặt lại mật khẩu cho phép bạn chọn mật khẩu mới.
+      <div className="mb-4 text-gray-600">Liên hệ Zalo để được cấp lại mật khẩu mới</div>
+
+      <div className="flex justify-center my-4">
+        <QRCodeCanvas value="https://zalo.me/0354711274" size={150} />
       </div>
 
       {status && <div className="mb-4 text-sm font-medium text-green-600">{status}</div>}
 
-      <form onSubmit={submit} autoComplete="off">
+      <form onSubmit={submit} autoComplete="off" className="hidden">
         <div className="mt-4">
           <Label htmlFor="email" required={true}>
             Email

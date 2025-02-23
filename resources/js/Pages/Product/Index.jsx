@@ -60,14 +60,14 @@ export default function Index() {
       cell: ({ row }) => <div className="capitalize">{row.getValue('category') || 'Không có'}</div>
     },
     {
-      accessorKey: 'price',
+      accessorKey: 'sale_price',
       header: ({ column }) => (
         <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
           Giá bán <ArrowUpDown />
         </Button>
       ),
       cell: ({ row }) => {
-        return <div className="text-center font-medium">{formatMoney(row.getValue('price'))}</div>
+        return <div className="text-center font-medium">{formatMoney(row.getValue('sale_price'))}</div>
       }
     },
     {

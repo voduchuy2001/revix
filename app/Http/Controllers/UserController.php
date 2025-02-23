@@ -61,8 +61,9 @@ class UserController extends Controller
     public function store(StoreUserRequest $request): RedirectResponse
     {
         $data = $request->validated();
-        User::create($data);
-        return Redirect::back();
+        $user = User::create($data);
+
+        return Redirect::back()->with(['user' => $user]);
     }
 
     public function update(UpdateUserRequest $request, string|int $id): RedirectResponse

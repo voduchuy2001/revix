@@ -25,6 +25,7 @@ export function CreateUserDialog({
   showTrigger = true,
   type = 'customer',
   initialPhoneNumber = '',
+  onCustomerCreated,
   ...props
 }) {
   const { reset, data, setData, errors, processing, post } = useForm({
@@ -41,9 +42,10 @@ export function CreateUserDialog({
     e.preventDefault()
 
     post(route('user.store'), {
-      onSuccess: () => {
-        onOpenChange?.(false)
+      onSuccess: (data) => {
         toast.success('Thêm mới thành công')
+        onCustomerCreated?.(data.props.flash.user)
+        onOpenChange?.(false)
       }
     })
   }

@@ -81,29 +81,49 @@ class ProductController extends Controller
         return Redirect::back();
     }
 
-    public function updateStock(UpdateProductStockRequest $request, string|int $id)
+    public function updateStock(UpdateProductStockRequest $request, string|int $id): RedirectResponse
     {
         $data = $request->validated();
         $product = Product::findOrFail($id);
 
         DB::beginTransaction();
         try {
-            $request['type'] === ProductType::IMPORT->value ? $product->increment('stock', $data['stock']) : $product->decrement('stock', $data['stock']);
-            StockMovement::create([
-                'product_id' => $product->id,
-                'type' => $request['type'],
-                'quantity' => $data['stock'],
-                'created_by' => Auth::id(),
-                'note' => $data['note'],
-            ]);
+            $request['type'] === ProductType::IMPORT->value
+                ? $this->importStock($product, $data['stock'])
+                : $this->exportStock($product, $data['stock']);
+
+            $this->logStockMovement($product->id, $request['type'], $data['stock'], $data['note']);
 
             DB::commit();
 
-            return Redirect::back();
-        } catch (QueryException $e) {
+            return Redirect::back()->with('success', 'Cập nhật tồn kho thành công.');
+        } catch (\Exception $e) {
             DB::rollBack();
             Log::error($e->getMessage());
-            return Redirect::back()->withErrors(['error' => 'Có lỗi xảy ra!']);
+            return Redirect::back()->withErrors(['error' => $e->getMessage()]);
         }
+    }
+
+
+    private function importStock(Product $product, int $quantity): void
+    {
+        $product->increment('stock', $quantity);
+    }
+
+    private function exportStock(Product $product, int $quantity): void
+    {
+        throw_if($product->stock < $quantity, new \Exception('Số lượng tồn kho không đủ để xuất.'));
+        $product->decrement('stock', $quantity);
+    }
+
+    private function logStockMovement(int $productId, string $type, int $quantity, ?string $note = null): void
+    {
+        StockMovement::create([
+            'product_id' => $productId,
+            'type' => $type,
+            'quantity' => $quantity,
+            'created_by' => Auth::id(),
+            'note' => $note,
+        ]);
     }
 }

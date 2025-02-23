@@ -59,7 +59,7 @@ class RepairTicketController extends Controller
             ->get();
 
         return Inertia::render('RepairTicket/Create', [
-        'customers' => $customers,
+            'customers' => $customers,
         ]);
     }
 
@@ -165,7 +165,7 @@ class RepairTicketController extends Controller
 
             DB::commit();
 
-            return Redirect::back();
+            return Redirect::route('repair_ticket.index');
         } catch (QueryException $e) {
             DB::rollBack();
             Log::error($e->getMessage());

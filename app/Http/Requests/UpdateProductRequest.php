@@ -11,8 +11,8 @@ class UpdateProductRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'sku' => ['required', 'string', 'max:255'],
-            'price' => ['required', 'numeric', 'min:0', 'max:1000000000'],
-            'sale_price' =>  ['required_if:type,export', 'numeric', 'min:0', 'max:1000000000'],
+            'price' => ['nullable', 'required_if:type,import', 'numeric', 'min:0', 'max:1000000000'],
+            'sale_price' =>  ['nullable', 'required_if:type,export', 'numeric', 'min:0', 'max:1000000000'],
             'category' => ['nullable', 'string', 'max:255'],
             'note' => ['nullable', 'string', 'max:100000'],
         ];

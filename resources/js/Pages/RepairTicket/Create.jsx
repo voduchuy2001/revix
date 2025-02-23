@@ -176,7 +176,7 @@ const Create = () => {
                                     (customer) => customer.id?.toString() === selectedCustomer
                                   )
                                   return selectedCustomer
-                                    ? `${customer.name} - ${customer.phone_number || 'Không có'}`
+                                    ? `${customer?.name} - ${customer?.phone_number || 'Không có'}`
                                     : ''
                                 })()}
                               </Button>
@@ -201,6 +201,7 @@ const Create = () => {
                                       value={`${customer.id} ${customer.name?.toLowerCase()} ${customer.phone_number?.toLowerCase() || ''}`}
                                       onSelect={(currentValue) => {
                                         setSelectedCustomer(currentValue.split(' ')[0])
+                                        console.log('check selected customer: ', selectedCustomer)
                                         setData('customer', currentValue.split(' ')[0])
                                         setOpenComboboxCustomer(false)
                                       }}
@@ -254,6 +255,11 @@ const Create = () => {
           open={showCreateUserDialog}
           onOpenChange={setShowCreateUserDialog}
           showTrigger={false}
+          onCustomerCreated={(customer) => {
+            setSelectedCustomer(customer.id?.toString())
+            setData('customer', customer?.id)
+            setOpenComboboxCustomer(false)
+          }}
         />
       )}
     </AuthenticatedLayout>

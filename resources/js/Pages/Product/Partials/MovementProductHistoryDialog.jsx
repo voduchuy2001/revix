@@ -37,7 +37,8 @@ export default function MovementProductHistoryDialog({ product, open, onOpenChan
             {stockMovement.map((item) => (
               <AccordionItem key={item.id} value={`item-${item.id}`}>
                 <AccordionTrigger>
-                  {item.type === 'import' ? 'Nhập kho' : 'Xuất kho'} #{item.id} - Số lượng: {item.quantity}
+                  {item.type === 'import' ? 'Nhập kho' : 'Xuất kho'} #{item.id} - Số lượng: {item.quantity} - Ngày:{' '}
+                  {formatDate(item.created_at)}
                 </AccordionTrigger>
                 <AccordionContent>
                   <div className="text-sm text-gray-700">

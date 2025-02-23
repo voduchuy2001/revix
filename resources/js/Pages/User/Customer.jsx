@@ -25,6 +25,7 @@ import { Button } from '@/Components/ui/button'
 import { PlusIcon } from '@radix-ui/react-icons'
 import { CreateUserDialog } from './Partials/CreateUserDialog'
 import RepairHistoryDialog from './Partials/RepairHistoryDialog'
+import toast from 'react-hot-toast'
 
 export default function Customer() {
   const { customers, filters } = usePage().props
