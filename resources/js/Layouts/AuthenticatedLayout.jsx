@@ -48,11 +48,21 @@ export default function AuthenticatedLayout({ header, children }) {
                   Người dùng
                 </NavLink>
 
-                <NavLink href={route('branch.detail', { id: 1 })} active={route().current('branch.detail')}>
+                <NavLink
+                  href={route('branch.detail', { id: 1 })}
+                  active={route().current('branch.detail') && Number(route().params.id) === 1}
+                >
                   Kho 1
                 </NavLink>
 
-                <NavLink href={route('product.index', { id: 1 })} active={route().current('product.index')}>
+                <NavLink
+                  href={route('branch.detail', { id: 2 })}
+                  active={route().current('branch.detail') && Number(route().params.id) === 2}
+                >
+                  Kho 2
+                </NavLink>
+
+                <NavLink href={route('product.index')} active={route().current('product.index')}>
                   Giá bán
                 </NavLink>
               </div>
@@ -146,11 +156,21 @@ export default function AuthenticatedLayout({ header, children }) {
               Người dùng
             </ResponsiveNavLink>
 
-            <ResponsiveNavLink href={route('branch.detail', { id: 1 })} active={route().current('branch.detail')}>
+            <ResponsiveNavLink
+              href={route('branch.detail', { id: 1 })}
+              active={route().current('branch.detail') && Number(route().params.id) === 1}
+            >
               Kho 1
             </ResponsiveNavLink>
 
-            <ResponsiveNavLink href={route('product.index', { id: 1 })} active={route().current('product.index')}>
+            <ResponsiveNavLink
+              href={route('branch.detail', { id: 2 })}
+              active={route().current('branch.detail') && Number(route().params.id) === 2}
+            >
+              Kho 2
+            </ResponsiveNavLink>
+
+            <ResponsiveNavLink href={route('product.index')} active={route().current('product.index')}>
               Giá bán
             </ResponsiveNavLink>
           </div>

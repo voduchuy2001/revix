@@ -19,6 +19,14 @@ class BranchSeeder extends Seeder
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
+            [
+                'name' => 'Chi nhánh 2',
+                'address' => '',
+                'phone_number' => '',
+                'email' => '',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
         ];
 
         Branch::insert($branches);
