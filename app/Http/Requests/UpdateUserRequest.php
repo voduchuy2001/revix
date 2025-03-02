@@ -20,6 +20,7 @@ class UpdateUserRequest extends FormRequest
         $type = $this->input('type');
 
         return [
+            'branch_id' => ['nullable', 'required_if:type,user', 'integer'],
             'name' => ['required', 'string', 'max:191'],
             'phone_number' => [
                 'required',
@@ -36,6 +37,9 @@ class UpdateUserRequest extends FormRequest
     public function messages(): array
     {
         return [
+            'branch_id.required_if' => 'Chi nhánh là bắt buộc.',
+            'branch_id.integer' => 'Chi nhánh phải là một số nguyên.',
+
             'name.required' => 'Tên không được để trống.',
             'name.string' => 'Tên phải là một chuỗi ký tự.',
             'name.max' => 'Tên không được vượt quá 191 ký tự.',

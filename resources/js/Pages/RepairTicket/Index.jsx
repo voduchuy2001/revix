@@ -26,7 +26,7 @@ import EmptyState from '@/Components/EmptyState'
 import { PrintTicketView } from './Partials/PrintTicketView'
 
 export default function Index() {
-  const { tickets, filters, setting } = usePage().props
+  const { tickets, filters, setting, branchId } = usePage().props
 
   const now = new Date()
   const [values, setValues] = useState({
@@ -39,7 +39,7 @@ export default function Index() {
 
   const updateQuery = useCallback(
     debounce((query) => {
-      router.get(route('repair_ticket.index'), query, {
+      router.get(route('repair_ticket.index', { branchId }), query, {
         replace: true,
         preserveState: true
       })
@@ -79,9 +79,13 @@ export default function Index() {
 
   return (
     <AuthenticatedLayout
-      header={<h2 className="text-xl font-semibold leading-tight text-gray-800">Tiếp nhận sửa chữa</h2>}
+      header={
+        <h2 className="text-xl font-semibold leading-tight text-gray-800">
+          Danh sách phiếu tiếp nhận sửa chữa CN {branchId}
+        </h2>
+      }
     >
-      <Head title="Tiếp nhận sửa chữa" />
+      <Head title={`Danh sách phiếu tiếp nhận sửa chữa CN ${branchId}`} />
 
       <div className="py-12">
         <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
@@ -89,7 +93,7 @@ export default function Index() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex flex-col gap-3 text-xl font-semibold">
-                  <span>Danh sách phiếu tiếp nhận sửa chữa</span>
+                  <span>Danh sách phiếu tiếp nhận sửa chữa CN {branchId}</span>
 
                   <div className="flex flex-col md:flex-row items-center gap-2 md:gap-4 justify-between">
                     <Input
@@ -118,7 +122,7 @@ export default function Index() {
                       />
 
                       <Link
-                        href={route('repair_ticket.create')}
+                        href={route('repair_ticket.create', { id: branchId })}
                         className="text-sm bg-primary text-secondary flex items-center py-2 px-4 rounded-md border border-input shadow-sm hover:bg-accent hover:text-accent-foreground w-full md:w-auto justify-center"
                       >
                         <Plus className="w-4 h-4 mr-2" />

@@ -11,7 +11,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Inter', 'sans-serif']
+        sans: ['Inter', 'sans-serif'],
+        roboto: ['Roboto', 'sans-serif']
       },
       borderRadius: {
         lg: 'var(--radius)',

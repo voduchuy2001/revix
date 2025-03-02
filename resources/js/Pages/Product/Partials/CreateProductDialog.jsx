@@ -96,7 +96,7 @@ export default function CreateProductDialog({
                 </div>
               </div>
 
-              <div className="space-y-1">
+              <div className={`${type === 'import' ? 'space-y-1' : 'hidden'}`}>
                 <Label htmlFor="sku" required={true}>
                   Mã sản phẩm
                 </Label>
@@ -126,7 +126,7 @@ export default function CreateProductDialog({
                 <InputError message={errors.category} className="mt-2" />
               </div>
 
-              <div className="space-y-1">
+              <div className={`${type === 'import' ? 'space-y-1' : 'hidden'}`}>
                 <Label htmlFor="stock" required={true}>
                   Số lượng
                 </Label>
@@ -174,7 +174,7 @@ export default function CreateProductDialog({
                 <InputError message={errors.sale_price} className="mt-2" />
               </div>
 
-              <div className="col-span-1 md:col-span-2 w-full space-y-4">
+              <div className={`${type === 'import' ? 'col-span-1 md:col-span-2 w-full space-y-4' : 'hidden'}`}>
                 <div className="space-y-1">
                   <Label htmlFor="note" required={false}>
                     Ghi chú

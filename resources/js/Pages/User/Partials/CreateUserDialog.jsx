@@ -14,6 +14,7 @@ import {
 } from '@/Components/ui/dialog'
 import { Input } from '@/Components/ui/input'
 import { Label } from '@/Components/ui/label'
+import { RadioGroup, RadioGroupItem } from '@/Components/ui/radio-group'
 import { Textarea } from '@/Components/ui/textarea'
 import { useForm } from '@inertiajs/react'
 import { PlusIcon } from '@radix-ui/react-icons'
@@ -29,6 +30,7 @@ export function CreateUserDialog({
   ...props
 }) {
   const { reset, data, setData, errors, processing, post } = useForm({
+    branch_id: '',
     name: '',
     phone_number: initialPhoneNumber,
     address: '',
@@ -141,6 +143,30 @@ export function CreateUserDialog({
                   onChange={(e) => setData('password_confirmation', e.target.value)}
                 />
                 <InputError message={errors.password_confirmation} className="mt-2" />
+              </div>
+
+              <div className={`${type === 'user' ? 'space-y-1' : 'hidden'}`}>
+                <Label htmlFor="branch" required={true}>
+                  Chi nhánh
+                </Label>
+
+                <RadioGroup
+                  className="flex w-full"
+                  value={data.branch_id}
+                  onValueChange={(value) => setData('branch_id', value)}
+                >
+                  <div className="flex items-center space-x-2 w-full">
+                    <RadioGroupItem value="1" id="branch-1" />
+                    <Label htmlFor="branch-1">Chi nhánh 1</Label>
+                  </div>
+
+                  <div className="flex items-center space-x-2 w-full">
+                    <RadioGroupItem value="2" id="branch-2" />
+                    <Label htmlFor="branch-2">Chi nhánh 2</Label>
+                  </div>
+                </RadioGroup>
+
+                <InputError message={errors.branch_id} className="mt-2" />
               </div>
 
               <div className="col-span-1 md:col-span-2 w-full space-y-4">

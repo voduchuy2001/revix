@@ -10,6 +10,7 @@ class RepairTicket extends Model
     protected $table = 'repair_tickets';
 
     protected $fillable = [
+        'branch_id',
         'customer_id',
         'device_id',
         'technician',
@@ -27,11 +28,19 @@ class RepairTicket extends Model
         parent::boot();
 
         static::creating(function ($ticket) {
-            $latestCode = self::where('code', 'LIKE', '#%')->orderByDesc('code')->value('code');
-            $number = $latestCode ? intval(substr($latestCode, 1)) + 1 : 1;
-            $ticket->code = '#' . str_pad($number, 7, '0', STR_PAD_LEFT);
+            $branchId = $ticket->branch_id;
+
+            $latestCode = self::where('branch_id', $branchId)
+                ->where('code', 'LIKE', "#$branchId%")
+                ->orderByDesc('code')
+                ->value('code');
+
+            $number = $latestCode ? intval(substr($latestCode, strlen("#$branchId"))) + 1 : 1;
+
+            $ticket->code = "#$branchId" . str_pad($number, 7, '0', STR_PAD_LEFT);
         });
     }
+
 
     public function customer(): BelongsTo
     {

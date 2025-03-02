@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\GetRepairTicketRequest;
 use App\Http\Requests\StoreRepairTicketRequest;
 use App\Http\Requests\UpdateRepairTicketRequest;
+use App\Models\Branch;
 use App\Models\Device;
 use App\Models\RepairTicket;
 use App\Models\Setting;
@@ -20,9 +21,17 @@ use Inertia\Response;
 
 class RepairTicketController extends Controller
 {
-    public function index(GetRepairTicketRequest $request): Response
+    private function getValidBranches(string|int $branchId): Branch
     {
+        return Branch::findOrFail($branchId);
+    }
+
+    public function index(GetRepairTicketRequest $request, string|int $branchId): Response
+    {
+        $this->getValidBranches($branchId);
+
         $tickets = RepairTicket::with(['customer', 'device'])
+            ->where('branch_id', $branchId)
             ->when($request->filled('from') && !$request->filled('to'), function ($query) use ($request) {
                 $query->where('created_at', '>=', $request->input('from'));
             })
@@ -45,14 +54,17 @@ class RepairTicketController extends Controller
         $setting = Setting::where('key', 'info')->first();
 
         return Inertia::render('RepairTicket/Index', [
+            'branchId' => $branchId,
             'tickets' => $tickets,
             'filters' => $request->only(['search', 'from', 'to']),
             'setting' => json_decode($setting->value),
         ]);
     }
 
-    public function create(): Response
+    public function create(int|string $branchId): Response
     {
+        $this->getValidBranches($branchId);
+
         $customers = User::query()
             ->where('type', 'customer')
             ->orderByDesc('created_at')
@@ -60,6 +72,7 @@ class RepairTicketController extends Controller
 
         return Inertia::render('RepairTicket/Create', [
             'customers' => $customers,
+            'branchId' => $branchId,
         ]);
     }
 
@@ -74,7 +87,8 @@ class RepairTicketController extends Controller
                 'name' => $data['device_name'],
             ]);
 
-            $repairTicket = RepairTicket::create([
+            $ticket = RepairTicket::create([
+                'branch_id' => $data['branch_id'],
                 'device_id' => $device->id,
                 'customer_id' => $data['customer'],
                 'technician' => $data['technician'],
@@ -88,8 +102,8 @@ class RepairTicketController extends Controller
             DB::commit();
 
             return $request['action']
-                ? Redirect::route('repair_ticket.print', ['id' => $repairTicket->id])
-                : Redirect::route('repair_ticket.index');
+                ? Redirect::route('repair_ticket.print', ['id' => $ticket->id])
+                : Redirect::route('repair_ticket.index', ['branchId' => $ticket->branch_id]);
         } catch (QueryException $e) {
             DB::rollBack();
             Log::error($e->getMessage());
@@ -165,7 +179,7 @@ class RepairTicketController extends Controller
 
             DB::commit();
 
-            return Redirect::route('repair_ticket.index');
+            return Redirect::route('repair_ticket.index', ["branchId" => $ticket->branch_id]);
         } catch (QueryException $e) {
             DB::rollBack();
             Log::error($e->getMessage());

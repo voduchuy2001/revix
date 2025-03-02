@@ -18,20 +18,22 @@ export function PrintTicketView({ setting, ticket, redirectAfterPrint = true }) 
   }, [])
 
   return (
-    <div ref={contentRef} className="mx-auto w-80 bg-white p-4 text-xs">
-      <div className="break-inside-avoid">
-        <div className="text-center mb-4 pt-5">
+    <div ref={contentRef} className="print:font-roboto mx-auto bg-white p-4 text-xs">
+      <div className="break-inside-avoid break-after-page">
+        <div className="text-center py-5 space-y-1">
           <h1 className="font-bold">{setting?.type}</h1>
-          <h1 className="font-bold">{setting?.name}</h1>
+          <h2 className="font-bold text-lg">{setting?.name}</h2>
+          <h3 className="font-bold">{setting?.short_description}</h3>
 
           <p>Điện thoại: {setting?.phone_number}</p>
           <p>
             Website: <a href={setting?.website}>{setting?.website}</a>
           </p>
           <p>Địa chỉ: {setting?.address}</p>
-          <div className="flex justify-center mt-2">
-            <QRCodeCanvas value={setting.website} size={50} />
-          </div>
+        </div>
+
+        <div className="flex justify-center mb-5">
+          <QRCodeCanvas value={setting.website} size={60} />
         </div>
 
         <h2 className="text-center text-sm font-bold uppercase mb-2">Phiếu tiếp nhận sửa chữa</h2>

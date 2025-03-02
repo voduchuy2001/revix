@@ -26,18 +26,29 @@ export default function AuthenticatedLayout({ header, children }) {
 
               <div className="hidden space-x-4 sm:-my-px sm:ms-10 sm:flex">
                 <NavLink href={route('dashboard')} active={route().current('dashboard')}>
-                  Tổng quan
+                  Doanh thu
                 </NavLink>
 
                 <NavLink
-                  href={route('repair_ticket.index')}
+                  href={route('repair_ticket.index', { branchId: 1 })}
                   active={
-                    route().current('repair_ticket.index') ||
-                    route().current('repair_ticket.create') ||
+                    route().current('repair_ticket.index', { branchId: 1 }) ||
+                    route().current('repair_ticket.create', { branchId: 1 }) ||
                     route().current('repair_ticket.edit')
                   }
                 >
-                  Sửa chữa
+                  Sửa chữa CN1
+                </NavLink>
+
+                <NavLink
+                  href={route('repair_ticket.index', { branchId: 2 })}
+                  active={
+                    route().current('repair_ticket.index', { branchId: 2 }) ||
+                    route().current('repair_ticket.create', { branchId: 2 }) ||
+                    route().current('repair_ticket.edit')
+                  }
+                >
+                  Sửa chữa CN2
                 </NavLink>
 
                 <NavLink href={route('customer.index')} active={route().current('customer.index')}>
@@ -138,14 +149,25 @@ export default function AuthenticatedLayout({ header, children }) {
             </ResponsiveNavLink>
 
             <ResponsiveNavLink
-              href={route('repair_ticket.index')}
+              href={route('repair_ticket.index', { branchId: 1 })}
               active={
                 route().current('repair_ticket.index') ||
                 route().current('repair_ticket.create') ||
                 route().current('repair_ticket.edit')
               }
             >
-              Sửa chữa
+              Sửa chữa CN1
+            </ResponsiveNavLink>
+
+            <ResponsiveNavLink
+              href={route('repair_ticket.index', { branchId: 2 })}
+              active={
+                route().current('repair_ticket.index') ||
+                route().current('repair_ticket.create') ||
+                route().current('repair_ticket.edit')
+              }
+            >
+              Sửa chữa CN2
             </ResponsiveNavLink>
 
             <ResponsiveNavLink href={route('customer.index')} active={route().current('customer.index')}>

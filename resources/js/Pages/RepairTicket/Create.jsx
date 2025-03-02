@@ -17,7 +17,7 @@ import { formatMoney } from '@/utils/format'
 import NameInput from '@/Components/NameInput'
 
 const Create = () => {
-  const { customers } = usePage().props
+  const { customers, branchId } = usePage().props
   const { data, setData, post, processing, errors } = useForm({
     device_name: '',
     imei: '',
@@ -26,7 +26,8 @@ const Create = () => {
     note: '',
     technician: '',
     customer: '',
-    action: false
+    action: false,
+    branch_id: branchId
   })
 
   const [openComboboxCustomer, setOpenComboboxCustomer] = useState(false)
@@ -36,7 +37,7 @@ const Create = () => {
   const submit = (e) => {
     e.preventDefault()
 
-    post(route('repair_ticket.store'))
+    post(route('repair_ticket.store', { branchId }))
   }
 
   const handleAmountChange = (value) => {
@@ -48,7 +49,11 @@ const Create = () => {
 
   return (
     <AuthenticatedLayout
-      header={<h2 className="text-xl font-semibold leading-tight text-gray-800">Thêm phiếu tiếp nhận sửa chữa</h2>}
+      header={
+        <h2 className="text-xl font-semibold leading-tight text-gray-800">
+          Thêm phiếu tiếp nhận sửa chữa CN {branchId}
+        </h2>
+      }
     >
       <Head title="Thêm phiếu tiếp nhận sửa chữa" />
 

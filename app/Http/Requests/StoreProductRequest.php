@@ -13,10 +13,10 @@ class StoreProductRequest extends FormRequest
         return [
             'branch_id' => ['required_if:type,import', 'integer'],
             'name' => ['required', 'string', 'max:255'],
-            'sku' => ['required', 'string', 'max:255'],
+            'sku' => ['nullable', 'required_if:type,import', 'string', 'max:255'],
             'price' => ['nullable', 'required_if:type,import', 'numeric', 'min:0', 'max:1000000000'],
             'sale_price' =>  ['nullable', 'required_if:type,export', 'numeric', 'min:0', 'max:1000000000'],
-            'stock' =>  ['required', 'numeric', 'min:0', 'max:1000000000'],
+            'stock' =>  ['nullable', 'required_if:type,import',  'numeric', 'min:0', 'max:1000000000'],
             'category' => ['nullable', 'string', 'max:255'],
             'note' => ['nullable', 'string', 'max:100000'],
             'type' => ['required', new Enum(ProductType::class)],
@@ -33,7 +33,7 @@ class StoreProductRequest extends FormRequest
             'name.string' => 'Tên sản phẩm phải là chuỗi ký tự.',
             'name.max' => 'Tên sản phẩm không được vượt quá 255 ký tự.',
 
-            'sku.required' => 'SKU là bắt buộc.',
+            'sku.required_if' => 'SKU là bắt buộc.',
             'sku.string' => 'SKU phải là chuỗi ký tự.',
             'sku.max' => 'SKU không được vượt quá 255 ký tự.',
 
@@ -42,12 +42,12 @@ class StoreProductRequest extends FormRequest
             'price.min' => 'Giá sản phẩm không được nhỏ hơn 0.',
             'price.max' => 'Giá sản phẩm không được vượt quá 1 tỷ.',
 
-            'sale_price.required_if' => 'Giá khuyến mãi là bắt buộc khi loại sản phẩm là xuất khẩu.',
-            'sale_price.numeric' => 'Giá khuyến mãi phải là một số.',
-            'sale_price.min' => 'Giá khuyến mãi không được nhỏ hơn 0.',
-            'sale_price.max' => 'Giá khuyến mãi không được vượt quá 1 tỷ.',
+            'sale_price.required_if' => 'Giá bán là bắt buộc.',
+            'sale_price.numeric' => 'Giá bán phải là một số.',
+            'sale_price.min' => 'Giá bán không được nhỏ hơn 0.',
+            'sale_price.max' => 'Giá bán không được vượt quá 1 tỷ.',
 
-            'stock.required' => 'Tồn kho là bắt buộc.',
+            'stock.required_if' => 'Tồn kho là bắt buộc.',
             'stock.numeric' => 'Tồn kho phải là một số.',
             'stock.min' => 'Tồn kho không được nhỏ hơn 0.',
             'stock.max' => 'Tồn kho không được vượt quá 1 tỷ.',

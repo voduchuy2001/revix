@@ -220,9 +220,9 @@ export default function Detail() {
 
   return (
     <AuthenticatedLayout
-      header={<h2 className="text-xl font-semibold leading-tight text-gray-800">Kho chi nhánh 1</h2>}
+      header={<h2 className="text-xl font-semibold leading-tight text-gray-800">Kho chi nhánh {branchId}</h2>}
     >
-      <Head title="Kho chi nhánh 1" />
+      <Head title={`Kho chi nhánh ${branchId}`} />
 
       <div className="py-12">
         <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
@@ -230,7 +230,7 @@ export default function Detail() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex flex-col gap-3 text-xl font-semibold">
-                  <span>Kho chi nhánh 1</span>
+                  <span>Kho chi nhánh {branchId}</span>
                   <div className="flex flex-col md:flex-row items-center gap-2 md:gap-4 justify-between">
                     <Input
                       type="search"

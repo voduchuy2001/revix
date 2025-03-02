@@ -14,8 +14,8 @@ const chartConfig = {
 }
 
 export default function Index() {
-  const { revenues: data } = usePage().props
-  const formattedData = data.map((item) => ({
+  const { revenues: data = [] } = usePage().props
+  const formattedData = data?.map((item) => ({
     month: `T ${item.month}`,
     amount: Number(item.amount)
   }))

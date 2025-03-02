@@ -44,7 +44,7 @@ class ProductController extends Controller
                 'updated_by' => Auth::id(),
             ]);
 
-            StockMovement::create([
+            $request['type'] === ProductType::IMPORT->value && StockMovement::create([
                 'product_id' => $product->id,
                 'type' => StockMovementType::IMPORT->value,
                 'quantity' => $data['stock'],

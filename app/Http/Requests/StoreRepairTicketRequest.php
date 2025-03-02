@@ -14,6 +14,7 @@ class StoreRepairTicketRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'branch_id' => ['required', 'integer'],
             'device_name' => ['required', 'string', 'max:191'],
             'imei' => ['nullable', 'string', 'max:191'],
             'amount' => ['nullable', 'integer', 'min:0', 'max:100000000'],
@@ -28,6 +29,9 @@ class StoreRepairTicketRequest extends FormRequest
     public function messages(): array
     {
         return [
+            'branch_id.required' => 'Chi nhánh không được để trống',
+            'branch_id.integer' => 'Chi nhánh phải là một số nguyên.',
+
             'device_name.required' => 'Tên thiết bị không được để trống.',
             'device_name.string' => 'Tên thiết bị phải là một chuỗi ký tự.',
             'device_name.max' => 'Tên thiết bị không được vượt quá 191 ký tự.',

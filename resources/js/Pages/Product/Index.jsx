@@ -45,11 +45,6 @@ export default function Index() {
       cell: ({ row }) => <div className="uppercase">{Number(row.id) + 1}</div>
     },
     {
-      accessorKey: 'sku',
-      header: 'Mã sản phẩm',
-      cell: ({ row }) => <div className="uppercase">{row.getValue('sku')}</div>
-    },
-    {
       accessorKey: 'name',
       header: 'Tên sản phẩm',
       cell: ({ row }) => <div className="font-medium min-w-32">{row.getValue('name')}</div>
@@ -169,7 +164,7 @@ export default function Index() {
                   <div className="flex flex-col md:flex-row items-center gap-2 md:gap-4 justify-between">
                     <Input
                       type="search"
-                      placeholder="Nhập mã, tên sản phẩm, danh mục"
+                      placeholder="Nhập tên sản phẩm, danh mục"
                       value={globalFilter}
                       onChange={(e) => setGlobalFilter(e.target.value)}
                       className="w-full md:max-w-sm"
@@ -238,7 +233,7 @@ export default function Index() {
 
 const globalFilterFunction = (row, filterValue) => {
   if (!filterValue) return true
-  return ['name', 'sku', 'category'].some((key) =>
+  return ['name', 'category'].some((key) =>
     row.getValue(key)?.toString().toLowerCase().includes(filterValue.toLowerCase())
   )
 }

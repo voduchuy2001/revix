@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Branch;
 use App\Models\Device;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
@@ -17,6 +18,7 @@ return new class () extends Migration {
             $table->string('code')->unique();
             $table->foreignIdFor(User::class, 'customer_id')->constrained()->cascadeOnDelete();
             $table->foreignIdFor(Device::class, 'device_id')->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Branch::class, 'branch_id')->nullable()->constrained()->cascadeOnDelete();
             $table->string('technician')->nullable();
             $table->decimal('amount', 10, 2)->nullable();
             $table->text('condition')->nullable();

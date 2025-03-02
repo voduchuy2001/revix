@@ -12,6 +12,7 @@ class SettingSeeder extends Seeder
         $setting = (object) [
             'type' => 'TRUNG TÂM SỬA CHỮA ĐIỆN THOẠI',
             'name' => 'TRẦN ÚT - TÁO CƯỜI',
+            'short_description' => 'MUA BÁN - SỬA CHỮA - ÉP KÍNH - ĐÀO TẠO DẠY NGHỀ',
             'phone_number' => '085.222.7282',
             'address' => 'Số 333, Nguyễn Văn Linh, P. An Khánh, Q. Ninh Kiều, Tp. Cần Thơ',
             'website' => 'https://taocuoi.vn',
