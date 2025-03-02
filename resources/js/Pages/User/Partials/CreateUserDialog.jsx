@@ -151,18 +151,22 @@ export function CreateUserDialog({
                 </Label>
 
                 <RadioGroup
-                  className="flex w-full"
+                  className="flex flex-col space-y-1"
                   value={data.branch_id}
                   onValueChange={(value) => setData('branch_id', value)}
                 >
-                  <div className="flex items-center space-x-2 w-full">
+                  <div className="flex items-center space-x-3 space-y-0">
                     <RadioGroupItem value="1" id="branch-1" />
-                    <Label htmlFor="branch-1">Chi nhánh 1</Label>
+                    <Label htmlFor="branch-1" className="font-normal">
+                      Chi nhánh 1
+                    </Label>
                   </div>
 
-                  <div className="flex items-center space-x-2 w-full">
+                  <div className="flex items-center space-x-3 space-y-0">
                     <RadioGroupItem value="2" id="branch-2" />
-                    <Label htmlFor="branch-2">Chi nhánh 2</Label>
+                    <Label htmlFor="branch-2" className="font-normal">
+                      Chi nhánh 2
+                    </Label>
                   </div>
                 </RadioGroup>
 
