@@ -79,4 +79,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/detail/{id}', [BranchController::class, 'detail'])->name('branch.detail');
         Route::get('/report/{id}', [BranchController::class, 'getReports'])->name('branch.get_reports');
     });
+
+
+    Route::prefix('revenue')->group(function () {
+        Route::post('/store', [DashboardController::class, 'storeRevenueReport'])->name('revenue_report.store');
+        Route::delete('/delete/{id}', [DashboardController::class, 'destroyRevenueReport'])->name('revenue_report.destroy');
+    });
 });

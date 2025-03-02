@@ -33,10 +33,10 @@ class GetRepairTicketRequest extends FormRequest
             'search' => $this->input('search'),
             'from' => $this->input('from')
                 ? Carbon::parse($this->input('from'))->startOfDay()
-                : null,
+                : Carbon::now()->startOfMonth(),
             'to' => $this->input('to')
                 ? Carbon::parse($this->input('to'))->endOfDay()
-                : null,
+                : Carbon::now()->endOfMonth(),
         ]);
     }
 }

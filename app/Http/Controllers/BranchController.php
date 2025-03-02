@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\ProductType;
 use App\Models\Branch;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -11,6 +12,10 @@ class BranchController extends Controller
 {
     public function detail(string|int $id): Response
     {
+        if (!Auth::user()->isSuperUser() && Auth::user()->branch_id !== (int)$id) {
+            abort(403);
+        }
+
         $branch = Branch::with([
             'products' => function ($query) {
                 $query->where('type', ProductType::IMPORT->value);

@@ -93,7 +93,7 @@ export default function Index() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex flex-col gap-3 text-xl font-semibold">
-                  <span>Danh sách phiếu tiếp nhận sửa chữa CN {branchId}</span>
+                  <span>Danh sách phiếu</span>
 
                   <div className="flex flex-col md:flex-row items-center gap-2 md:gap-4 justify-between">
                     <Input

@@ -30,6 +30,10 @@ class RepairTicketController extends Controller
     {
         $this->getValidBranches($branchId);
 
+        if (!Auth::user()->isSuperUser() && Auth::user()->branch_id !== (int)$branchId) {
+            abort(403);
+        }
+
         $tickets = RepairTicket::with(['customer', 'device', 'branch'])
             ->where('branch_id', $branchId)
             ->when($request->filled('from') && !$request->filled('to'), function ($query) use ($request) {
@@ -65,6 +69,10 @@ class RepairTicketController extends Controller
     {
         $this->getValidBranches($branchId);
 
+        if (!Auth::user()->isSuperUser() && Auth::user()->branch_id !== (int)$branchId) {
+            abort(403);
+        }
+
         $customers = User::query()
             ->where('type', 'customer')
             ->orderByDesc('created_at')
@@ -79,6 +87,10 @@ class RepairTicketController extends Controller
     public function store(StoreRepairTicketRequest $request): RedirectResponse
     {
         $data = $request->validated();
+
+        if (!Auth::user()->isSuperUser() && Auth::user()->branch_id !== (int)$data['branch_id']) {
+            abort(403);
+        }
 
         DB::beginTransaction();
         try {

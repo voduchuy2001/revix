@@ -148,6 +148,7 @@ export default function Index() {
       globalFilter
     }
   })
+
   return (
     <AuthenticatedLayout
       header={<h2 className="text-xl font-semibold leading-tight text-gray-800">Danh sách sản phẩm bán ra</h2>}

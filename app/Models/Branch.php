@@ -25,4 +25,14 @@ class Branch extends Model
     {
         return $this->hasMany(RepairTicket::class, 'branch_id');
     }
+
+    public function employees(): HasMany
+    {
+        return $this->hasMany(User::class, 'branch_id');
+    }
+
+    public function revenues(): HasMany
+    {
+        return $this->hasMany(Revenue::class, 'branch_id');
+    }
 }
