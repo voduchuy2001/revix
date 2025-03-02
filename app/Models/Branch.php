@@ -20,4 +20,9 @@ class Branch extends Model
     {
         return $this->hasMany(Product::class, 'branch_id');
     }
+
+    public function tickets(): HasMany
+    {
+        return $this->hasMany(RepairTicket::class, 'branch_id');
+    }
 }

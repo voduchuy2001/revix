@@ -51,4 +51,9 @@ class RepairTicket extends Model
     {
         return $this->belongsTo(Device::class, 'device_id');
     }
+
+    public function branch(): BelongsTo
+    {
+        return $this->belongsTo(Branch::class, 'branch_id');
+    }
 }

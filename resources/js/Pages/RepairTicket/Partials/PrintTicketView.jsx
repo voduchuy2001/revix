@@ -3,13 +3,15 @@ import { QRCodeCanvas } from 'qrcode.react'
 import { useEffect, useRef } from 'react'
 import { useReactToPrint } from 'react-to-print'
 
-export function PrintTicketView({ setting, ticket, redirectAfterPrint = true }) {
+export function PrintTicketView({ setting, ticket, branch, redirectAfterPrint = true }) {
   const contentRef = useRef(null)
   const reactToPrintFn = useReactToPrint({
     contentRef,
     documentTitle: ticket?.code ? `Phiếu ${ticket?.code}` : 'Phiếu tiếp nhận sửa chữa',
     onAfterPrint: () => {
-      redirectAfterPrint ? (window.location.href = route('repair_ticket.create')) : window.location.reload()
+      redirectAfterPrint
+        ? (window.location.href = route('repair_ticket.create', { branchId: branch.id }))
+        : window.location.reload()
     }
   })
 
@@ -25,11 +27,11 @@ export function PrintTicketView({ setting, ticket, redirectAfterPrint = true }) 
           <h2 className="font-bold text-lg">{setting?.name}</h2>
           <h3 className="font-bold">{setting?.short_description}</h3>
 
-          <p>Điện thoại: {setting?.phone_number}</p>
+          <p>Điện thoại: {branch?.phone_number}</p>
           <p>
             Website: <a href={setting?.website}>{setting?.website}</a>
           </p>
-          <p>Địa chỉ: {setting?.address}</p>
+          <p>Địa chỉ: {branch?.address}</p>
         </div>
 
         <div className="flex justify-center mb-5">

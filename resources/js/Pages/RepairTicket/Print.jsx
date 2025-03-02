@@ -10,7 +10,7 @@ export default function Print() {
     <>
       <Head title={`Phiếu ${ticket.code}`} />
       <div className="hidden">
-        <PrintTicketView setting={setting} ticket={ticket} />
+        <PrintTicketView setting={setting} ticket={ticket} branch={ticket.branch} />
       </div>
 
       <div className="w-full min-h-screen flex items-center justify-center">

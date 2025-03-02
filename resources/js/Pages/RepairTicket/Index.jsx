@@ -231,7 +231,12 @@ export default function Index() {
 
       {print && ticketToPrint && (
         <div className="hidden">
-          <PrintTicketView redirectAfterPrint={false} setting={setting} ticket={ticketToPrint} />
+          <PrintTicketView
+            redirectAfterPrint={false}
+            setting={setting}
+            branch={ticketToPrint.branch}
+            ticket={ticketToPrint}
+          />
         </div>
       )}
     </AuthenticatedLayout>

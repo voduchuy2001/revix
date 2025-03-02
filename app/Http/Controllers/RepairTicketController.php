@@ -30,7 +30,7 @@ class RepairTicketController extends Controller
     {
         $this->getValidBranches($branchId);
 
-        $tickets = RepairTicket::with(['customer', 'device'])
+        $tickets = RepairTicket::with(['customer', 'device', 'branch'])
             ->where('branch_id', $branchId)
             ->when($request->filled('from') && !$request->filled('to'), function ($query) use ($request) {
                 $query->where('created_at', '>=', $request->input('from'));
@@ -125,8 +125,7 @@ class RepairTicketController extends Controller
 
     public function print(string|int $id): Response
     {
-        $ticket = RepairTicket::with(['customer', 'device'])->findOrFail($id);
-
+        $ticket = RepairTicket::with(['customer', 'device', 'branch'])->findOrFail($id);
         $setting = Setting::where('key', 'info')->first();
 
         return Inertia::render('RepairTicket/Print', [
