@@ -55,16 +55,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
 
-    Route::middleware(['is_super_user'])->group(function () {
-        Route::prefix('user')->group(function () {
-            Route::post('/store', [UserController::class, 'store'])->name('user.store');
-            Route::put('/update/{id}', [UserController::class, 'update'])->name('user.update');
-            Route::get('/', [UserController::class, 'getUsers'])->name('user.index');
-            Route::delete('/delete/{id}', [UserController::class, 'destroy'])->name('user.destroy');
-        });
-
+    Route::prefix('user')->group(function () {
+        Route::post('/store', [UserController::class, 'store'])->name('user.store');
+        Route::put('/update/{id}', [UserController::class, 'update'])->name('user.update');
+        Route::get('/', [UserController::class, 'getUsers'])->name('user.index');
+        Route::delete('/delete/{id}', [UserController::class, 'destroy'])->name('user.destroy')->middleware('is_super_user');
     });
-
     Route::get('/customer', [UserController::class, 'getCustomers'])->name('customer.index');
 
     Route::prefix('product')->group(function () {

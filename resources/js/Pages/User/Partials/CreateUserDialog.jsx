@@ -18,6 +18,7 @@ import { RadioGroup, RadioGroupItem } from '@/Components/ui/radio-group'
 import { Textarea } from '@/Components/ui/textarea'
 import { useForm } from '@inertiajs/react'
 import { PlusIcon } from '@radix-ui/react-icons'
+import { useRef } from 'react'
 import toast from 'react-hot-toast'
 
 export function CreateUserDialog({
@@ -39,6 +40,9 @@ export function CreateUserDialog({
     password_confirmation: '',
     type
   })
+
+  const passwordInput = useRef()
+  const confirmPasswordInput = useRef()
 
   const submit = (e) => {
     e.preventDefault()
@@ -126,6 +130,7 @@ export function CreateUserDialog({
                   type="password"
                   name="password"
                   className="mt-1 block w-full"
+                  ref={passwordInput}
                   onChange={(e) => setData('password', e.target.value)}
                 />
                 <InputError message={errors.password} className="mt-2" />
@@ -140,6 +145,7 @@ export function CreateUserDialog({
                   type="password"
                   name="password_confirmation"
                   className="mt-1 block w-full"
+                  ref={confirmPasswordInput}
                   onChange={(e) => setData('password_confirmation', e.target.value)}
                 />
                 <InputError message={errors.password_confirmation} className="mt-2" />
