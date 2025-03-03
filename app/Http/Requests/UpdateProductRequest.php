@@ -10,7 +10,7 @@ class UpdateProductRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-            'sku' => ['required', 'string', 'max:255'],
+            'sku' => ['nullable', 'required_if:type,import', 'string', 'max:255'],
             'price' => ['nullable', 'required_if:type,import', 'numeric', 'min:0', 'max:1000000000'],
             'sale_price' =>  ['nullable', 'required_if:type,export', 'numeric', 'min:0', 'max:1000000000'],
             'category' => ['nullable', 'string', 'max:255'],
@@ -25,7 +25,7 @@ class UpdateProductRequest extends FormRequest
             'name.string' => 'Tên sản phẩm phải là chuỗi ký tự.',
             'name.max' => 'Tên sản phẩm không được vượt quá 255 ký tự.',
 
-            'sku.required' => 'SKU là bắt buộc.',
+            'sku.required_if' => 'SKU là bắt buộc.',
             'sku.string' => 'SKU phải là chuỗi ký tự.',
             'sku.max' => 'SKU không được vượt quá 255 ký tự.',
 

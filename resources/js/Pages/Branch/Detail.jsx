@@ -164,6 +164,7 @@ export default function Detail() {
 
             {showUpdateProductDialog && (
               <UpdateProductDialog
+                type="warehouse"
                 product={product}
                 open={showUpdateProductDialog}
                 onOpenChange={setShowUpdateProductDialog}

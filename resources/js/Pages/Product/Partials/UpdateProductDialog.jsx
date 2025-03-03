@@ -19,7 +19,14 @@ import { useForm } from '@inertiajs/react'
 import { PlusIcon } from '@radix-ui/react-icons'
 import toast from 'react-hot-toast'
 
-export default function UpdateProductDialog({ product, open, onOpenChange, showTrigger = true, ...props }) {
+export default function UpdateProductDialog({
+  product,
+  open,
+  type = 'sales',
+  onOpenChange,
+  showTrigger = true,
+  ...props
+}) {
   const { reset, data, setData, errors, processing, put } = useForm({
     name: product.name,
     category: product.category || '',
@@ -27,7 +34,7 @@ export default function UpdateProductDialog({ product, open, onOpenChange, showT
     price: product.price || '',
     sale_price: product.sale_price || '',
     note: product.note || '',
-    sku: product.sku
+    sku: product.sku || ''
   })
 
   const submit = (e) => {
@@ -37,6 +44,9 @@ export default function UpdateProductDialog({ product, open, onOpenChange, showT
       onSuccess: () => {
         onOpenChange?.(false)
         toast.success('Cập nhật thành công')
+      },
+      onError: (e) => {
+        console.log(e)
       }
     })
   }
@@ -114,7 +124,7 @@ export default function UpdateProductDialog({ product, open, onOpenChange, showT
                 <InputError message={errors.category} className="mt-2" />
               </div>
 
-              <div className="space-y-1">
+              <div className={`${type === 'warehouse' ? 'space-y-1' : 'hidden'}`}>
                 <Label htmlFor="price" required={true}>
                   Giá
                 </Label>
@@ -128,6 +138,22 @@ export default function UpdateProductDialog({ product, open, onOpenChange, showT
                   onChange={(e) => handlePriceChange(e.target.value)}
                 />
                 <InputError message={errors.price} className="mt-2" />
+              </div>
+
+              <div className={`${type === 'sales' ? 'space-y-1' : 'hidden'}`}>
+                <Label htmlFor="sale_price" required={true}>
+                  Giá
+                </Label>
+                <Input
+                  tabIndex={5}
+                  id="sale_price"
+                  type="text"
+                  name="sale_price"
+                  value={formatMoney(data.sale_price)}
+                  className="mt-1 block w-full"
+                  onChange={(e) => handlePriceChange(e.target.value)}
+                />
+                <InputError message={errors.sale_price} className="mt-2" />
               </div>
 
               <div className="col-span-1 md:col-span-2 w-full space-y-4">

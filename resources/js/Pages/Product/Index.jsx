@@ -95,6 +95,7 @@ export default function Index() {
 
             {showUpdateProductDialog && (
               <UpdateProductDialog
+                type="sales"
                 product={product}
                 open={showUpdateProductDialog}
                 onOpenChange={setShowUpdateProductDialog}
