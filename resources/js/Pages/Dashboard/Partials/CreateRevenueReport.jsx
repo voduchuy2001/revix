@@ -27,7 +27,7 @@ export default function CreateRevenueReport() {
         toast.success('Thêm mới thành công')
         reset()
       },
-      preserveScroll: false
+      preserveScroll: true
     })
   }
 

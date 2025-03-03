@@ -48,7 +48,8 @@ export default function RevenueReport() {
     debounce((query) => {
       router.get(route('dashboard'), query, {
         replace: true,
-        preserveState: true
+        preserveState: true,
+        preserveScroll: true
       })
     }, 500),
     []
@@ -103,7 +104,8 @@ export default function RevenueReport() {
 
         const handleDeleteRevenue = (revenueId) => {
           destroy(route('revenue_report.destroy', revenueId), {
-            onSuccess: () => toast.success('Xóa thành công')
+            onSuccess: () => toast.success('Xóa thành công'),
+            preserveScroll: true
           })
         }
 

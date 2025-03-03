@@ -53,7 +53,11 @@ export default function UpdateProductDialog({
 
   const handlePriceChange = (value) => {
     const numericValue = Number(value.replace(/,/g, '').replace(/\D/g, ''))
-    setData({ ...data, price: numericValue })
+    const key = type === 'warehouse' ? 'price' : type ? 'sale_price' : null
+
+    if (key) {
+      setData({ ...data, [key]: numericValue })
+    }
   }
 
   return (
