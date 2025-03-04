@@ -28,6 +28,7 @@ import {
 } from '@/Components/ui/alert-dialog'
 import { formatDate, formatMoney } from '@/utils/format'
 import CreateProductDialog from './Partials/CreateProductDialog'
+import toast from 'react-hot-toast'
 
 export default function Index() {
   const { products: data } = usePage().props
