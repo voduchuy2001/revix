@@ -79,6 +79,6 @@ Route::middleware('auth')->group(function () {
 
     Route::prefix('revenue')->group(function () {
         Route::post('/store', [DashboardController::class, 'storeRevenueReport'])->name('revenue_report.store');
-        Route::delete('/delete/{id}', [DashboardController::class, 'destroyRevenueReport'])->name('revenue_report.destroy');
+        Route::delete('/delete/{id}', [DashboardController::class, 'destroyRevenueReport'])->name('revenue_report.destroy')->middleware('is_super_user');
     });
 });
