@@ -49,7 +49,9 @@ class RepairTicketController extends Controller
                 $search = $request->input('search');
                 $query->whereHas('customer', function ($q) use ($search) {
                     $q->where('name', 'like', "%{$search}%")
-                        ->orWhere('phone_number', 'like', "%{$search}%");
+                        ->orWhere('phone_number', 'like', "%{$search}%")
+                        ->orWhere('code', 'like', "%{$search}%")
+                    ;
                 });
             })
             ->orderByDesc('created_at')
