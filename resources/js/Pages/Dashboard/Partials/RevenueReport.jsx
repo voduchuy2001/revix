@@ -12,6 +12,7 @@ import {
   AlertDialogTrigger
 } from '@/Components/ui/alert-dialog'
 import { Button } from '@/Components/ui/button'
+import { Checkbox } from '@/Components/ui/checkbox'
 import { Separator } from '@/Components/ui/separator'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/ui/table'
 import { formatDate, formatMoney } from '@/utils/format'
@@ -23,7 +24,7 @@ import {
   getSortedRowModel,
   useReactTable
 } from '@tanstack/react-table'
-import { endOfMonth, startOfMonth } from 'date-fns'
+import { endOfMonth, format, startOfMonth } from 'date-fns'
 import { debounce, pickBy } from 'lodash'
 import { ArrowUpDown, Trash } from 'lucide-react'
 import { useCallback, useEffect, useState } from 'react'
@@ -40,9 +41,20 @@ export default function RevenueReport() {
 
   const now = Date.now()
   const [values, setValues] = useState({
-    from: filters?.from || startOfMonth(now),
-    to: filters?.to || endOfMonth(now)
+    branches: [],
+    from: format(filters?.from, 'yyyy-MM-dd') || format(startOfMonth(now), 'yyyy-MM-dd'),
+    to: format(filters?.to, 'yyyy-MM-dd') || format(endOfMonth(now), 'yyyy-MM-dd')
   })
+
+  const handleBranchChange = (branchId) => {
+    setValues((prev) => {
+      const isSelected = prev.branches.includes(branchId)
+      return {
+        ...prev,
+        branches: isSelected ? prev.branches.filter((id) => id !== branchId) : [...prev.branches, branchId]
+      }
+    })
+  }
 
   const prevValues = usePrevious(values)
 
@@ -174,12 +186,28 @@ export default function RevenueReport() {
           onChange={(range) => {
             setValues((prev) => ({
               ...prev,
-              from: range?.from || '',
-              to: range?.to || ''
+              from: range?.from ? format(range.from, 'yyyy-MM-dd') : '',
+              to: range?.to ? format(range.to, 'yyyy-MM-dd') : ''
             }))
           }}
           className="w-full md:w-auto md:min-w-[200px]"
         />
+      </div>
+
+      <div className="flex gap-4 my-2">
+        <div className="flex items-center space-x-2">
+          <Checkbox id="branch-1" checked={values.branches.includes(1)} onCheckedChange={() => handleBranchChange(1)} />
+          <label htmlFor="branch-1" className="text-sm font-medium">
+            Chi nhánh 1
+          </label>
+        </div>
+
+        <div className="flex items-center space-x-2">
+          <Checkbox id="branch-2" checked={values.branches.includes(2)} onCheckedChange={() => handleBranchChange(2)} />
+          <label htmlFor="branch-2" className="text-sm font-medium">
+            Chi nhánh 2
+          </label>
+        </div>
       </div>
 
       <Table className="my-2">

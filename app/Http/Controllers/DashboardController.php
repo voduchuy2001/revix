@@ -49,17 +49,22 @@ class DashboardController extends Controller
     public function index(GetRevenueReportRequest $request): Response
     {
         $reports = Revenue::query()
+            ->when($request->filled('branches'), function ($query) use ($request) {
+                $branches = $request->input('branches');
+                if (is_array($branches)) {
+                    $query->whereIn('branch_id', $branches);
+                } else {
+                    $query->where('branch_id', $branches);
+                }
+            })
             ->when($request->filled(['from', 'to']), function ($query) use ($request) {
-                $query->whereBetween('date', [
-                    Carbon::parse($request->input('from'))->startOfDay(),
-                    Carbon::parse($request->input('to'))->endOfDay()
-                ]);
+                $query->whereBetween('date', [$request->input('from'), $request->input('to')]);
             })
             ->when($request->filled('from') && !$request->filled('to'), function ($query) use ($request) {
-                $query->whereDate('date', '>=', Carbon::parse($request->input('from'))->startOfDay());
+                $query->where('date', '>=', $request->input('from'));
             })
             ->when($request->filled('to') && !$request->filled('from'), function ($query) use ($request) {
-                $query->whereDate('date', '<=', Carbon::parse($request->input('to'))->endOfDay());
+                $query->where('date', '<=', $request->input('to'));
             })
             ->orderByDesc('created_at')
             ->get();
@@ -74,5 +79,4 @@ class DashboardController extends Controller
             'branchTwo' => $branchTwo,
         ]);
     }
-
 }

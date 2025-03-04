@@ -9,7 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
 import { formatDate, formatMoney } from '@/utils/format'
 import { Pencil, Plus, Printer, Trash } from 'lucide-react'
 import { DateRange } from '@/Components/DateRange'
-import { endOfMonth, startOfMonth } from 'date-fns'
+import { endOfMonth, format, startOfMonth } from 'date-fns'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -31,8 +31,8 @@ export default function Index() {
   const now = new Date()
   const [values, setValues] = useState({
     search: filters?.search || '',
-    from: filters?.from || startOfMonth(now),
-    to: filters?.to || endOfMonth(now)
+    from: format(filters?.from, 'yyyy-MM-dd') || format(startOfMonth(now), 'yyyy-MM-dd'),
+    to: format(filters?.to, 'yyyy-MM-dd') || format(endOfMonth(now), 'yyyy-MM-dd')
   })
 
   const prevValues = usePrevious(values)
@@ -114,8 +114,8 @@ export default function Index() {
                         onChange={(range) => {
                           setValues((prev) => ({
                             ...prev,
-                            from: range?.from || '',
-                            to: range?.to || ''
+                            from: range?.from ? format(range.from, 'yyyy-MM-dd') : '',
+                            to: range?.to ? format(range.to, 'yyyy-MM-dd') : ''
                           }))
                         }}
                         className="md:min-w-[200px]"

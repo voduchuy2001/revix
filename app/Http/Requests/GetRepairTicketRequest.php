@@ -32,12 +32,11 @@ class GetRepairTicketRequest extends FormRequest
         $this->merge([
             'search' => $this->input('search'),
             'from' => $this->input('from')
-                ? Carbon::parse($this->input('from'))->startOfDay()->toDateString()
-                : Carbon::now()->startOfMonth()->toDateString(),
+                ? Carbon::parse($this->input('from'))->startOfDay()
+                : Carbon::now()->startOfMonth(),
             'to' => $this->input('to')
-                ? Carbon::parse($this->input('to'))->endOfDay()->toDateString()
-                : Carbon::now()->endOfMonth()->toDateString(),
+                ? Carbon::parse($this->input('to'))->endOfDay()
+                : Carbon::now()->endOfMonth(),
         ]);
     }
-
 }

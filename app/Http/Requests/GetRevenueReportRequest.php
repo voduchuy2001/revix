@@ -10,6 +10,8 @@ class GetRevenueReportRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'branches' => ['nullable', 'array'],
+            'branches.*' => ['integer'],
             'from' => ['nullable', 'date'],
             'to' => ['nullable', 'date'],
         ];
