@@ -58,7 +58,7 @@ class DashboardController extends Controller
             ->when($request->filled('to') && !$request->filled('from'), function ($query) use ($request) {
                 $query->whereDate('date', '<=', $request->input('to'));
             })
-            ->orderByDesc('date')
+            ->orderByDesc('created_at')
             ->get();
 
         $branchOne = $this->getMonthlyRevenue(1);

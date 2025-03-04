@@ -72,6 +72,11 @@ export default function Detail() {
       ),
       cell: ({ row }) => {
         return <div className="text-center font-medium">{formatMoney(row.getValue('price'))}</div>
+      },
+      sortingFn: (rowA, rowB, columnId) => {
+        const a = parseFloat(rowA.getValue(columnId)?.toString().replace(/\D/g, '')) || 0
+        const b = parseFloat(rowB.getValue(columnId)?.toString().replace(/\D/g, '')) || 0
+        return a - b
       }
     },
     {
