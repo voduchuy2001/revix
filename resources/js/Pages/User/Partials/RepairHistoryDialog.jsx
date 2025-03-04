@@ -63,7 +63,7 @@ export default function RepairHistoryDialog({ customer, open, onOpenChange, show
           </DialogTrigger>
         )}
 
-        <DialogContent className="md:h-auto md:max-w-5xl">
+        <DialogContent className="md:h-auto md:max-w-7xl">
           <DialogHeader>
             <DialogTitle></DialogTitle>
             <DialogDescription></DialogDescription>
@@ -74,11 +74,13 @@ export default function RepairHistoryDialog({ customer, open, onOpenChange, show
               <TableHeader className="sticky top-0 z-10 bg-secondary">
                 <TableRow>
                   <TableHead>Số phiếu</TableHead>
+                  <TableHead>Chi nhánh</TableHead>
                   <TableHead className="min-w-32">Tên khách hàng</TableHead>
                   <TableHead className="min-w-28">Số điện thoại</TableHead>
                   <TableHead>Thiết bị</TableHead>
                   <TableHead>Giá</TableHead>
                   <TableHead>Thợ</TableHead>
+                  <TableHead>Tình trạng máy</TableHead>
                   <TableHead>Ngày lập</TableHead>
                   <TableHead>Cập nhật</TableHead>
                   <TableHead>Hành động</TableHead>
@@ -89,6 +91,7 @@ export default function RepairHistoryDialog({ customer, open, onOpenChange, show
                   tickets.map((ticket) => (
                     <TableRow key={ticket.code}>
                       <TableCell className="font-medium">{ticket.code}</TableCell>
+                      <TableCell className="min-w-28">{ticket.branch.name}</TableCell>
                       <TableCell className="font-medium">{ticket.customer.name}</TableCell>
                       <TableCell>{ticket.customer.phone_number || 'Không có'}</TableCell>
                       <TableCell>
@@ -98,7 +101,8 @@ export default function RepairHistoryDialog({ customer, open, onOpenChange, show
                         </div>
                       </TableCell>
                       <TableCell>{formatMoney(ticket.amount)}</TableCell>
-                      <TableCell>{ticket.technician}</TableCell>
+                      <TableCell>{ticket.technician || 'Không có'}</TableCell>
+                      <TableCell className="min-w-28">{ticket.condition || 'Không có'}</TableCell>
                       <TableCell>{formatDate(ticket.created_at)}</TableCell>
                       <TableCell>{formatDate(ticket.updated_at)}</TableCell>
                       <TableCell>
@@ -153,7 +157,7 @@ export default function RepairHistoryDialog({ customer, open, onOpenChange, show
                   ))
                 ) : (
                   <TableRow>
-                    <TableCell colSpan={9} className="text-center py-6 text-gray-500">
+                    <TableCell colSpan={11} className="text-center py-6 text-gray-500">
                       <EmptyState />
                     </TableCell>
                   </TableRow>

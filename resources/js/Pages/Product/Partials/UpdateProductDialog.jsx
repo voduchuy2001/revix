@@ -80,23 +80,25 @@ export default function UpdateProductDialog({
         <div className="max-h-[65vh] overflow-auto md:max-h-[75vh]">
           <form id={`update-product-${product.id}`} onSubmit={submit} autoComplete="off">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
-              <div className="space-y-1">
-                <Label htmlFor="name" required={true}>
-                  Tên sản phẩm
-                </Label>
-                <NameInput
-                  tabIndex={1}
-                  id="name"
-                  type="text"
-                  name="name"
-                  className="mt-1 block w-full"
-                  value={data.name}
-                  onChange={(e) => setData('name', e.target.value)}
-                />
-                <InputError message={errors.name} className="mt-2" />
+              <div className="col-span-1 md:col-span-2 w-full space-y-4">
+                <div className="space-y-1">
+                  <Label htmlFor="name" required={true}>
+                    Tên sản phẩm
+                  </Label>
+                  <NameInput
+                    tabIndex={1}
+                    id="name"
+                    type="text"
+                    name="name"
+                    className="mt-1 block w-full"
+                    value={data.name}
+                    onChange={(e) => setData('name', e.target.value)}
+                  />
+                  <InputError message={errors.name} className="mt-2" />
+                </div>
               </div>
 
-              <div className="space-y-1">
+              <div className={`${type === 'warehouse' ? 'space-y-1' : 'hidden'}`}>
                 <Label htmlFor="sku" required={true}>
                   Mã sản phẩm
                 </Label>
@@ -160,7 +162,7 @@ export default function UpdateProductDialog({
                 <InputError message={errors.sale_price} className="mt-2" />
               </div>
 
-              <div className="col-span-1 md:col-span-2 w-full space-y-4">
+              <div className={`${type === 'warehouse' ? 'col-span-1 md:col-span-2 w-full space-y-4' : 'hidden'}`}>
                 <div className="space-y-1">
                   <Label htmlFor="note" required={false}>
                     Ghi chú

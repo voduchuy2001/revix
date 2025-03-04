@@ -45,6 +45,7 @@ class UserController extends Controller
                 'repairTickets',
                 'repairTickets.customer',
                 'repairTickets.device',
+                'repairTickets.branch',
             ])
             ->orderByDesc('created_at')
             ->get();
