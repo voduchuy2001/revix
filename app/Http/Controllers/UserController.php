@@ -61,6 +61,10 @@ class UserController extends Controller
     public function store(StoreUserRequest $request): RedirectResponse
     {
         $data = $request->validated();
+        if ($data['type'] === UserType::USER->value && !Auth::user()->isSuperUser()) {
+            abort(403);
+        }
+
         $user = User::create($data);
 
         return Redirect::back()->with(['user' => $user]);
@@ -69,6 +73,11 @@ class UserController extends Controller
     public function update(UpdateUserRequest $request, string|int $id): RedirectResponse
     {
         $data = $request->validated();
+        $data = $request->validated();
+        if ($data['type'] === UserType::USER->value && !Auth::user()->isSuperUser()) {
+            abort(403);
+        }
+
         $user = User::findOrFail($id);
         $user->update($data);
         return Redirect::back();
