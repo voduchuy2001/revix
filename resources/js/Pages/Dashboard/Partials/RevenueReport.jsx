@@ -12,6 +12,7 @@ import {
   AlertDialogTrigger
 } from '@/Components/ui/alert-dialog'
 import { Button } from '@/Components/ui/button'
+import { Separator } from '@/Components/ui/separator'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/ui/table'
 import { formatDate, formatMoney } from '@/utils/format'
 import { router, useForm, usePage } from '@inertiajs/react'
@@ -31,6 +32,7 @@ import { usePrevious } from 'react-use'
 
 export default function RevenueReport() {
   const { reports, filters } = usePage().props
+  const total = reports.reduce((acc, report) => acc + report.amount, 0) || 0
 
   const [sorting, setSorting] = useState([])
   const [columnFilters, setColumnFilters] = useState([])
@@ -207,6 +209,10 @@ export default function RevenueReport() {
           )}
         </TableBody>
       </Table>
+
+      <Separator className="my-3" />
+
+      <div className="flex w-full justify-end text-sm">Tổng tiền: {formatMoney(total)}</div>
     </div>
   )
 }

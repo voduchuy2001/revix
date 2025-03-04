@@ -139,9 +139,10 @@ export default function Index() {
                       <TableHead>Số phiếu</TableHead>
                       <TableHead className="min-w-32">Tên khách hàng</TableHead>
                       <TableHead className="min-w-28">Số điện thoại</TableHead>
-                      <TableHead>Thiết bị</TableHead>
+                      <TableHead className="min-w-28">Thiết bị</TableHead>
                       <TableHead>Giá</TableHead>
                       <TableHead>Thợ</TableHead>
+                      <TableHead className="min-w-28">Tình trạng máy</TableHead>
                       <TableHead>Ngày lập</TableHead>
                       <TableHead>Cập nhật</TableHead>
                       <TableHead>Hành động</TableHead>
@@ -162,6 +163,7 @@ export default function Index() {
                           </TableCell>
                           <TableCell>{formatMoney(ticket.amount)}</TableCell>
                           <TableCell>{ticket.technician || 'Không có'}</TableCell>
+                          <TableCell>{ticket.condition || 'Không có'}</TableCell>
                           <TableCell>{formatDate(ticket.created_at)}</TableCell>
                           <TableCell>{formatDate(ticket.updated_at)}</TableCell>
                           <TableCell>

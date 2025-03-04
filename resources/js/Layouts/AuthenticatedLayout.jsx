@@ -151,8 +151,8 @@ export default function AuthenticatedLayout({ header, children }) {
             <ResponsiveNavLink
               href={route('repair_ticket.index', { branchId: 1 })}
               active={
-                route().current('repair_ticket.index') ||
-                route().current('repair_ticket.create') ||
+                route().current('repair_ticket.index', { branchId: 1 }) ||
+                route().current('repair_ticket.create', { branchId: 1 }) ||
                 route().current('repair_ticket.edit')
               }
             >
@@ -162,8 +162,8 @@ export default function AuthenticatedLayout({ header, children }) {
             <ResponsiveNavLink
               href={route('repair_ticket.index', { branchId: 2 })}
               active={
-                route().current('repair_ticket.index') ||
-                route().current('repair_ticket.create') ||
+                route().current('repair_ticket.index', { branchId: 2 }) ||
+                route().current('repair_ticket.create', { branchId: 2 }) ||
                 route().current('repair_ticket.edit')
               }
             >
