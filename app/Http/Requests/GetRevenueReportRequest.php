@@ -19,11 +19,11 @@ class GetRevenueReportRequest extends FormRequest
     {
         $this->merge([
             'from' => $this->input('from')
-                ? Carbon::parse($this->input('from'))->startOfDay()
-                : Carbon::now()->startOfMonth(),
+                ? Carbon::parse($this->input('from'))->startOfDay()->toDateString()
+                : Carbon::now()->startOfMonth()->toDateString(),
             'to' => $this->input('to')
-                ? Carbon::parse($this->input('to'))->endOfDay()
-                : Carbon::now()->endOfMonth(),
+                ? Carbon::parse($this->input('to'))->endOfDay()->toDateString()
+                : Carbon::now()->endOfMonth()->toDateString(),
         ]);
     }
 }

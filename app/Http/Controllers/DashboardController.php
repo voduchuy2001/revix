@@ -50,13 +50,16 @@ class DashboardController extends Controller
     {
         $reports = Revenue::query()
             ->when($request->filled(['from', 'to']), function ($query) use ($request) {
-                $query->whereBetween('date', [$request->input('from'), $request->input('to')]);
+                $query->whereBetween('date', [
+                    Carbon::parse($request->input('from'))->startOfDay(),
+                    Carbon::parse($request->input('to'))->endOfDay()
+                ]);
             })
             ->when($request->filled('from') && !$request->filled('to'), function ($query) use ($request) {
-                $query->whereDate('date', '>=', $request->input('from'));
+                $query->whereDate('date', '>=', Carbon::parse($request->input('from'))->startOfDay());
             })
             ->when($request->filled('to') && !$request->filled('from'), function ($query) use ($request) {
-                $query->whereDate('date', '<=', $request->input('to'));
+                $query->whereDate('date', '<=', Carbon::parse($request->input('to'))->endOfDay());
             })
             ->orderByDesc('created_at')
             ->get();
@@ -71,4 +74,5 @@ class DashboardController extends Controller
             'branchTwo' => $branchTwo,
         ]);
     }
+
 }

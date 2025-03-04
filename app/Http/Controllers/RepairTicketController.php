@@ -10,6 +10,7 @@ use App\Models\Device;
 use App\Models\RepairTicket;
 use App\Models\Setting;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
@@ -37,13 +38,16 @@ class RepairTicketController extends Controller
         $tickets = RepairTicket::with(['customer', 'device', 'branch'])
             ->where('branch_id', $branchId)
             ->when($request->filled('from') && !$request->filled('to'), function ($query) use ($request) {
-                $query->where('created_at', '>=', $request->input('from'));
+                $query->where('created_at', '>=', Carbon::parse($request->input('from'))->startOfDay());
             })
             ->when($request->filled('to') && !$request->filled('from'), function ($query) use ($request) {
-                $query->where('created_at', '<=', $request->input('to'));
+                $query->where('created_at', '<=', Carbon::parse($request->input('to'))->endOfDay());
             })
             ->when($request->filled(['from', 'to']), function ($query) use ($request) {
-                $query->whereBetween('created_at', [$request->input('from'), $request->input('to')]);
+                $query->whereBetween('created_at', [
+                    Carbon::parse($request->input('from'))->startOfDay(),
+                    Carbon::parse($request->input('to'))->endOfDay()
+                ]);
             })
             ->when($request->filled('search'), function ($query) use ($request) {
                 $search = $request->input('search');
