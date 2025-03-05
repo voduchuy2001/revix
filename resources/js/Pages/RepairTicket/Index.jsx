@@ -97,7 +97,7 @@ export default function Index() {
 
                   <div className="flex flex-col md:flex-row items-center gap-2 md:gap-4 justify-between">
                     <Input
-                      placeholder="Tên khách hàng, số điện thoại, mã số phiếu"
+                      placeholder="Tên khách, SĐT, MS phiếu, thiết bị"
                       value={values?.search}
                       onChange={handleChange}
                       className="max-w-sm"
