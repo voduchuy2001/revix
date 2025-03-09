@@ -196,15 +196,23 @@ export default function RevenueReport() {
 
       <div className="flex gap-4 my-2">
         <div className="flex items-center space-x-2">
-          <Checkbox id="branch-1" checked={values.branches.includes(1)} onCheckedChange={() => handleBranchChange(1)} />
-          <label htmlFor="branch-1" className="text-sm font-medium">
+          <Checkbox
+            id="filter-branch-1"
+            checked={values.branches.includes(1)}
+            onCheckedChange={() => handleBranchChange(1)}
+          />
+          <label htmlFor="filter-branch-1" className="text-sm font-medium">
             Chi nhánh 1
           </label>
         </div>
 
         <div className="flex items-center space-x-2">
-          <Checkbox id="branch-2" checked={values.branches.includes(2)} onCheckedChange={() => handleBranchChange(2)} />
-          <label htmlFor="branch-2" className="text-sm font-medium">
+          <Checkbox
+            id="filter-branch-2"
+            checked={values.branches.includes(2)}
+            onCheckedChange={() => handleBranchChange(2)}
+          />
+          <label htmlFor="filter-branch-2" className="text-sm font-medium">
             Chi nhánh 2
           </label>
         </div>
