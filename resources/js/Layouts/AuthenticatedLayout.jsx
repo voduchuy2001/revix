@@ -34,7 +34,7 @@ export default function AuthenticatedLayout({ header, children }) {
                   active={
                     route().current('repair_ticket.index', { branchId: 1 }) ||
                     route().current('repair_ticket.create', { branchId: 1 }) ||
-                    route().current('repair_ticket.edit')
+                    route().current('repair_ticket.edit', { branchId: 1 })
                   }
                 >
                   Sửa chữa CN1
@@ -45,7 +45,7 @@ export default function AuthenticatedLayout({ header, children }) {
                   active={
                     route().current('repair_ticket.index', { branchId: 2 }) ||
                     route().current('repair_ticket.create', { branchId: 2 }) ||
-                    route().current('repair_ticket.edit')
+                    route().current('repair_ticket.edit', { branchId: 2 })
                   }
                 >
                   Sửa chữa CN2
@@ -108,6 +108,9 @@ export default function AuthenticatedLayout({ header, children }) {
 
                   <Dropdown.Content>
                     <Dropdown.Link href={route('profile.edit')}>Thông tin cá nhân</Dropdown.Link>
+                    <Dropdown.Link href={route('repair_ticket_setting.index')}>
+                      Cài đặt phiếu tiếp nhận sửa chữa
+                    </Dropdown.Link>
                     <Dropdown.Link href={route('logout')} method="post" as="button">
                       Đăng xuất
                     </Dropdown.Link>
@@ -153,7 +156,7 @@ export default function AuthenticatedLayout({ header, children }) {
               active={
                 route().current('repair_ticket.index', { branchId: 1 }) ||
                 route().current('repair_ticket.create', { branchId: 1 }) ||
-                route().current('repair_ticket.edit')
+                route().current('repair_ticket.edit', { branchId: 1 })
               }
             >
               Sửa chữa CN1
@@ -164,7 +167,7 @@ export default function AuthenticatedLayout({ header, children }) {
               active={
                 route().current('repair_ticket.index', { branchId: 2 }) ||
                 route().current('repair_ticket.create', { branchId: 2 }) ||
-                route().current('repair_ticket.edit')
+                route().current('repair_ticket.edit', { branchId: 2 })
               }
             >
               Sửa chữa CN2
@@ -205,6 +208,9 @@ export default function AuthenticatedLayout({ header, children }) {
 
             <div className="mt-3 space-y-1">
               <ResponsiveNavLink href={route('profile.edit')}>Thông tin cá nhân</ResponsiveNavLink>
+              <ResponsiveNavLink href={route('repair_ticket_setting.index')}>
+                Cài đặt phiếu tiếp nhận sửa chữa
+              </ResponsiveNavLink>
               <ResponsiveNavLink method="post" href={route('logout')} as="button">
                 Đăng xuất
               </ResponsiveNavLink>

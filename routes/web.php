@@ -10,6 +10,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RepairTicketController;
+use App\Http\Controllers\RepairTicketSettingController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
@@ -48,7 +49,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/store', [RepairTicketController::class, 'store'])->name('repair_ticket.store');
         Route::delete('/delete/{id}', [RepairTicketController::class, 'destroy'])->name('repair_ticket.destroy');
         Route::get('/print/{id}', [RepairTicketController::class, 'print'])->name('repair_ticket.print');
-        Route::get('/edit/{id}', [RepairTicketController::class, 'edit'])->name('repair_ticket.edit');
+        Route::get('/edit/{branchId}/{id}', [RepairTicketController::class, 'edit'])->name('repair_ticket.edit');
         Route::put('/update/{id}', [RepairTicketController::class, 'update'])->name('repair_ticket.update');
     });
 
@@ -80,5 +81,10 @@ Route::middleware('auth')->group(function () {
     Route::prefix('revenue')->group(function () {
         Route::post('/store', [DashboardController::class, 'storeRevenueReport'])->name('revenue_report.store');
         Route::delete('/delete/{id}', [DashboardController::class, 'destroyRevenueReport'])->name('revenue_report.destroy')->middleware('is_super_user');
+    });
+
+    Route::prefix('setting')->group(function () {
+        Route::get('/', [RepairTicketSettingController::class, 'index'])->name('repair_ticket_setting.index')->middleware('is_super_user');
+        Route::put('/update', [RepairTicketSettingController::class, 'update'])->name('repair_ticket_setting.update')->middleware('is_super_user');
     });
 });

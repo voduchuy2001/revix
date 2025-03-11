@@ -181,7 +181,8 @@ export default function Index() {
                                   onClick={() => {
                                     router.visit(
                                       route('repair_ticket.edit', {
-                                        id: ticket.id
+                                        id: ticket.id,
+                                        branchId
                                       })
                                     )
                                   }}

@@ -20,10 +20,10 @@ class UpdateProductStockRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'stock.required' => 'Tồn kho là bắt buộc.',
-            'stock.numeric' => 'Tồn kho phải là một số.',
-            'stock.min' => 'Tồn kho không được nhỏ hơn 1.',
-            'stock.max' => 'Tồn kho không được vượt quá 1 tỷ.',
+            'stock.required' => 'Số lượng kho là bắt buộc.',
+            'stock.numeric' => 'Số lượng kho phải là một số.',
+            'stock.min' => 'Số lượng kho không được nhỏ hơn 1.',
+            'stock.max' => 'Số lượng kho không được vượt quá 1 tỷ.',
 
             'note.string' => 'Ghi chú phải là chuỗi ký tự.',
             'note.max' => 'Ghi chú không được vượt quá 100000 ký tự.',

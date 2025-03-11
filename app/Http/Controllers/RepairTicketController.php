@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\UserType;
 use App\Http\Requests\GetRepairTicketRequest;
 use App\Http\Requests\StoreRepairTicketRequest;
 use App\Http\Requests\UpdateRepairTicketRequest;
@@ -149,11 +150,15 @@ class RepairTicketController extends Controller
         ]);
     }
 
-    public function edit(string|int $id): Response
+    public function edit(string|int $branchId, string|int $id): Response
     {
-        $ticket = RepairTicket::with(['customer', 'device'])->findOrFail($id);
+        $ticket = RepairTicket::with(['customer', 'device'])
+            ->where('id', $id)
+            ->where('branch_id', $branchId)
+            ->firstOrFail();
+
         $customers = User::query()
-            ->where('type', 'customer')
+            ->where('type', UserType::CUSTOMER->value)
             ->orderByDesc('created_at')
             ->get();
 
