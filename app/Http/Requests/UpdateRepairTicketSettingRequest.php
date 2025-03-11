@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateRepairSettingRequest extends FormRequest
+class UpdateRepairTicketSettingRequest extends FormRequest
 {
     public function rules(): array
     {

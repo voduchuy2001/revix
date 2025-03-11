@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\UpdateRepairSettingRequest;
+use App\Http\Requests\UpdateRepairTicketSettingRequest;
 use App\Models\Branch;
 use App\Models\Setting;
 use Illuminate\Http\RedirectResponse;
@@ -24,7 +24,7 @@ class RepairTicketSettingController extends Controller
         ]);
     }
 
-    public function update(UpdateRepairSettingRequest $request): RedirectResponse
+    public function update(UpdateRepairTicketSettingRequest $request): RedirectResponse
     {
         $data = $request->validated();
 
