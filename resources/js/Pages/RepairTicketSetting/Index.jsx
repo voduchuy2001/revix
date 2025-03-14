@@ -8,7 +8,6 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
 import { Head, useForm, usePage } from '@inertiajs/react'
 import { UpdateIcon } from '@radix-ui/react-icons'
 import { Plus, X } from 'lucide-react'
-import { QRCodeCanvas } from 'qrcode.react'
 import toast from 'react-hot-toast'
 
 export default function Index() {
@@ -295,19 +294,16 @@ export default function Index() {
                       className="print:font-roboto mx-auto bg-white p-4 text-xs w-[302px]"
                     >
                       <div className="text-center py-5 space-y-1">
-                        <h2 className="font-bold">{data.setting?.type}</h2>
                         <h1 className="font-bold text-lg">{data.setting?.name}</h1>
                         <h3 className="font-bold">{data.setting?.short_description}</h3>
 
-                        <p>Điện thoại: {branch?.phone_number}</p>
+                        <p>
+                          Điện thoại: <b>{branch?.phone_number}</b>
+                        </p>
                         <p>
                           Website: <a href={setting?.website}>{setting?.website}</a>
                         </p>
                         <p>Địa chỉ: {branch?.address}</p>
-                      </div>
-
-                      <div className="flex justify-center mb-5">
-                        <QRCodeCanvas value={data.setting.website} size={60} />
                       </div>
 
                       <h2 className="text-center text-sm font-bold uppercase mb-2">Phiếu tiếp nhận sửa chữa</h2>
@@ -356,7 +352,7 @@ export default function Index() {
                       </div>
 
                       <div className="mt-2">
-                        <b>Kỹ thuật: </b> {data.setting.support_phone_number}
+                        <b>Kỹ thuật: </b> {data.setting.support_phone_number} tư vấn sửa chữa góp ý
                       </div>
 
                       <div className="mt-2 border-t border-black border-dashed pt-2">

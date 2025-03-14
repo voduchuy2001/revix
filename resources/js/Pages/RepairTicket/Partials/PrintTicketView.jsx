@@ -1,5 +1,4 @@
 import { formatDate, formatMoney, toVietnamese } from '@/utils/format'
-import { QRCodeCanvas } from 'qrcode.react'
 import { useEffect, useRef } from 'react'
 import { useReactToPrint } from 'react-to-print'
 
@@ -23,19 +22,16 @@ export function PrintTicketView({ setting, ticket, branch, redirectAfterPrint = 
     <div ref={contentRef} className="print:font-roboto mx-auto bg-white p-4 text-xs">
       <div className="break-inside-avoid break-after-page">
         <div className="text-center py-5 space-y-1">
-          <h1 className="font-bold">{setting?.type}</h1>
           <h2 className="font-bold text-lg">{setting?.name}</h2>
           <h3 className="font-bold">{setting?.short_description}</h3>
 
-          <p>Điện thoại: {branch?.phone_number}</p>
+          <p>
+            Điện thoại: <b>{branch?.phone_number}</b>
+          </p>
           <p>
             Website: <a href={setting?.website}>{setting?.website}</a>
           </p>
           <p>Địa chỉ: {branch?.address}</p>
-        </div>
-
-        <div className="flex justify-center mb-5">
-          <QRCodeCanvas value={setting.website} size={60} />
         </div>
 
         <h2 className="text-center text-sm font-bold uppercase mb-2">Phiếu tiếp nhận sửa chữa</h2>
@@ -86,7 +82,7 @@ export function PrintTicketView({ setting, ticket, branch, redirectAfterPrint = 
         </div>
 
         <div className="mt-2">
-          <b>Kỹ thuật: </b> {setting?.support_phone_number}
+          <b>Kỹ thuật: </b> {setting?.support_phone_number} tư vấn sửa chữa góp ý
         </div>
 
         <div className="mt-2 border-t border-black border-dashed pt-2">
