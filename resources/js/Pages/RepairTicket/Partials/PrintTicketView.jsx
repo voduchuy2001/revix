@@ -19,7 +19,7 @@ export function PrintTicketView({ setting, ticket, branch, redirectAfterPrint = 
   }, [])
 
   return (
-    <div ref={contentRef} className="print:font-roboto mx-auto bg-white p-4 text-xs">
+    <div ref={contentRef} className="print:font-roboto mx-auto bg-white px-4 text-xs -mt-[10px]">
       <div className="break-inside-avoid break-after-page">
         <div className="text-center py-5 space-y-1">
           <h2 className="font-bold text-lg">{setting?.name}</h2>
@@ -98,36 +98,34 @@ export function PrintTicketView({ setting, ticket, branch, redirectAfterPrint = 
       </div>
 
       <div className="break-inside-avoid">
-        <div className="text-start">
-          <div className="pt-8">
-            <p>
-              <b>Số phiếu:</b> {ticket.code}
-            </p>
-            <p>
-              <b>KH:</b> {ticket.customer.name || 'Không có'} - {ticket.customer.phone_number || 'Không có'}
-            </p>
-            <p>
-              <b>Ngày nhận:</b> {formatDate(ticket.created_at)}
-            </p>
-            <p>
-              <b>Máy:</b> {ticket.device.name || 'Không có'}
-            </p>
-            <p>
-              <b>IMEI:</b> {ticket.device.code || 'Không có'}
-            </p>
-            <p>
-              <b>Tình trạng:</b> {ticket.condition}
-            </p>
-            <p>
-              <b>Chi phí sửa chữa:</b> {ticket.amount ? formatMoney(ticket.amount) : 'Không có'}
-            </p>
-            <p>
-              <b>Ghi chú:</b> {ticket.note || 'Không có'}
-            </p>
-            <p>
-              <b>Thợ:</b> {ticket.technician || 'Không có'}
-            </p>
-          </div>
+        <div className="text-start py-4">
+          <p>
+            <b>Số phiếu:</b> {ticket.code}
+          </p>
+          <p>
+            <b>KH:</b> {ticket.customer.name || 'Không có'} - {ticket.customer.phone_number || 'Không có'}
+          </p>
+          <p>
+            <b>Ngày nhận:</b> {formatDate(ticket.created_at)}
+          </p>
+          <p>
+            <b>Máy:</b> {ticket.device.name || 'Không có'}
+          </p>
+          <p>
+            <b>IMEI:</b> {ticket.device.code || 'Không có'}
+          </p>
+          <p>
+            <b>Tình trạng:</b> {ticket.condition}
+          </p>
+          <p>
+            <b>Chi phí sửa chữa:</b> {ticket.amount ? formatMoney(ticket.amount) : 'Không có'}
+          </p>
+          <p>
+            <b>Ghi chú:</b> {ticket.note || 'Không có'}
+          </p>
+          <p>
+            <b>Thợ:</b> {ticket.technician || 'Không có'}
+          </p>
         </div>
       </div>
     </div>
