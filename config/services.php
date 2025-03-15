@@ -34,5 +34,9 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
+    'control' => [
+        'username' => env('CONTROL_API_USERNAME', 'admin'),
+        'password_hash' => env('CONTROL_API_PASSWORD', ''),
+    ]
 
 ];

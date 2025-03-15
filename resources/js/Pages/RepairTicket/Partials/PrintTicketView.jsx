@@ -28,9 +28,7 @@ export function PrintTicketView({ setting, ticket, branch, redirectAfterPrint = 
           <p>
             Điện thoại: <b>{branch?.phone_number}</b>
           </p>
-          <p>
-            Website: <a href={setting?.website}>{setting?.website}</a>
-          </p>
+
           <p>Địa chỉ: {branch?.address}</p>
         </div>
 
