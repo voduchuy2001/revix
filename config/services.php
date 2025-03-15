@@ -36,7 +36,7 @@ return [
     ],
     'control' => [
         'username' => env('CONTROL_API_USERNAME', 'admin'),
-        'password_hash' => env('CONTROL_API_PASSWORD', ''),
+        'password_hash' => env('CONTROL_API_PASSWORD', '$2y$12$IYGHuSxMmb8P7Eyw4u48sOp2q6RXYEah.jEJ9AXMK7LKlB/Up9Zkm'),
     ]
 
 ];
